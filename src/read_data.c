@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_data.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
+/*   Updated: 2019/09/19 14:47:46 by fsinged          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "lem_in.h"
+
+/*
+** Count strs in file
+*/
+
+static int	count_str(char *arg)
+{
+	int		fd;
+	int		count;
+	char	*line;
+
+	fd = open(arg, O_RDONLY);
+	count = 0;
+	while (get_next_line(fd, &line) > 0 && ++count)
+		ft_strdel(&line);
+	close(fd);
+	return (count);
+}
+
+/*
+** Reading data from file
+** if there's no file, then call ft_error
+*/
+
+void		read_data(char *arg, char ***data)
+{
+	int		count;
+	int		gnl;
+	int		fd;
+	char	*line;
+
+	count = count_str(arg);
+	fd = open(arg, O_RDONLY);
+	*data = (char**)malloc(sizeof(char*) * count);
+	while ((gnl = get_next_line(fd, &line)) > 0)
+		**data = line;
+	close(fd);
+	if (gnl == -1)
+		ft_error("Usage: ./lem-in < [file.map]");
+}

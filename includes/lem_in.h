@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 15:34:09 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/19 14:45:55 by fsinged          ###   ########.fr       */
+/*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
+/*   Updated: 2019/09/19 15:28:34 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#ifndef LEM_IN_H
+# define LEM_IN_H
+
+# include "libft.h"
 
 /*
-** Write error massage and exit program
+** flag == 1 - start, -1 - end, 0 - just room
 */
 
-void	ft_error(char *str)
+typedef struct		s_list
 {
-	write(1, str, ft_strlen(str));
-	exit(0);
+	int				coord_x;
+	int				coord_y;
+	char			*name;
+	int				flag;
+	struct t_list	**next;
 }
+
+void		read_data(char **argv, char ***data);
+int			validation(char **data);
+
+#endif
