@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:30:35 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 13:04:51 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 14:00:46 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int		main(int argc, char **argv)
 	read_data(argv[1], &data);
 	validation(data, &rooms, &ways);
 	ft_strddel(data);
-	printf("rooms");
-	print(rooms);
-	printf("ways");
-	print(ways);
+//	printf("rooms");
+//	print(rooms);
+//	printf("ways");
+//	print(ways);
 //	overwrite(rooms, ways);
-	ft_strddel(rooms);
-	ft_strddel(ways);
+//	ft_strddel(rooms);
+//	ft_strddel(ways);
 	
 //	ft_free_list
 	return (0);

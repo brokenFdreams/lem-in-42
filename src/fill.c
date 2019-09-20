@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 13:16:08 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 14:15:13 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 int		isroom(char *str)
 {
-	if (*str == 'L' || *str == '#')
+	if (!*str || *str == 'L' || *str == '#')
 		return (0);
 	while (*str && *str != ' ')
 		str++;
-	if (*str == '\0')
+	if (!*str)
 		return (0);
 	str++;
 	while (*str && *str != ' ')
@@ -30,10 +30,10 @@ int		isroom(char *str)
 			return (0);
 		else
 			str++;
-	if (*str == '\0')
+	if (!*str)
 		return (0);
 	str++;
-	if (*str == '\0')
+	if (!*str)
 		return (0);
 	while (*str)
 		if (!ft_isdigit(*str))
@@ -69,17 +69,23 @@ int		fill_rooms(char **data, char ***rooms, int size)
 {
 	int i;
 	int j;
+	int flag;
 
 	i = 0;
 	j = 1;
+	flag = 0;
+	if (size < 2)
+		ft_error("No rooms");
 	*rooms = (char**)malloc(sizeof(char*) * (size + 1));
-	while (++i && data[i] && j < size)
-		if (ft_strcmp(data[i], "##start") == 0)
+	while (data[++i] && j < size)
+		if (ft_strcmp(data[i], "##start") == 0 && ++flag)
 			*rooms[0] = ft_strdup(data[++i]);
-		else if (ft_strcmp(data[i], "##end") == 0 && size--)
+		else if (ft_strcmp(data[i], "##end") == 0 && size-- && ++flag)
 			*rooms[size] = ft_strdup(data[++i]);
 		else if (isroom(data[i]))
-			*rooms[j++] = ft_strdup(data[i]);
+			*rooms[j++] = ft_strdup(data[i]); //There's segmentation fault
+	if (flag != 2)
+		ft_error("No mandatory comments");
 	*rooms[size + 1] = NULL;
 	return (i);
 }
@@ -95,6 +101,8 @@ void	fill_ways(char **data, char ***ways, int size)
 
 	i = 0;
 	j = 0;
+	if (size < 1)
+		ft_error("No possible solution");
 	*ways = (char**)malloc(sizeof(char*) * (size + 1));
 	while (data[i] && j < size)
 	{
