@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/19 15:28:34 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 12:41:04 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,17 @@ typedef struct		s_list
 	struct t_list	**next;
 }
 
-void		read_data(char **argv, char ***data);
-int			validation(char **data);
+void				read_data(char **argv, char ***data);
+int					validation(char **data, char ***rooms, char ***ways);
+void				ft_error(char *str);
+
+/*
+** fill.c
+*/
+
+int					isroom(char *str);
+int					isway(char *str);
+int					fill_rooms(char **data, char ***rooms, int size);
+int					fill_ways(char **data, char ***ways, int size);
 
 #endif
