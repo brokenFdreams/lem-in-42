@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:44:07 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 12:37:28 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:16:22 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ int			validation(char **data, char ***rooms, char ***ways)
 	i = 0;
 	rcount = 0;
 	wcount = 0;
-	while (data[i][0] == '#' && data[i][1] != '#')
+	while (data[i] && data[i][0] == '#' && data[i][1] != '#')
 		i++;
 	ants = read_num(data[i]);
 	while (++i && data[i])
-		if (!(ft_strcmp(data[i],  "##start") == 0 ||
+		if (!(ft_strcmp(data[i], "##start") == 0 ||
 			ft_strcmp(data[i], "##end") == 0 ||
 			(data[i][0] == '#' && data[i][1] != '#')))
 		{
 			if (isroom(data[i]))
 				rcount++;
-			else if (isway)
+			else if (isway(data[i]))
 				wcount++;
 			else
 				break ;

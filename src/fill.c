@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 12:37:18 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 13:16:08 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int		isroom(char *str)
 	if (*str == '\0')
 		return (0);
 	str++;
-	while (*str && *str != '\n')
+	if (*str == '\0')
+		return (0);
+	while (*str)
 		if (!ft_isdigit(*str))
 			return (0);
 		else
@@ -97,7 +99,7 @@ void	fill_ways(char **data, char ***ways, int size)
 	while (data[i] && j < size)
 	{
 		if (isway(data[i]))
-			ways[j++] = ft_strdup(data[i]);
+			*ways[j++] = ft_strdup(data[i]);
 		i++;
 	}
 	ways[j] = NULL;

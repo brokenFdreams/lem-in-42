@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/19 14:47:46 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/20 12:59:21 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void		read_data(char *arg, char ***data)
 
 	count = count_str(arg);
 	fd = open(arg, O_RDONLY);
-	*data = (char**)malloc(sizeof(char*) * count);
+	*data = (char**)malloc(sizeof(char*) * (count + 1));
+	count = 0;
 	while ((gnl = get_next_line(fd, &line)) > 0)
-		**data = line;
+		(*data)[count++] = line;
 	close(fd);
 	if (gnl == -1)
 		ft_error("Usage: ./lem-in < [file.map]");
+	(*data)[count] = NULL;
 }
