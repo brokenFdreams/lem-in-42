@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 19:20:12 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 21:14:36 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,34 +28,45 @@ t_farm			*init_farm(t_vertex **vertexes, t_queue *ant_queue,
 	return (farm);
 }
 
-int				set_distance(t_vertex *vertex, int dist)
+void				set_distance(t_vertex *vertex, int dist)
 {
-	t_list		*temp_link;
-	t_vertex	*temp_vertex;
 
 	if (vertex->dist < 0) //
 		vertex->dist = dist;
 	else //
 		vertex->dist = ft_min(dist, vertex->dist); //
+}
+
+void				set_distances_by_dfs(t_vertex *vertex, int dist)
+{
+	t_list		*temp_link;
+	t_vertex	*temp_vertex;
+
 	temp_link = vertex->links;
 	while (temp_link)
 	{
 		temp_vertex = *(t_vertex **)temp_link->content;
-		if (temp_vertex->dist < 0)
-			set_distance(temp_vertex, dist + 1);
+		set_distance(temp_vertex, dist + 1);
 		temp_link = temp_link->next;
 	}
-	return (dist);
+	temp_link = vertex->links;
+	vertex->is_visited = 1;
+	while (temp_link)
+	{
+		temp_vertex = *(t_vertex **)temp_link->content;
+		if (!temp_vertex->is_visited)
+			set_distances_by_dfs(temp_vertex, temp_vertex->dist);
+		temp_link = temp_link->next;
+	}
 }
 
 int				compute_distances(t_farm *farm)
 {
-	int			i;
-
-	i = set_distance(farm->end, 0);
+	farm->end->dist = 0;
+	set_distances_by_dfs(farm->end, 0);
 	if (farm->start->dist < 0)
 		return (0);
-	return (i);
+	return (1);
 }
 
 //
@@ -130,6 +141,8 @@ int				main(int ac, char **av)
 	add_links(vertexes, links);
 	ant_queue = create_ant_queue(ants_num);
 	farm = init_farm(vertexes, ant_queue, ants_num);
-	compute_distances(farm);
+	if (!compute_distances(farm))
+		ft_error("No path from end to start found");
+	printf("Distance from start to end: %d\n", farm->start->dist);
 	return (0);
 }

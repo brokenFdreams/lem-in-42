@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 15:48:09 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 21:14:48 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
 	new->is_end = end_flag;
 	new->dist = -1;
 	new->is_occupied = 0;
+	new->is_visited = 0;
 	new->links = NULL;
 	new->ants_num = 0;
 	new->x = ft_strtol(room_line, &room_line, 10);

@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 17:56:04 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 21:14:53 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_vertex
 	int				ants_num;
 	char			is_start;
 	char			is_end;
+	char			is_visited;
 	int				x;
 	int				y;
 	int				capacity;
