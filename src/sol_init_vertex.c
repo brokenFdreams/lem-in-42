@@ -6,14 +6,14 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 01:44:34 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:48:09 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "structs.h"
 
-char			*read_room_name(char **room_line)
+static char		*read_room_name(char **room_line)
 {
 	char		*name;
 	char		*space_pos;

@@ -6,23 +6,12 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 01:38:03 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 19:20:12 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "structs.h"
-
-#define ANTS_NUM 4
-#define ROOMS_NUM 8
-#define START "start 4 0"
-#define END "end 4 6"
-#define ROOM1 "1 4 2"
-#define ROOM2 "2 4 4"
-#define ROOM3 "3 2 2"
-#define ROOM4 "4 0 4"
-#define ROOM5 "5 8 2"
-#define ROOM6 "6 8 4"
 
 t_farm			*init_farm(t_vertex **vertexes, t_queue *ant_queue,
 							int ants_num)
@@ -51,7 +40,7 @@ int				set_distance(t_vertex *vertex, int dist)
 	temp_link = vertex->links;
 	while (temp_link)
 	{
-		temp_vertex = (t_vertex *)temp_link->content;
+		temp_vertex = *(t_vertex **)temp_link->content;
 		if (temp_vertex->dist < 0)
 			set_distance(temp_vertex, dist + 1);
 		temp_link = temp_link->next;
@@ -69,23 +58,78 @@ int				compute_distances(t_farm *farm)
 	return (i);
 }
 
-int				main(void)
+//
+int			read_rooms_and_links(int fd, char ***rooms, char ***links,
+									char **start, char **end)
 {
-	char		*rooms[] = {ROOM1, ROOM2, ROOM3, ROOM4, ROOM5, ROOM6};
-	char		*links[] = { "start-1", "3-4", "2-4", "1-5", "6-5", "end-6", "1-2", "2-end", "3-start", NULL };
-	int			rooms_num = 8;
+	char		*line;
+	int			r_i = 0;
+	int			l_i = 0;
+	int			start_flag = 0;
+	int			end_flag = 0;
+
+	*rooms = (char **)ft_memalloc(sizeof(char *) * 10000);
+	*links = (char **)ft_memalloc(sizeof(char *) * 100000);
+	
+	while (get_next_line(fd, &line) > 0)
+	{
+		if (ft_strchr(line, '-') && !start_flag && !end_flag &&
+			!ft_strnequ(line, "##start", 7) && !ft_strnequ(line, "##end", 5))
+			(*links)[l_i++] = line;
+		else if (!start_flag && !end_flag && !ft_strnequ(line, "##start", 7) &&
+				!ft_strnequ(line, "##end", 5))
+			(*rooms)[r_i++] = line;
+		if (start_flag)
+		{
+			*start = line;
+			start_flag = 0;
+		}
+		else if (end_flag)
+		{
+			*end = line;
+			end_flag = 0;
+		}
+		if (ft_strnequ(line, "##start", 7))
+			start_flag = 1;
+		else if (ft_strnequ(line, "##end", 5))
+			end_flag = 1;
+	}
+	return (r_i + 2);
+}
+
+int				main(int ac, char **av)
+{
+	char		**rooms;
+	char		**links;
+	int			rooms_num;
 	t_farm		*farm;
 	t_vertex	*start;
 	t_vertex	*end;
 	t_vertex	**vertexes;
 	t_queue		*ant_queue;
 
-	start = init_vertex(START, 1, 0);
-	end = init_vertex(END, 0, 1);
+	int			fd;
+	int			ants_num;
+	char		*line;
+	char		*start_line;
+	char		*end_line;
+
+//
+	if (ac != 2)
+		return (0);
+	fd = open(av[1], O_RDONLY);
+	get_next_line(fd, &line);
+	ants_num = ft_strtol(line, NULL, 10);
+
+	rooms_num = read_rooms_and_links(fd, &rooms, &links, &start_line, &end_line);
+//
+
+	start = init_vertex(start_line, 1, 0);
+	end = init_vertex(end_line, 0, 1);
 	vertexes = collect_vertexes(start, end, rooms, rooms_num);
 	add_links(vertexes, links);
-	ant_queue = create_ant_queue(ANTS_NUM);
-	farm = init_farm(vertexes, ant_queue, ANTS_NUM);
+	ant_queue = create_ant_queue(ants_num);
+	farm = init_farm(vertexes, ant_queue, ants_num);
 	compute_distances(farm);
 	return (0);
 }

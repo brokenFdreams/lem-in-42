@@ -6,14 +6,14 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:30:56 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 01:38:10 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 19:08:52 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "structs.h"
 
-t_vertex		*find_room(char *name, t_vertex **vertexes)
+static t_vertex	*find_room(char *name, t_vertex **vertexes)
 {
 	int			i;
 
@@ -27,10 +27,10 @@ t_vertex		*find_room(char *name, t_vertex **vertexes)
 	return (NULL);
 }
 
-void			link_rooms(t_vertex *room1, t_vertex *room2)
+static void		link_rooms(t_vertex *room1, t_vertex *room2)
 {
-	ft_lstadd(&room1->links, ft_lstnew(room2, sizeof(t_vertex *)));
-	ft_lstadd(&room2->links, ft_lstnew(room1, sizeof(t_vertex *)));
+	ft_lstadd(&room1->links, ft_lstnew(&room2, sizeof(t_vertex *)));
+	ft_lstadd(&room2->links, ft_lstnew(&room1, sizeof(t_vertex *)));
 }
 
 void				add_links(t_vertex **vertexes, char **links_line)

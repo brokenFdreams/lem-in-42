@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:33:51 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 01:38:08 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/23 15:44:39 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "structs.h"
 
 
-t_ant			*init_ant(int ant_num)
+static t_ant	*init_ant(int ant_num)
 {
 	t_ant		*new;
 
@@ -26,7 +26,7 @@ t_ant			*init_ant(int ant_num)
 	return (new);
 }
 
-int				add_ant(t_queue **head_node, t_ant *ant)
+static int		add_ant(t_queue **head_node, t_ant *ant)
 {
 	t_queue		*new_node;
 
