@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:44:07 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/24 12:57:34 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 13:53:22 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int			validation(char **data, char ***rooms, char ***ways)
 		i++;
 	ants = read_num(data[i]);
 	while (++i && data[i])
-		if (!(ft_strcmp(data[i], "##start") == 0 ||
+/*		if ((ft_strcmp(data[i], "##start") == 0 ||
+			ft_strcmp(data[i], "##end") == 0) && !isroom(data[i + 1]))
+			ft_error("No start/end\n");
+			else */if (!(ft_strcmp(data[i], "##start") == 0 ||
 			ft_strcmp(data[i], "##end") == 0 ||
 			(data[i][0] == '#' && data[i][1] != '#')))
 		{
@@ -57,6 +60,8 @@ int			validation(char **data, char ***rooms, char ***ways)
 			else
 				break ;
 		}
+	if (data[i][0] == '#' && data[i][1] == '#')
+		ft_error("Invalid comment\n");
 	fill_rooms(data, rooms, rcount);
 	fill_ways(data, ways, wcount);
 	return (ants);

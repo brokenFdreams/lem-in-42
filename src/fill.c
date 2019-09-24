@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/24 13:03:11 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 13:44:32 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int		isway(char *str)
 	if (*str == '\0')
 		return (0);
 	str++;
+	if (*str == '\0')
+		return (0);
 	while (*str)
 		str++;
 	return (1);
@@ -83,7 +85,7 @@ int		fill_rooms(char **data, char ***rooms, int size)
 		else if (ft_strcmp(data[i], "##end") == 0 && size-- && ++flag)
 			(*rooms)[size] = ft_strdup(data[++i]);
 		else if (isroom(data[i]))
-			(*rooms)[j++] = ft_strdup(data[i]); //There's segmentation fault
+			(*rooms)[j++] = ft_strdup(data[i]);
 	if (flag != 2)
 		ft_error("No mandatory comments");
 	(*rooms)[size + 1] = NULL;
