@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 14:15:13 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 13:03:11 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		isway(char *str)
 	if (*str == '\0')
 		return (0);
 	str++;
-	while (*str && *str != '\n')
+	while (*str)
 		str++;
 	return (1);
 }
@@ -79,14 +79,14 @@ int		fill_rooms(char **data, char ***rooms, int size)
 	*rooms = (char**)malloc(sizeof(char*) * (size + 1));
 	while (data[++i] && j < size)
 		if (ft_strcmp(data[i], "##start") == 0 && ++flag)
-			*rooms[0] = ft_strdup(data[++i]);
+			(*rooms)[0] = ft_strdup(data[++i]);
 		else if (ft_strcmp(data[i], "##end") == 0 && size-- && ++flag)
-			*rooms[size] = ft_strdup(data[++i]);
+			(*rooms)[size] = ft_strdup(data[++i]);
 		else if (isroom(data[i]))
-			*rooms[j++] = ft_strdup(data[i]); //There's segmentation fault
+			(*rooms)[j++] = ft_strdup(data[i]); //There's segmentation fault
 	if (flag != 2)
 		ft_error("No mandatory comments");
-	*rooms[size + 1] = NULL;
+	(*rooms)[size + 1] = NULL;
 	return (i);
 }
 
@@ -107,8 +107,8 @@ void	fill_ways(char **data, char ***ways, int size)
 	while (data[i] && j < size)
 	{
 		if (isway(data[i]))
-			*ways[j++] = ft_strdup(data[i]);
+			(*ways)[j++] = ft_strdup(data[i]);
 		i++;
 	}
-	ways[j] = NULL;
+	(*ways)[j] = NULL;
 }

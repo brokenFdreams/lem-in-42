@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:44:07 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 14:12:47 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 12:57:34 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static int	read_num(char *str)
 
 	num = ft_atoi(str);
 	if (num < 1)
-		ft_error("No ants");
+		ft_error("No ants\n");
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
-			ft_error("Error");
+			ft_error("Error\n");
 		str++;
 	}
 	return (num);
@@ -58,6 +58,6 @@ int			validation(char **data, char ***rooms, char ***ways)
 				break ;
 		}
 	fill_rooms(data, rooms, rcount);
-//	fill_ways(data, ways, wcount);
+	fill_ways(data, ways, wcount);
 	return (ants);
 }
