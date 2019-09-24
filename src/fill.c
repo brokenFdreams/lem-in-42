@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/24 13:44:32 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 14:26:27 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int		isway(char *str)
 	str++;
 	if (*str == '\0')
 		return (0);
-	while (*str)
-		str++;
 	return (1);
 }
 
@@ -87,7 +85,7 @@ int		fill_rooms(char **data, char ***rooms, int size)
 		else if (isroom(data[i]))
 			(*rooms)[j++] = ft_strdup(data[i]);
 	if (flag != 2)
-		ft_error("No mandatory comments");
+		ft_error("No mandatory comments\n");
 	(*rooms)[size + 1] = NULL;
 	return (i);
 }
@@ -104,7 +102,7 @@ void	fill_ways(char **data, char ***ways, int size)
 	i = 0;
 	j = 0;
 	if (size < 1)
-		ft_error("No possible solution");
+		ft_error("No possible solution\n");
 	*ways = (char**)malloc(sizeof(char*) * (size + 1));
 	while (data[i] && j < size)
 	{
