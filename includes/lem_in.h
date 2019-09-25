@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/23 17:56:06 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/25 18:37:48 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,26 @@ t_vertex			**collect_vertexes(t_vertex *start, t_vertex *end,
 ** sol_create_ant_queue.c
 */
 
-t_queue				*create_ant_queue(int ants_left);
+t_ant_queue				*create_ant_queue(int ants_left);
 
 /* 
 ** sol_add_links_to_vertex.c
 */
 
 void				add_links(t_vertex **vertexes, char **links_line);
+
+/* 
+** sol_distance_computing.c
+*/
+
+int					compute_distances(t_farm *farm);
+
+/*
+** sol_queue_functions.c
+*/
+
+void				push(t_queue **queue, t_vertex *vertex);
+t_vertex			*pop(t_queue **queue);
 
 /* 
 ** additional libft functions

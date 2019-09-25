@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 21:14:48 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/25 16:51:29 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char		*read_room_name(char **room_line)
 	space_pos = ft_strchr(name, ' ');
 	name[space_pos - name] = '\0';
 	*room_line = space_pos + 1;
-	return (name);	
+	return (name);
 }
 
 t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
@@ -38,10 +38,12 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
 	new->dist = -1;
 	new->is_occupied = 0;
 	new->is_visited = 0;
+	new->is_sorted = 0;
+	new->links_num = 0;
 	new->links = NULL;
 	new->ants_num = 0;
 	new->x = ft_strtol(room_line, &room_line, 10);
-	new->y = ft_strtol(room_line, &room_line, 10);
+	new->y = ft_strtol(room_line, NULL, 10);
 	return (new);
 }
 
