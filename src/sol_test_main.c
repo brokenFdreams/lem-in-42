@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 20:20:02 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/25 21:23:21 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,126 +67,7 @@ int			read_rooms_and_links(int fd, char ***rooms, char ***links,
 	return (r_i + 2);
 }
 
-void	ft_lst_del_content(void *content, size_t size)
-{
-	ft_bzero(content, size);
-	ft_memdel(&content);
-}
 
-void			remove_impasses(t_vertex *vertex)
-{
-	t_list		*list;
-	t_list		*temp_list;
-	t_vertex	*temp_vertex;
-
-	list = vertex->links;
-	while (list && list->next)
-	{
-		temp_list = list->next;
-		temp_vertex = *(t_vertex **)temp_list->content;
-		if (temp_vertex->dist < 0)
-		{
-			ft_lstdel(&temp_list, ft_lst_del_content);
-			list->next = NULL;
-		}
-		if (list->next)
-			list = list->next;
-	}
-}
-
-void			ft_swap(void **a, void **b)
-{
-	void		*tmp;
-	
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-int				compare_vertexes(t_vertex *vertex_a, t_vertex *vertex_b)
-{
-	if (vertex_a->dist < 0 && vertex_b->dist >= 0)
-		return (1);
-	else if (vertex_a->dist > vertex_b->dist && vertex_b->dist > 0)
-		return (1);
-	else if (vertex_a->dist == vertex_b->dist)
-	{
-		if (vertex_a->links_num > vertex_b->links_num)
-			return (1);
-		return (0);
-	}
-	else
-		return (0);
-}
-
-t_list			*ft_sort_list(t_list *lst, int (*cmp)(t_vertex *, t_vertex *))
-{
-	t_list		*tmp;
-	t_list		*first;
-	
-	first = lst;
-	while (lst->next)
-	{
-		tmp = lst->next;
-		while (tmp)
-		{
-			if (cmp(*(t_vertex **)lst->content, *(t_vertex **)tmp->content))
-				ft_swap(&lst->content, &tmp->content);
-			tmp = tmp->next;
-		}
-		lst = lst->next;
-	}
-	return (first);
-}
-
-void			sort_links(t_vertex *start)
-{
-	t_queue		*queue;
-	t_vertex	*vertex;
-	t_vertex	*temp_vertex;
-	t_list		*list;
-	
-	queue = NULL;
-	push(&queue, start);
-	while ((vertex = pop(&queue)) && !vertex->is_sorted)
-	{
-		vertex->links = ft_sort_list(vertex->links, compare_vertexes);
-		vertex->is_sorted = 1;
-		list = vertex->links;
-		while (list)
-		{
-			temp_vertex = *(t_vertex **)list->content;
-			temp_vertex->links_num++;
-			if (!temp_vertex->is_sorted)
-				push(&queue, temp_vertex);
-			list = list->next;
-		}
-	}
-}
-
-void			log_links(int fd, t_vertex *vertex, char *message)
-{
-	t_list		*list;
-	t_vertex	*temp_vertex;
-
-	ft_putstr_fd(message, fd);
-	list = vertex->links;
-	ft_putstr_fd("\nLinks of vertex with name \"", fd);
-	ft_putstr_fd(vertex->name, fd);
-	ft_putstr_fd("\"", fd);
-	while (list)
-	{
-		temp_vertex = *(t_vertex **)list->content;
-		ft_putstr_fd("\nlink name: ", fd);
-		ft_putstr_fd(temp_vertex->name, fd);
-		ft_putstr_fd(", dist: ", fd);
-		ft_putnbr_fd(temp_vertex->dist, fd);
-		ft_putstr_fd(", links_num: ", fd);
-		ft_putnbr_fd(temp_vertex->links_num, fd);
-		list = list->next;
-	}
-	ft_putstr_fd("\n", fd);
-}
 
 void			prepare_vertexes(t_farm *farm)
 {

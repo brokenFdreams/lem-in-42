@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/25 18:37:48 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/25 21:21:03 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,24 @@ int					compute_distances(t_farm *farm);
 
 void				push(t_queue **queue, t_vertex *vertex);
 t_vertex			*pop(t_queue **queue);
+
+/*
+** sol_sorting_links.c
+*/
+
+void				sort_links(t_vertex *start);
+
+/*
+** sol_logging.c
+*/
+
+void				log_links(int fd, t_vertex *vertex, char *message);
+
+/*
+** sol_removing_impasses.c
+*/
+
+void				remove_impasses(t_vertex *vertex);
 
 /* 
 ** additional libft functions
