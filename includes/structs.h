@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 18:39:21 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/26 20:48:30 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct			s_farm
 	t_vertex			*start;
 	t_vertex			*end;
 	t_vertex			**vertexes; //
-	t_ant_queue				*ant_queue;
+	t_ant_queue			*ant_queue;
+	t_ant				*first_in_queue;
 }						t_farm;
 
 typedef struct			s_queue

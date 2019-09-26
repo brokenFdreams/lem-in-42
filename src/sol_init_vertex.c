@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 16:51:29 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/26 20:48:16 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
 
 	new = (t_vertex *)malloc(sizeof(t_vertex));
 	if (!new)
-		ft_error("Memory allocation error");
+		ft_error("Memory allocation error\n");
 	new->name = read_room_name(&room_line);
 	new->is_start = start_flag;
 	new->is_end = end_flag;
 	new->dist = -1;
-	new->is_occupied = 0;
+	new->is_occupied = start_flag;
 	new->is_visited = 0;
 	new->is_sorted = 0;
 	new->links_num = 0;
@@ -55,7 +55,7 @@ t_vertex		**collect_vertexes(t_vertex *start, t_vertex *end,
 
 	vertexes = (t_vertex **)malloc(sizeof(t_vertex) * rooms_num + 1);
 	if (!vertexes)
-		ft_error("Memory allocation error");
+		ft_error("Memory allocation error\n");
 	vertexes[0] = end;
 	vertexes[1] = start;
 	vertexes[rooms_num] = NULL;

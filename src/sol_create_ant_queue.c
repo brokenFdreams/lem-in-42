@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:33:51 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 18:38:17 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/26 21:59:54 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,44 @@
 #include "structs.h"
 
 
-static t_ant	*init_ant(int ant_num)
+static t_ant		*init_ant(int ant_num, t_vertex *start)
 {
-	t_ant		*new;
+	t_ant			*new;
 
 	new = (t_ant *)malloc(sizeof(t_ant));
 	if (!new)
 		return (NULL);
 	new->num = ant_num;
-	new->current_vertex = NULL;
+	new->current_vertex = start;
 	return (new);
 }
 
-static int		add_ant(t_ant_queue **head_node, t_ant *ant)
+t_ant					*get_next_ant(t_ant_queue *queue, t_ant *previous)
 {
-	t_ant_queue		*new_node;
+	static t_ant_queue	*next_ant = NULL;
+	t_ant				*current;
+
+	if (!previous)
+	{
+		next_ant = queue->next;
+		return (queue->ant);
+	}
+	else
+	{
+		if (next_ant)
+		{
+			current = next_ant->ant;
+			next_ant = next_ant->next;
+			return (current);
+		}
+		else
+			return (NULL);		
+	}
+}
+
+static int				add_ant(t_ant_queue **head_node, t_ant *ant)
+{
+	t_ant_queue			*new_node;
 
 	new_node = (t_ant_queue *)malloc(sizeof(t_ant_queue));
 	if (!new_node)
@@ -42,16 +65,16 @@ static int		add_ant(t_ant_queue **head_node, t_ant *ant)
 	return (1);
 }
 
-t_ant_queue			*create_ant_queue(int ants_left)
+t_ant_queue				*create_ant_queue(int ants_left, t_vertex *start)
 {
-	t_ant_queue		*node;
-	t_ant		*ant;
+	t_ant_queue			*node;
+	t_ant				*ant;
 
 	node = NULL;
 	while (ants_left > 0)
 	{
-		if (!(ant = init_ant(ants_left)) || !add_ant(&node, ant))
-			ft_error("Memory allocation error");
+		if (!(ant = init_ant(ants_left, start)) || !add_ant(&node, ant))
+			ft_error("Memory allocation error\n");
 		ants_left--;
 	}
 	return (node);

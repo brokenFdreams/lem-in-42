@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/25 21:21:03 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/26 21:59:53 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ t_vertex			**collect_vertexes(t_vertex *start, t_vertex *end,
 ** sol_create_ant_queue.c
 */
 
-t_ant_queue				*create_ant_queue(int ants_left);
+t_ant				*get_next_ant(t_ant_queue *queue, t_ant *previous);
+t_ant_queue			*create_ant_queue(int ants_left, t_vertex *start);
 
 /* 
 ** sol_add_links_to_vertex.c
