@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/26 20:48:30 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/29 21:23:39 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,23 @@ typedef struct			s_ant_queue
 	struct s_ant_queue	*next;
 }						t_ant_queue;
 
+typedef	struct			s_path
+{
+	t_vertex			*starting_vertex;
+	int					steps;
+	struct s_path		*next;
+}						t_path;
+
+typedef struct			s_path_combo
+{
+	t_vertex			*starting;
+	int					lines_num;
+	int					paths_num;
+	int					steps;
+	t_path				*paths;
+	char				*name;
+}						t_path_combo;
+
 typedef struct			s_farm
 {
 	int					ants_num;
@@ -53,6 +70,7 @@ typedef struct			s_farm
 	t_vertex			**vertexes; //
 	t_ant_queue			*ant_queue;
 	t_ant				*first_in_queue;
+	t_path_combo		*combo;
 }						t_farm;
 
 typedef struct			s_queue

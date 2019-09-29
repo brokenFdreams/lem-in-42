@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/26 21:59:53 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/29 21:50:12 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "structs.h"
 # include <fcntl.h>
+# include <limits.h>
 
 
 # include <stdio.h>
@@ -91,6 +92,7 @@ void				sort_links(t_vertex *start);
 */
 
 void				log_links(int fd, t_vertex *vertex, char *message);
+void				log_finding_move(int fd, t_ant *ant);
 
 /*
 ** sol_removing_impasses.c

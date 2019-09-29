@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/26 22:35:10 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/29 22:31:18 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 	farm->end = vertexes[0];
 	farm->ants_num = ants_num;
 	farm->ant_queue = ant_queue;
+	farm->combo = NULL;
 	return (farm);
 }
 
@@ -43,6 +44,8 @@ int			read_rooms_and_links(int fd, char ***rooms, char ***links,
 	
 	while (get_next_line(fd, &line) > 0)
 	{
+		if (*line == '#' && *(line + 1) != '#')
+			continue ;
 		if (ft_strchr(line, '-') && !start_flag && !end_flag &&
 			!ft_strnequ(line, "##start", 7) && !ft_strnequ(line, "##end", 5))
 			(*links)[l_i++] = line;
@@ -95,13 +98,14 @@ int				find_move(t_ant *ant, int ants_num)
 	t_vertex	*vertex;
 
 	vertex_list = ant->current_vertex->links;
+	// log_finding_move(STDOUT_FILENO, ant);
 	while (vertex_list)
 	{
 		vertex = *(t_vertex **)vertex_list->content;
 		if (!vertex->is_occupied &&
-			(vertex->dist <= (ant->current_vertex->dist + 1) ||
+			((vertex->dist < (ant->current_vertex->dist)) ||
 			(ant->current_vertex->is_start &&
-			(ants_num - ant->num) > vertex->dist)))
+			((ants_num - ant->num - ant->current_vertex->dist > vertex->dist)))))
 		{
 			move_ant(ant, vertex);
 			return (1);
@@ -143,7 +147,7 @@ void			del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
 void			del_ant_queue_node(t_ant_queue **to_del, t_ant_queue *previous)
 {
 	previous->next = (*to_del)->next;
-	ft_memdel((void **)(*to_del)->ant);
+	ft_memdel((void **)&(*to_del)->ant);
 	ft_memdel((void **)to_del);
 }
 
@@ -191,6 +195,79 @@ void			release_ants(t_farm *farm)
 	}
 }
 
+t_path_combo		*init_path_combo(void)
+{
+	t_path_combo	*new;
+
+	new = (t_path_combo *)malloc(sizeof(t_path_combo));
+	if (!new)
+		ft_error("Memory allocation error\n");
+	new->starting = NULL;
+	new->lines_num = INT_MAX;
+	new->paths_num = 0;
+	new->steps = 0;
+	new->paths = NULL;
+	new->name = NULL;
+	return (new);
+}
+
+void				add_path(t_vertex *first, t_path_combo *combo)
+{
+	t_path			*path;
+	t_list			*links;
+	t_vertex		*vertex;
+
+	path = init_path(vertex);
+	vertex = first;
+	while (!vertex->is_end)
+	{
+		links = vertex->links;
+
+	}
+}
+
+void				find_combo_with_vertex(t_path_combo **combo,
+											t_vertex *first, t_farm *farm)
+{
+	t_list			*links;
+	t_vertex		*vertex;
+
+	if (!*combo)
+		*combo = init_path_combo();
+	(*combo)->starting = first;
+	(*combo)->name = first->name;
+	links = farm->start->links;
+	while (links)
+	{
+		vertex = *(t_vertex **)links->content;
+		add_path(vertex, *combo);
+		links = links->next;
+	}
+	(*combo)->lines_num = calculate_lines_num((*combo)->paths, farm->ants_num);	
+}
+
+t_path_combo		*find_path_combo(t_farm *farm)
+{
+	t_path_combo	*combo;
+	t_path_combo	*best_combo;
+	t_list			*link_a;
+	t_vertex		*vertex;
+
+	best_combo = init_path_combo();
+	combo = NULL;
+	link_a = farm->start->links;
+	while (link_a)
+	{
+		vertex = *(t_vertex **)link_a->content;
+		find_combo_with_vertex(&combo, vertex, farm);
+		if (combo->lines_num < best_combo->lines_num)
+			copy_combo(best_combo, combo);
+		clear_combo(combo);
+		link_a = link_a->next;
+	}
+	return (best_combo);
+}
+
 int				main(int ac, char **av)
 {
 	char		**rooms;
@@ -212,7 +289,9 @@ int				main(int ac, char **av)
 	if (ac != 2)
 		return (0);
 	fd = open(av[1], O_RDONLY);
-	get_next_line(fd, &line);
+	while (get_next_line(fd, &line) > 0)
+		if (*line != '#')
+			break;
 	ants_num = ft_strtol(line, NULL, 10);
 
 	rooms_num = read_rooms_and_links(fd, &rooms, &links, &start_line, &end_line);
@@ -228,6 +307,8 @@ int				main(int ac, char **av)
 		ft_error("No path from end to start found\n");
 	// printf("Distance from start to end is %d\n", farm->start->dist);
 	prepare_vertexes(farm);
+	find_path_combo(farm);
+	set_paths(farm);
 	release_ants(farm);
 	return (0);
 }

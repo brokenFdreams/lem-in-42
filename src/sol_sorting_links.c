@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:56:30 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 21:05:50 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/29 15:35:35 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int			compare_vertexes(t_vertex *vertex_a, t_vertex *vertex_b)
 {
 	if (vertex_a->dist < 0 && vertex_b->dist >= 0)
 		return (1);
-	else if (vertex_a->dist > vertex_b->dist && vertex_b->dist > 0)
+	else if ((vertex_a->dist > vertex_b->dist) && vertex_b->dist >= 0)
 		return (1);
 	else if (vertex_a->dist == vertex_b->dist)
 	{
@@ -66,18 +66,22 @@ void			sort_links(t_vertex *start)
 	
 	queue = NULL;
 	push(&queue, start);
-	while ((vertex = pop(&queue)) && !vertex->is_sorted)
+	while ((vertex = pop(&queue)))
 	{
-		vertex->links = ft_sort_list(vertex->links, compare_vertexes);
-		vertex->is_sorted = 1;
-		list = vertex->links;
-		while (list)
+		if (!vertex->is_sorted)
 		{
-			temp_vertex = *(t_vertex **)list->content;
-			temp_vertex->links_num++;
-			if (!temp_vertex->is_sorted)
-				push(&queue, temp_vertex);
-			list = list->next;
+			vertex->links = ft_sort_list(vertex->links, compare_vertexes);
+			vertex->is_sorted = 1;
+			list = vertex->links;
+			while (list)
+			{
+				temp_vertex = *(t_vertex **)list->content;
+				temp_vertex->links_num++;
+				if (!temp_vertex->is_sorted)
+					push(&queue, temp_vertex);
+				list = list->next;
+			}
+			log_links(STDOUT_FILENO, vertex, "\nAfter links sorting\n");
 		}
 	}
 }
