@@ -6,12 +6,22 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/29 22:31:18 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/30 20:29:57 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include "structs.h"
+
+static int		count_vertexes(t_vertex **vertexes)
+{
+	t_vertex	**temp;
+
+	temp = vertexes;
+	while (temp)
+		temp++;
+	return (temp - vertexes);
+}
 
 t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 							int ants_num)
@@ -23,6 +33,7 @@ t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 		ft_error("Memory allocation error\n");
 	farm->start = vertexes[1];
 	farm->end = vertexes[0];
+	farm->vertex_num = count_vertexes(vertexes);
 	farm->ants_num = ants_num;
 	farm->ant_queue = ant_queue;
 	farm->combo = NULL;
@@ -211,19 +222,68 @@ t_path_combo		*init_path_combo(void)
 	return (new);
 }
 
-void				add_path(t_vertex *first, t_path_combo *combo)
+// TODO: check vertex != current_vertex?
+t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
+									int name_flag)
 {
-	t_path			*path;
-	t_list			*links;
-	t_vertex		*vertex;
+	t_list		*temp;
+	t_vertex	*vertex;
+
+	temp = links;
+	while (temp)
+	{
+		vertex = *(t_vertex **)temp->content;
+		if (!ft_strequ(vertex->name, combo->name))
+		{
+			if (name_flag)
+				ft_strncpy(vertex->name, combo->name,
+							ft_strlen(combo->name + 1));
+			return (vertex);
+		}
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
+void			mark_path(t_vertex *first, t_path_combo *combo)
+{
+		t_list		*links;
+		t_vertex	*vertex;
+
+		vertex = first;
+		ft_strncpy(vertex->name, combo->name, ft_strlen(combo->name + 1));
+		while (!vertex->is_end)
+		{
+			links = vertex->links;
+			vertex = choose_next_vertex(links, combo, 1);
+		}
+}
+
+int				search_for_path(t_vertex *first, t_path_combo *combo,
+								int vertex_num)
+{
+	t_path		*path;
+	t_list		*links;
+	t_vertex	*vertex;
+	int			steps;
 
 	path = init_path(vertex);
-	vertex = first;
-	while (!vertex->is_end)
+	path->starting_vertex = first;
+	steps = 1;
+	while (steps < vertex_num)
 	{
+		if (vertex->is_end)
+		{
+			mark_path(first, combo);
+			add_path(combo, first, steps);
+			return (1);
+		}
 		links = vertex->links;
-
+		if (!(vertex = choose_next_vertex(links, combo, 0)))
+			return (0);
+		steps++;
 	}
+	return (0);
 }
 
 void				find_combo_with_vertex(t_path_combo **combo,
@@ -236,17 +296,20 @@ void				find_combo_with_vertex(t_path_combo **combo,
 		*combo = init_path_combo();
 	(*combo)->starting = first;
 	(*combo)->name = first->name;
+	(*combo)->paths_num = 0;
+	vertex = first;
 	links = farm->start->links;
 	while (links)
 	{
-		vertex = *(t_vertex **)links->content;
-		add_path(vertex, *combo);
+		(*combo)->paths_num += add_search_for_path(vertex, *combo,
+													farm->vertex_num);
 		links = links->next;
+		vertex = *(t_vertex **)links->content;
 	}
-	(*combo)->lines_num = calculate_lines_num((*combo)->paths, farm->ants_num);	
+	(*combo)->lines_num = calculate_lines_num(*combo, farm->ants_num);	
 }
 
-t_path_combo		*find_path_combo(t_farm *farm)
+void				find_path_combo(t_farm *farm)
 {
 	t_path_combo	*combo;
 	t_path_combo	*best_combo;
@@ -262,10 +325,10 @@ t_path_combo		*find_path_combo(t_farm *farm)
 		find_combo_with_vertex(&combo, vertex, farm);
 		if (combo->lines_num < best_combo->lines_num)
 			copy_combo(best_combo, combo);
-		clear_combo(combo);
+		clear_combo(&combo);
 		link_a = link_a->next;
 	}
-	return (best_combo);
+	farm->combo = best_combo;
 }
 
 int				main(int ac, char **av)
@@ -308,7 +371,7 @@ int				main(int ac, char **av)
 	// printf("Distance from start to end is %d\n", farm->start->dist);
 	prepare_vertexes(farm);
 	find_path_combo(farm);
-	set_paths(farm);
-	release_ants(farm);
+	// set_paths(farm);
+	// release_ants(farm);
 	return (0);
 }
