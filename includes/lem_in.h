@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/29 21:50:12 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/01 12:59:42 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,6 @@ void				remove_impasses(t_vertex *vertex);
 ** additional libft functions
 */
 
-void				ft_free_strings_array(char ***array);
-int					ft_isspace(int c);
-int					ft_chrtoint(char c);
-char				*ft_strnchr(const char *str, char c, size_t n);
 long int			ft_strtol(const char *nptr, char **endptr, int base);
 
 #endif

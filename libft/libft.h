@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 11:58:17 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/01 12:57:43 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/01 13:07:05 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ void				ft_error(char *str);
 void				ft_free_strings_array(char ***array);
 int					ft_isspace(int c);
 char				*ft_strnchr(const char *str, char c, size_t n);
+long int			ft_strtol(const char *nptr, char **endptr, int base);
 
 #endif
