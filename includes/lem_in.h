@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/01 12:59:42 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/01 21:44:04 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void				sort_links(t_vertex *start);
 
 void				log_links(int fd, t_vertex *vertex, char *message);
 void				log_finding_move(int fd, t_ant *ant);
+void				log_combo(int fd, t_path_combo *combo, char *message);
 
 /*
 ** sol_removing_impasses.c

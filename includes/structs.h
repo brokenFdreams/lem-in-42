@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/30 16:23:17 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/01 23:05:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct			s_vertex
 	char				is_visited;
 	char				is_sorted;
 	char				*path_name;
+	int					path_num;
 	int					links_num;
 	int					x;
 	int					y;
@@ -50,15 +51,16 @@ typedef	struct			s_path
 {
 	t_vertex			*starting_vertex;
 	int					steps;
+	int					num;
 	struct s_path		*next;
 }						t_path;
 
 typedef struct			s_path_combo
 {
 	t_vertex			*starting;
-	int					lines_num;
+	int					capacity;
+	float				average_path_len;
 	int					paths_num;
-	int					steps;
 	t_path				*paths;
 	char				*name;
 }						t_path_combo;

@@ -6,11 +6,11 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 17:17:18 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/01 16:26:29 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/01 21:34:02 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "libft.h"
 #include <limits.h>
 
 static int				has_hex_preffix(const char *p)
