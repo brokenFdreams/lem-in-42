@@ -6,11 +6,10 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 17:17:18 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 00:50:03 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/09/25 18:35:54 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "lem_in.h"
 #include <limits.h>
 
