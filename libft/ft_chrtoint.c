@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ft_chtoint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 15:34:09 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/19 14:45:55 by fsinged          ###   ########.fr       */
+/*   Created: 2019/04/14 15:23:49 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/01 12:55:36 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "libft.h"
 
-/*
-** Write error massage and exit program
-*/
-
-void	ft_error(char *str)
+int		ft_chrtoint(char c)
 {
-	write(1, str, ft_strlen(str));
-	exit(0);
+	if (c >= '0' && c <= '9')
+		return (c - '0');
+	else if (c >= 'A' && c <= 'Z')
+		return (c - 55);
+	else if (c >= 'a' && c <= 'z')
+		return (c - 87);
+	else
+		return (0);
 }

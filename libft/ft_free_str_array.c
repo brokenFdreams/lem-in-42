@@ -6,11 +6,11 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:07:49 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/23 01:22:17 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/01 12:57:09 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 void		ft_free_strings_array(char ***array)
 {
