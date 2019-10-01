@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 12:59:21 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/09/24 13:34:09 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void		read_data(char *arg, char ***data)
 	char	*line;
 
 	count = count_str(arg);
+	if (count == 0)
+		ft_error("Empty map\n");
 	fd = open(arg, O_RDONLY);
 	*data = (char**)malloc(sizeof(char*) * (count + 1));
 	count = 0;
