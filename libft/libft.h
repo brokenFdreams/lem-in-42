@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 11:58:17 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/01 13:07:05 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/01 13:13:18 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdint.h>
+# include <limits.h>
 # include "get_next_line.h"
-
-# define BUFF_SIZE 42
 
 typedef struct		s_list
 {
@@ -92,7 +91,6 @@ int					ft_min(int a, int b);
 int					ft_sqrt(int nbr);
 char				*ft_strpcat(char *s1, const char *s2, size_t n, size_t pos);
 char				*ft_itoa_base(uintmax_t nbr, int base);
-int					get_next_line(int fd, char **line);
 int					ft_chrtoint(char c);
 void				ft_error(char *str);
 void				ft_free_strings_array(char ***array);
