@@ -6,9 +6,11 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 15:49:22 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/04/28 16:21:52 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/01 12:56:15 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_isspace(int c)
 {

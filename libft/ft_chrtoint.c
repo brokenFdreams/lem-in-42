@@ -1,17 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   overwrite.c                                        :+:      :+:    :+:   */
+/*   ft_chtoint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/20 11:57:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/20 11:58:19 by fsinged          ###   ########.fr       */
+/*   Created: 2019/04/14 15:23:49 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/01 12:55:36 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "libft.h"
 
-/*
-** 
-*/
+int		ft_chrtoint(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (c - '0');
+	else if (c >= 'A' && c <= 'Z')
+		return (c - 55);
+	else if (c >= 'a' && c <= 'z')
+		return (c - 87);
+	else
+		return (0);
+}
