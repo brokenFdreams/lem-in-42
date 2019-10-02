@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/01 23:02:51 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/02 16:00:19 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void			prepare_vertexes(t_farm *farm)
 {
 	// log_links(1, farm->start, "Before sorting:\n");
 	sort_links(farm->start);
-	// log_links(1, farm->start, "\nBefore deleting impasses:\n");
+	log_links(1, farm->start, "\nBefore deleting impasses:\n");
 	remove_impasses(farm->start);
-	// log_links(1, farm->start, "\nAfter deleting impasses:\n");
+	log_links(1, farm->start, "\nAfter deleting impasses:\n");
 }
 
 void			move_ant(t_ant *ant, t_vertex *vertex)
@@ -236,9 +236,11 @@ t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
 		if (!ft_strequ(vertex->path_name, combo->name)
 			&& links != vertex->links && !vertex->is_start)
 		{
-			if (name_flag)
-				ft_strncpy(vertex->path_name, combo->name,
-							ft_strlen(combo->name + 1));
+			if (name_flag && !vertex->is_end)
+			{
+				ft_strclr(vertex->path_name);
+				ft_strcpy(vertex->path_name, combo->name);
+			}
 			return (vertex);
 		}
 		temp = temp->next;
@@ -254,7 +256,8 @@ void			mark_path(t_vertex *first, t_path_combo *combo, int num)
 
 		vertex = first;
 		combo_name_len = ft_strlen(combo->name);
-		ft_strncpy(vertex->path_name, combo->name, combo_name_len);
+		ft_strclr(vertex->path_name);
+		ft_strcpy(vertex->path_name, combo->name);
 		while (!vertex->is_end)
 		{
 			links = vertex->links;
@@ -327,7 +330,7 @@ void				calculate_combo(t_path_combo *combo)
 	combo->average_path_len = (float)combo->capacity / (float)combo->paths_num;
 }
 
-void				clear_combo(t_path_combo *combo)
+void				clear_combo(t_path_combo *combo, int clr_paths_flag)
 {
 	t_path			*temp_a;
 	t_path			*temp_b;
@@ -336,14 +339,19 @@ void				clear_combo(t_path_combo *combo)
 	combo->capacity = 0;
 	combo->average_path_len = 0;
 	combo->paths_num = 0;
-	ft_strdel(&combo->name);
-	temp_a = combo->paths;
-	while (temp_a)
+	ft_strclr(combo->name);
+	if (clr_paths_flag)
 	{
-		temp_b = temp_a;
-		temp_a = temp_a->next;
-		ft_memdel((void **)&temp_b);
+		temp_a = combo->paths;
+		while (temp_a)
+		{
+			temp_b = temp_a;
+			temp_a = temp_a->next;
+			ft_memdel((void **)&temp_b);
+		}
 	}
+	else
+		combo->paths = NULL;
 }
 
 void				find_combo_with_vertex(t_path_combo **combo,
@@ -355,11 +363,9 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	if (!*combo)
 		*combo = init_path_combo();
 	else
-	{
-		(*combo)->paths = NULL;
-		clear_combo(*combo);
-	}
-	(*combo)->name = ft_strcpy(ft_strnew(ft_strlen(first->name)), first->name);
+		clear_combo(*combo, 0);
+	ft_strcpy((*combo)->name, first->name);
+	(*combo)->starting = first;
 	(*combo)->paths_num += search_for_path(first, *combo, 
 										(*combo)->paths_num, farm->vertex_num);
 	if (!(*combo)->paths_num)
@@ -402,7 +408,7 @@ int					compare_combos(t_path_combo *current, t_path_combo *new,
 void				copy_combo(t_path_combo **old, t_path_combo *new)
 {
 	if (*old)
-		clear_combo(*old);
+		clear_combo(*old, 1);
 	else
 		*old = init_path_combo();
 	(*old)->starting = new->starting;
@@ -410,7 +416,8 @@ void				copy_combo(t_path_combo **old, t_path_combo *new)
 	(*old)->average_path_len = new->average_path_len;
 	(*old)->paths_num = new->paths_num;
 	(*old)->paths = new->paths;
-	(*old)->name = new->name;
+	ft_strclr((*old)->name);
+	ft_strcpy((*old)->name, new->name);
 }
 
 void				find_path_combo(t_farm *farm)
@@ -430,7 +437,7 @@ void				find_path_combo(t_farm *farm)
 		if (compare_combos(best_combo, combo, farm->ants_num))
 			copy_combo(&best_combo, combo);
 		else
-			clear_combo(combo);
+			clear_combo(combo, 1);
 		link_a = link_a->next;
 	}
 	farm->combo = best_combo;
