@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_test_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 21:43:05 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/05 01:45:20 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,7 @@ void			add_path(t_path_combo *combo, t_vertex *first, int steps)
 	new->starting_vertex = first;
 	new->steps = steps;
 	new->next = NULL;
+	new->num = combo->paths_num;
 	if (combo->paths)
 	{
 		temp = combo->paths;
@@ -454,7 +455,7 @@ void				prepare_combo(t_path_combo **combo, t_vertex *first)
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);
 	(*combo)->starting = first;
-	(*combo)->paths_num += search_for_path(first, *combo, (*combo)->paths_num);
+	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num);
 }
 
 void				find_combo_with_vertex(t_path_combo **combo,
@@ -478,6 +479,7 @@ void				find_combo_with_vertex(t_path_combo **combo,
 			links = links->next;
 			continue ;
 		}
+		farm->start->is_sorted = 1;
 		sort_links(farm->start);
 		new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num);
 		(*combo)->paths_num += new_path_flag;
@@ -537,7 +539,7 @@ void				find_path_combo(t_farm *farm)
 	best_combo = NULL;
 	combo = NULL;
 	link_a = farm->start->links;
-	while (link_a && i < 3)
+	while (link_a)
 	{
 		vertex = *(t_vertex **)link_a->content;
 		find_combo_with_vertex(&combo, vertex, farm);

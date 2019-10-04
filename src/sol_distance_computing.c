@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_distance_computing.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 17:20:11 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 21:35:14 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/05 00:54:32 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void		set_distance(t_vertex *vertex, int dist, char *name)
 {
 	if (ft_strequ(vertex->path_name, name))
-		vertex->dist = INT_MAX;
+		vertex->dist = -1;
 	else
 	{
 		if (vertex->dist < 0)
@@ -66,8 +66,11 @@ void			set_distances_by_bfs(t_vertex *end, char *name)
 			{
 				vertex->links_num++;
 				temp_vertex = *(t_vertex **)list->content;
-				set_distance(temp_vertex, vertex->real_dist + 1, name);
-				push(&queue, temp_vertex);
+				if (!ft_strequ(temp_vertex->path_name, name))
+				{
+					set_distance(temp_vertex, vertex->dist + 1, name);
+					push(&queue, temp_vertex);
+				}
 				list = list->next;
 			}
 		}
