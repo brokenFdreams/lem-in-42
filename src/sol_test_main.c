@@ -6,7 +6,7 @@
 /*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 02:21:36 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/04 14:14:13 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,33 +323,33 @@ void			add_path(t_path_combo *combo, t_vertex *first, int steps)
 // 	return (0);
 // }
 
-int				search_for_path_recursive(t_path_combo *combo, t_vertex *vertex, int path_num, int steps)
-{
-	t_list		*links;
-	t_vertex	*new;
-	int			new_search;
+// int				search_for_path_recursive(t_path_combo *combo, t_vertex *vertex, int path_num, int steps)
+// {
+// 	t_list		*links;
+// 	t_vertex	*new;
+// 	int			new_search;
 
-	if (vertex->is_end)
-		return (steps);
-	links = vertex->links;
-	ft_strclr(vertex->path_name);
-	ft_strcpy(vertex->path_name, combo->name);
-	vertex->path_num = path_num;
-	while (links)
-	{
-		new = *(t_vertex **)links->content;
-		if (!ft_strequ(new->path_name, combo->name) && !new->is_start && steps < 10000)
-		{
-			new_search = search_for_path_recursive(combo, new, path_num, steps + 1);
-			if (new_search)
-				return (new_search);
-		}
-		links = links->next;
-	}
-	// ft_strclr(vertex->path_name);
-	vertex->path_num = -1;
-	return (0);
-}
+// 	if (vertex->is_end)
+// 		return (steps);
+// 	links = vertex->links;
+// 	ft_strclr(vertex->path_name);
+// 	ft_strcpy(vertex->path_name, combo->name);
+// 	vertex->path_num = path_num;
+// 	while (links)
+// 	{
+// 		new = *(t_vertex **)links->content;
+// 		if (!ft_strequ(new->path_name, combo->name) && !new->is_start && steps < 10000)
+// 		{
+// 			new_search = search_for_path_recursive(combo, new, path_num, steps + 1);
+// 			if (new_search)
+// 				return (new_search);
+// 		}
+// 		links = links->next;
+// 	}
+// 	// ft_strclr(vertex->path_name);
+// 	vertex->path_num = -1;
+// 	return (0);
+// }
 
 int				search_for_path(t_vertex *first, t_path_combo *combo,
 								int path_num)
