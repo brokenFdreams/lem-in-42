@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/02 16:00:19 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/02 18:46:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,7 +374,8 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	while (links)
 	{
 		vertex = *(t_vertex **)links->content;
-		(*combo)->paths_num += search_for_path(vertex, *combo, 
+		if (vertex != first)
+			(*combo)->paths_num += search_for_path(vertex, *combo, 
 										(*combo)->paths_num, farm->vertex_num);
 		links = links->next;
 	}
