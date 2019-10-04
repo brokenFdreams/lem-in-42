@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/01 21:46:50 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/04 18:41:04 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
 	new->ants_num = 0;
 	new->path_num = -1;
 	new->path_name = ft_strnew(30); // TODO: change to longest name of start's links
+	new->path_name[0] = 'L';
 	new->x = ft_strtol(room_line, &room_line, 10);
 	new->y = ft_strtol(room_line, NULL, 10);
 	return (new);

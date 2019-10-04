@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_sorting_links.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:56:30 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 14:14:33 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/04 21:35:05 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,11 @@ void			sort_links(t_vertex *start)
 			while (list)
 			{
 				temp_vertex = *(t_vertex **)list->content;
-				// temp_vertex->links_num++;
 				if (!temp_vertex->is_sorted)
 					push(&queue, temp_vertex);
 				list = list->next;
 			}
-			log_links(STDOUT_FILENO, vertex, "\nAfter links sorting\n");
+			// log_links(STDOUT_FILENO, vertex, "\nAfter links sorting\n");
 		}
 	}
 }

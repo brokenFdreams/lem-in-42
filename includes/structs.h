@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/01 23:05:37 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/04 19:44:56 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct			s_vertex
 {
 	char				*name;
 	int					dist;
+	int					real_dist;
 	char				is_occupied;
 	t_list				*links;
 	int					ants_num;

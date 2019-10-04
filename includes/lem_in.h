@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/01 21:44:04 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/04 19:44:56 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void				add_links(t_vertex **vertexes, char **links_line);
 ** sol_distance_computing.c
 */
 
-int					compute_distances(t_farm *farm);
+int					compute_distances(t_farm *farm, char *name);
 
 /*
 ** sol_queue_functions.c
