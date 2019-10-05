@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 19:44:56 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/06 00:04:41 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ typedef	struct			s_path
 typedef struct			s_path_combo
 {
 	t_vertex			*starting;
-	int					capacity;
-	float				average_path_len;
+	// int					capacity;
+	// float				average_path_len;
+	int					num_of_paths_to_use;
+	int					lines_num;
 	int					paths_num;
 	t_path				*paths;
 	char				*name;

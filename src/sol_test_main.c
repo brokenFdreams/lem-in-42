@@ -6,7 +6,7 @@
 /*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/05 21:30:39 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/06 00:09:10 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,8 @@ t_path_combo		*init_path_combo(void)
 	if (!new)
 		ft_error("Memory allocation error\n");
 	new->starting = NULL;
-	new->capacity = 0;
-	new->average_path_len = 0;
+	new->lines_num = 0;
+	new->num_of_paths_to_use = 0;
 	new->paths_num = 0;
 	new->paths = NULL;
 	new->name = ft_strnew(30);
@@ -410,19 +410,46 @@ int				search_for_path(t_vertex *first, t_path_combo *combo,
 // 		return (0);
 // }
 
-void				calculate_combo(t_path_combo *combo)
+int					compute_line_num(t_path *first, t_path *last, int ants_num)
 {
+	int				total_steps;
 	t_path			*temp;
-	// int				max_steps;
+	int				lines_num;
 
-	temp = combo->paths;
-	// max_steps = 0;
-	while (temp)
+	total_steps = last->steps;
+	temp = first;
+	while (temp && temp != last)
 	{
-		combo->capacity += temp->steps - 1;
+		total_steps += temp->steps;
 		temp = temp->next;
 	}
-	combo->average_path_len = (float)combo->capacity / (float)combo->paths_num;
+	lines_num = (ants_num + total_steps) / (last->num + 1) - 1;
+	if ((ants_num + total_steps) % (last->num + 1) > 0)
+		lines_num++;
+	return (lines_num);
+}
+
+void				calculate_combo(t_path_combo *combo, int ants_num)
+{
+	t_path			*temp;
+	int				min_num_of_lines;
+	int				opt_path_num;
+	int				num_of_lines;
+
+	min_num_of_lines = INT_MAX;
+	temp = combo->paths;
+	while (temp)
+	{
+		num_of_lines = compute_line_num(combo->paths, temp, ants_num);
+		if (num_of_lines < min_num_of_lines)
+		{
+			min_num_of_lines = num_of_lines;
+			opt_path_num = temp->num + 1;
+		}
+		temp = temp->next;
+	}
+	combo->num_of_paths_to_use = opt_path_num;
+	combo->lines_num = min_num_of_lines;
 }
 
 void				clear_combo(t_path_combo **combo, int clr_paths_flag)
@@ -431,8 +458,8 @@ void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 	t_path			*temp_b;
 
 	(*combo)->starting = NULL;
-	(*combo)->capacity = 0;
-	(*combo)->average_path_len = 0;
+	// (*combo)->capacity = 0;
+	// (*combo)->average_path_len = 0;
 	(*combo)->paths_num = 0;
 	ft_strclr((*combo)->name);
 	if (clr_paths_flag)
@@ -449,7 +476,8 @@ void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 		(*combo)->paths = NULL;
 }
 
-void				prepare_combo(t_path_combo **combo, t_vertex *first, t_farm *farm)
+void				prepare_for_combo_search(t_path_combo **combo,
+											t_vertex *first, t_farm *farm)
 {
 	if (!*combo)
 		*combo = init_path_combo();
@@ -457,11 +485,10 @@ void				prepare_combo(t_path_combo **combo, t_vertex *first, t_farm *farm)
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);
 	(*combo)->starting = first;
-	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num, 500);
+	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num, farm->vertex_num);
 	clear_bfs_marks(farm->vertexes);
 	compute_distances(farm, (*combo)->name);
 	sort_links(farm->start);
-
 }
 
 t_list				*copy_links(t_vertex *vertex)
@@ -497,7 +524,7 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	t_vertex		*vertex;
 	int				new_path_flag;
 
-	prepare_combo(combo, first, farm);
+	prepare_for_combo_search(combo, first, farm);
 	if (!(*combo)->paths_num)
 		return ;
 	links = farm->start->links; //
@@ -514,32 +541,20 @@ void				find_combo_with_vertex(t_path_combo **combo,
 		if (ft_strequ(vertex->name, (*combo)->name))
 			vertex = *(t_vertex **)links->next->content;
 	}
-	calculate_combo(*combo);
+	calculate_combo(*combo, farm->ants_num);
 	log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }
 
-int					compare_combos(t_path_combo *current, t_path_combo *new,
-									int ants_num)
+int					compare_combos(t_path_combo *current, t_path_combo *new)
 {
 	if (!current)
 		return (1);
 	if (new->paths_num < 1)
 		return (0);
-	if (new->paths_num > current->paths_num)
-	{
-		if (current->capacity >= ants_num)
-			return (0);
-		return (1);		
-	}
-	else
-	{
-		if ((new->capacity >= ants_num) &&
-			(new->average_path_len < current->average_path_len))
-			return (1);
-	}
+	if (new->lines_num < current->lines_num)
+		return (1);	
 	return (0);	
 }
-
 
 void				copy_combo(t_path_combo **old, t_path_combo *new)
 {
@@ -548,16 +563,13 @@ void				copy_combo(t_path_combo **old, t_path_combo *new)
 	else
 		*old = init_path_combo();
 	(*old)->starting = new->starting;
-	(*old)->capacity = new->capacity;
-	(*old)->average_path_len = new->average_path_len;
+	(*old)->lines_num = new->lines_num;
+	(*old)->num_of_paths_to_use = new->num_of_paths_to_use;
 	(*old)->paths_num = new->paths_num;
 	(*old)->paths = new->paths;
 	ft_strclr((*old)->name);
 	ft_strcpy((*old)->name, new->name);
 }
-
-
-
 
 void				restore_vertexes(t_farm *farm)
 {
@@ -583,7 +595,7 @@ void				find_path_combo(t_farm *farm)
 	{
 		vertex = *(t_vertex **)link_a->content;
 		find_combo_with_vertex(&combo, vertex, farm);
-		if (compare_combos(best_combo, combo, farm->ants_num))
+		if (compare_combos(best_combo, combo))
 			copy_combo(&best_combo, combo);
 		else
 			clear_combo(&combo, 1);

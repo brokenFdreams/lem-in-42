@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_logging.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/04 21:32:26 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/06 00:04:38 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void			log_combo(int fd, t_path_combo *combo, char *message)
 	ft_putstr_fd(message, fd);
 	ft_putstr_fd("Combo name: ", fd);
 	ft_putstr_fd(combo->name, fd);
-	ft_putstr_fd(", capacity: ", fd);
-	ft_putnbr_fd(combo->capacity, fd);
-	ft_putstr_fd(", average path length: ", fd);
-	ft_putnbr_fd((int)combo->average_path_len, fd);
-	ft_putstr_fd(", number of paths: ", fd);
+	ft_putstr_fd(", number of lines: ", fd);
+	ft_putnbr_fd(combo->lines_num, fd);
+	ft_putstr_fd(", paths to use: ", fd);
+	ft_putnbr_fd((int)combo->num_of_paths_to_use, fd);
+	ft_putstr_fd(", total number of paths: ", fd);
 	ft_putnbr_fd(combo->paths_num, fd);
 	ft_putstr_fd("\nPaths:\n", fd);
 	path = combo->paths;
