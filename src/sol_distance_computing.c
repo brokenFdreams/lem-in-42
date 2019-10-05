@@ -6,7 +6,7 @@
 /*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 17:20:11 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/05 00:54:32 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/05 17:04:50 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 static void		set_distance(t_vertex *vertex, int dist, char *name)
 {
-	if (ft_strequ(vertex->path_name, name))
-		vertex->dist = -1;
-	else
-	{
+	// if (ft_strequ(vertex->path_name, name))
+	// 	vertex->dist = -1;
+	// else
+	// {
+		(void)name;
 		if (vertex->dist < 0)
 			vertex->dist = dist;
 		else
 			vertex->dist = ft_min(dist, vertex->dist);
-	}
+	// }
 }
 
 // static void		set_distances_by_dfs(t_vertex *vertex, int dist)
@@ -58,7 +59,7 @@ void			set_distances_by_bfs(t_vertex *end, char *name)
 	push(&queue, end);
 	while ((vertex = pop(&queue)))
 	{
-		if (!vertex->is_visited)
+		if (!vertex->is_visited && !ft_strequ(vertex->path_name, name))
 		{
 			vertex->is_visited = 1;
 			list = vertex->links;
