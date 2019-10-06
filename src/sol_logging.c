@@ -6,7 +6,7 @@
 /*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/06 00:04:38 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/06 21:28:04 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void			log_combo(int fd, t_path_combo *combo, char *message)
 		ft_putnbr_fd(path->steps, fd);
 		ft_putstr_fd(", path number: ", fd);
 		ft_putnbr_fd(path->num, fd);
-		ft_putstr_fd("\n\n", fd);
+		ft_putstr_fd("\n", fd);
 		path = path->next;
 	}
+	ft_putstr_fd("\n", fd);
 }
