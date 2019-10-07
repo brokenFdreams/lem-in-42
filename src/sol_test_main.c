@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sol_test_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/10/04 21:45:27 by dtimeon          ###   ########.fr       */
+=======
+/*   Updated: 2019/10/07 01:10:25 by anna             ###   ########.fr       */
+>>>>>>> 86beae42d03d001f30d2fde8008cb1fa76eafb39
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +110,7 @@ void			restore_dist(t_vertex **vertexes)
 	}
 }
 
-void			clear_bfs_marks(t_vertex **vertexes)
+void			clear_bfs_marks(t_vertex **vertexes, int path_name_clear_flag)
 {
 	int			i;
 
@@ -116,6 +120,11 @@ void			clear_bfs_marks(t_vertex **vertexes)
 		vertexes[i]->dist = -1;
 		vertexes[i]->is_visited = 0;
 		vertexes[i]->is_sorted = 0;
+		if (path_name_clear_flag)
+		{
+			ft_strclr(vertexes[i]->path_name);
+			ft_strcpy(vertexes[i]->path_name, "L");
+		}
 		i++;
 	}
 }
@@ -143,26 +152,27 @@ void			move_ant(t_ant *ant, t_vertex *vertex)
 	}
 }
 
-int				find_move(t_ant *ant, int ants_num)
+int				find_move(t_ant *ant, int ants_num, int paths_num, char *combo_name)
 {
 	t_list		*vertex_list;
 	t_vertex	*vertex;
+	int			path_no;
 
 	vertex_list = ant->current_vertex->links;
 	// log_finding_move(STDOUT_FILENO, ant);
+	path_no = ant->num % paths_num - 1;
+	if (path_no < 0)
+		path_no = paths_num - 1;
 	while (vertex_list)
 	{
 		vertex = *(t_vertex **)vertex_list->content;
 		if (!vertex->is_occupied &&
-			((vertex->dist < (ant->current_vertex->dist)) ||
-			(ant->current_vertex->is_start &&
-			((ants_num - ant->num - ant->current_vertex->dist > vertex->dist)))))
+			(ft_strequ(vertex->path_name, combo_name) &&
+			(vertex->path_num == path_no || vertex->is_end)))
 		{
 			move_ant(ant, vertex);
 			return (1);
 		}
-		if (!vertex->is_occupied)
-			break ;
 		vertex_list = vertex_list->next;
 	}
 	if (ant->current_vertex->is_start || ant->num == ants_num)
@@ -218,7 +228,8 @@ void			renew_ant_queue(t_farm *farm)
 		temp_ant_queue2 = temp_ant_queue1->next;
 		if (temp_ant_queue2->ant->current_vertex->is_end)
 			del_ant_queue_node(&temp_ant_queue2, temp_ant_queue1);
-		temp_ant_queue1 = temp_ant_queue1->next;
+		else
+			temp_ant_queue1 = temp_ant_queue1->next;
 	}
 	farm->ant_queue = ant_queue_head;
 }
@@ -234,7 +245,7 @@ void			release_ants(t_farm *farm)
 		move_status = 0;
 		while (move_status >=0 && current_ant)
 		{
-			if ((move_status = find_move(current_ant, farm->ants_num)) > 0 &&
+			if ((move_status = find_move(current_ant, farm->ants_num, farm->combo->num_of_paths_to_use, farm->combo->name)) > 0 &&
 				current_ant != farm->ant_queue->ant)
 				write(STDOUT_FILENO, " ", 1);
 			if (move_status > 0)
@@ -254,8 +265,8 @@ t_path_combo		*init_path_combo(void)
 	if (!new)
 		ft_error("Memory allocation error\n");
 	new->starting = NULL;
-	new->capacity = 0;
-	new->average_path_len = 0;
+	new->lines_num = 0;
+	new->num_of_paths_to_use = 0;
 	new->paths_num = 0;
 	new->paths = NULL;
 	new->name = ft_strnew(30);
@@ -263,53 +274,53 @@ t_path_combo		*init_path_combo(void)
 }
 
 // TODO: check vertex != current_vertex?
-// t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
-// 									t_vertex *previous, int name_flag)
-// {
-// 	t_list		*temp;
-// 	t_vertex	*vertex;
+t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
+									t_vertex *previous, int name_flag)
+{
+	t_list		*temp;
+	t_vertex	*vertex;
 
-// 	temp = links;
-// 	while (temp)
-// 	{
-// 		vertex = *(t_vertex **)temp->content;
-// 		if (!ft_strequ(vertex->path_name, combo->name)
-// 			&& previous != vertex && !vertex->is_start)
-// 		{
-// 			if (name_flag && !vertex->is_end)
-// 			{
-// 				ft_strclr(vertex->path_name);
-// 				ft_strcpy(vertex->path_name, combo->name);
-// 			}
-// 			return (vertex);
-// 		}
-// 		temp = temp->next;
-// 	}
-// 	return (NULL);
-// }
+	temp = links;
+	while (temp)
+	{
+		vertex = *(t_vertex **)temp->content;
+		if (!ft_strequ(vertex->path_name, combo->name)
+			&& previous != vertex && !vertex->is_start)
+		{
+			if (name_flag && !vertex->is_end)
+			{
+				ft_strclr(vertex->path_name);
+				ft_strcpy(vertex->path_name, combo->name);
+			}
+			return (vertex);
+		}
+		temp = temp->next;
+	}
+	return (NULL);
+}
 
-// void			mark_path(t_vertex *first, t_path_combo *combo, int num)
-// {
-// 		t_list		*links;
-// 		t_vertex	*vertex;
-// 		t_vertex	*new;
-// 		t_vertex	*previous;
-// 		// int			combo_name_len;
+void			mark_path(t_vertex *first, t_path_combo *combo, int num)
+{
+		t_list		*links;
+		t_vertex	*vertex;
+		t_vertex	*new;
+		t_vertex	*previous;
+		// int			combo_name_len;
 
-// 		vertex = first;
-// 		previous = first;
-// 		// combo_name_len = ft_strlen(combo->name);
-// 		ft_strclr(vertex->path_name);
-// 		ft_strcpy(vertex->path_name, combo->name);
-// 		while (!vertex->is_end)
-// 		{
-// 			links = vertex->links;
-// 			vertex->path_num = num;
-// 			new = choose_next_vertex(links, combo, previous, 1);
-// 			previous = vertex;
-// 			vertex = new;
-// 		}
-// }
+		vertex = first;
+		previous = first;
+		// combo_name_len = ft_strlen(combo->name);
+		ft_strclr(vertex->path_name);
+		ft_strcpy(vertex->path_name, combo->name);
+		while (!vertex->is_end)
+		{
+			links = vertex->links;
+			vertex->path_num = num;
+			new = choose_next_vertex(links, combo, previous, 1);
+			previous = vertex;
+			vertex = new;
+		}
+}
 
 void			add_path(t_path_combo *combo, t_vertex *first, int steps)
 {
@@ -322,6 +333,7 @@ void			add_path(t_path_combo *combo, t_vertex *first, int steps)
 	new->starting_vertex = first;
 	new->steps = steps;
 	new->next = NULL;
+	new->num = combo->paths_num;
 	if (combo->paths)
 	{
 		temp = combo->paths;
@@ -333,93 +345,122 @@ void			add_path(t_path_combo *combo, t_vertex *first, int steps)
 		combo->paths = new;
 }
 
-// int				search_for_path(t_vertex *first, t_path_combo *combo,
-// 								int path_num, int vertex_num)
-// {
-// 	t_list		*links;
-// 	t_vertex	*previous;
-// 	t_vertex	*new;
-// 	t_vertex	*vertex;
-// 	int			steps;
-
-// 	steps = 1;
-// 	vertex = first;
-// 	previous = first;
-// 	while (steps < vertex_num)
-// 	{
-// 		if (vertex->is_end)
-// 		{
-// 			mark_path(first, combo, path_num);
-// 			add_path(combo, first, steps);
-// 			return (1);
-// 		}
-// 		links = vertex->links;
-// 		if (!(new = choose_next_vertex(links, combo, previous, 0)))
-// 			return (0);
-// 		steps++;
-// 		previous = vertex;
-// 		vertex = new;
-// 	}
-// 	return (0);
-// }
-
-int				search_for_path_recursive(t_path_combo *combo, t_vertex *vertex,
-											int path_num, int steps)
+int				search_for_path(t_vertex *first, t_path_combo *combo,
+								int path_num, int vertex_num)
 {
 	t_list		*links;
+	t_vertex	*previous;
 	t_vertex	*new;
-	int			new_search;
+	t_vertex	*vertex;
+	int			steps;
 
-	if (vertex->is_end)
-		return (steps);
-	links = vertex->links;
-	ft_strclr(vertex->path_name);
-	ft_strcpy(vertex->path_name, combo->name);
-	vertex->path_num = path_num;
-	while (links)
+	steps = 1;
+	vertex = first;
+	previous = first;
+	while (steps < vertex_num)
 	{
-		new = *(t_vertex **)links->content;
-		if (!ft_strequ(new->path_name, combo->name) && !new->is_start)
+		if (vertex->is_end)
 		{
-			new_search = search_for_path_recursive(combo, new, path_num, steps + 1);
-			if (new_search)
-				return (new_search);
+			mark_path(first, combo, path_num);
+			add_path(combo, first, steps);
+			return (1);
 		}
-		links = links->next;
+		links = vertex->links;
+		if (!(new = choose_next_vertex(links, combo, previous, 0)))
+			return (0);
+		steps++;
+		previous = vertex;
+		vertex = new;
 	}
-	// ft_strclr(vertex->path_name);
-	vertex->path_num = -1;
 	return (0);
 }
 
-int				search_for_path(t_vertex *first, t_path_combo *combo,
-								int path_num)
-{
-	int			steps;
+// int				search_for_path_recursive(t_path_combo *combo, t_vertex *vertex,
+// 											int path_num, int steps)
+// {
+// 	t_list		*links;
+// 	t_vertex	*new;
+// 	int			new_search;
 
-	steps = search_for_path_recursive(combo, first, path_num, 1);
-	if (steps)
-	{
-		add_path(combo, first, steps);
-		return (1);
-	}
-	else
-		return (0);
-}
+// 	if (vertex->is_end)
+// 		return (steps);
+// 	links = vertex->links;
+// 	ft_strclr(vertex->path_name);
+// 	ft_strcpy(vertex->path_name, combo->name);
+// 	vertex->path_num = path_num;
+// 	while (links)
+// 	{
+// 		new = *(t_vertex **)links->content;
+// 		if (!ft_strequ(new->path_name, combo->name) && !new->is_start)
+// 		{
+// 			new_search = search_for_path_recursive(combo, new, path_num, steps + 1);
+// 			if (new_search)
+// 				return (new_search);
+// 		}
+// 		links = links->next;
+// 	}
+// 	// ft_strclr(vertex->path_name);
+// 	vertex->path_num = -1;
+// 	return (0);
+// }
 
-void				calculate_combo(t_path_combo *combo)
+// int				search_for_path(t_vertex *first, t_path_combo *combo,
+// 								int path_num)
+// {
+// 	int			steps;
+
+// 	steps = 0;
+// 	if (!ft_strequ(first->path_name, combo->name))
+// 		steps = search_for_path_recursive(combo, first, path_num, 1);
+// 	if (steps)
+// 	{
+// 		add_path(combo, first, steps);
+// 		return (1);
+// 	}
+// 	else
+// 		return (0);
+// }
+
+int					compute_line_num(t_path *first, t_path *last, int ants_num)
 {
+	int				total_steps;
 	t_path			*temp;
-	// int				max_steps;
+	int				lines_num;
 
-	temp = combo->paths;
-	// max_steps = 0;
-	while (temp)
+	total_steps = last->steps;
+	temp = first;
+	while (temp && temp != last)
 	{
-		combo->capacity += temp->steps - 1;
+		total_steps += temp->steps;
 		temp = temp->next;
 	}
-	combo->average_path_len = (float)combo->capacity / (float)combo->paths_num;
+	lines_num = (ants_num + total_steps) / (last->num + 1) - 1;
+	if ((ants_num + total_steps) % (last->num + 1) > 0)
+		lines_num++;
+	return (lines_num);
+}
+
+void				calculate_combo(t_path_combo *combo, int ants_num)
+{
+	t_path			*temp;
+	int				min_num_of_lines;
+	int				opt_path_num;
+	int				num_of_lines;
+
+	min_num_of_lines = INT_MAX;
+	temp = combo->paths;
+	while (temp)
+	{
+		num_of_lines = compute_line_num(combo->paths, temp, ants_num);
+		if (num_of_lines < min_num_of_lines)
+		{
+			min_num_of_lines = num_of_lines;
+			opt_path_num = temp->num + 1;
+		}
+		temp = temp->next;
+	}
+	combo->num_of_paths_to_use = opt_path_num;
+	combo->lines_num = min_num_of_lines;
 }
 
 void				clear_combo(t_path_combo **combo, int clr_paths_flag)
@@ -428,8 +469,8 @@ void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 	t_path			*temp_b;
 
 	(*combo)->starting = NULL;
-	(*combo)->capacity = 0;
-	(*combo)->average_path_len = 0;
+	// (*combo)->capacity = 0;
+	// (*combo)->average_path_len = 0;
 	(*combo)->paths_num = 0;
 	ft_strclr((*combo)->name);
 	if (clr_paths_flag)
@@ -446,7 +487,8 @@ void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 		(*combo)->paths = NULL;
 }
 
-void				prepare_combo(t_path_combo **combo, t_vertex *first)
+void				prepare_for_combo_search(t_path_combo **combo,
+											t_vertex *first, t_farm *farm)
 {
 	if (!*combo)
 		*combo = init_path_combo();
@@ -454,7 +496,36 @@ void				prepare_combo(t_path_combo **combo, t_vertex *first)
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);
 	(*combo)->starting = first;
-	(*combo)->paths_num += search_for_path(first, *combo, (*combo)->paths_num);
+	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num, farm->vertex_num);
+	clear_bfs_marks(farm->vertexes, 0);
+	restore_dist(farm->vertexes);
+	sort_links(farm->start);
+}
+
+t_list				*copy_links(t_vertex *vertex)
+{
+	t_list			*new;
+	t_list			*links;
+	t_list			*temp;
+
+	links = vertex->links;
+	if (!links)
+		return (NULL);
+	new = ft_lstnew(links->content, sizeof(t_vertex **));
+	temp = new;
+	while (links->next)
+	{	
+		links = links->next;
+		temp->next = ft_lstnew(links->content, sizeof(t_vertex **));
+		temp = temp->next;
+		if (!temp)
+		{
+			ft_lstdel(&new, ft_bzero);
+			return (NULL);
+		}
+	}
+	temp->next = NULL;
+	return (new);
 }
 
 void				find_combo_with_vertex(t_path_combo **combo,
@@ -464,51 +535,39 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	t_vertex		*vertex;
 	int				new_path_flag;
 
-	prepare_combo(combo, first);
+	prepare_for_combo_search(combo, first, farm);
 	if (!(*combo)->paths_num)
 		return ;
-	links = farm->start->links;
-	while (links)
+	new_path_flag = 0;
+	links = farm->start->links; //
+	vertex = *(t_vertex **)links->content;
+	while (vertex->dist >= 0 && !vertex->is_end)
 	{
-		vertex = *(t_vertex **)links->content;
-		clear_bfs_marks(farm->vertexes);
-		if (ft_strequ(vertex->name, (*combo)->name) ||
-			!compute_distances(farm, (*combo)->name))
-		{
-			links = links->next;
-			continue ;
-		}
-		sort_links(farm->start);
-		new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num);
+		if (vertex != first)
+			new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num, farm->vertex_num);
 		(*combo)->paths_num += new_path_flag;
-		links = links->next;
+		clear_bfs_marks(farm->vertexes, 0);
+		compute_distances(farm, (*combo)->name);
+		sort_links(farm->start);
+		links = farm->start->links;
+		vertex = *(t_vertex **)links->content;
+		if (ft_strequ(vertex->name, (*combo)->name))
+			vertex = *(t_vertex **)links->next->content;
 	}
-	calculate_combo(*combo);
+	calculate_combo(*combo, farm->ants_num);
 	log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }
 
-int					compare_combos(t_path_combo *current, t_path_combo *new,
-									int ants_num)
+int					compare_combos(t_path_combo *current, t_path_combo *new)
 {
 	if (!current)
 		return (1);
 	if (new->paths_num < 1)
 		return (0);
-	if (new->paths_num > current->paths_num)
-	{
-		if (current->capacity >= ants_num)
-			return (0);
-		return (1);		
-	}
-	else
-	{
-		if ((new->capacity >= ants_num) &&
-			(new->average_path_len < current->average_path_len))
-			return (1);
-	}
+	if (new->lines_num < current->lines_num)
+		return (1);	
 	return (0);	
 }
-
 
 void				copy_combo(t_path_combo **old, t_path_combo *new)
 {
@@ -517,12 +576,19 @@ void				copy_combo(t_path_combo **old, t_path_combo *new)
 	else
 		*old = init_path_combo();
 	(*old)->starting = new->starting;
-	(*old)->capacity = new->capacity;
-	(*old)->average_path_len = new->average_path_len;
+	(*old)->lines_num = new->lines_num;
+	(*old)->num_of_paths_to_use = new->num_of_paths_to_use;
 	(*old)->paths_num = new->paths_num;
 	(*old)->paths = new->paths;
 	ft_strclr((*old)->name);
 	ft_strcpy((*old)->name, new->name);
+}
+
+void				restore_vertexes(t_farm *farm)
+{
+	clear_bfs_marks(farm->vertexes, 1);
+	restore_dist(farm->vertexes); // change
+	sort_links(farm->start);
 }
 
 void				find_path_combo(t_farm *farm)
@@ -536,38 +602,57 @@ void				find_path_combo(t_farm *farm)
 	i = 0;
 	best_combo = NULL;
 	combo = NULL;
-	link_a = farm->start->links;
-	while (link_a && i < 3)
+	link_a = copy_links(farm->start);
+	while (link_a)
 	{
 		vertex = *(t_vertex **)link_a->content;
 		find_combo_with_vertex(&combo, vertex, farm);
-		if (compare_combos(best_combo, combo, farm->ants_num))
+		if (compare_combos(best_combo, combo))
 			copy_combo(&best_combo, combo);
 		else
 			clear_combo(&combo, 1);
-		restore_dist(farm->vertexes);
 		link_a = link_a->next;
+		restore_vertexes(farm);
 		i++;
 	}
 	farm->combo = best_combo;
 }
 
-int				main(int ac, char **av)
+void				free_combo(t_path_combo **combo)
 {
-	char		**rooms;
-	char		**links;
-	int			rooms_num;
-	t_farm		*farm;
-	t_vertex	*start;
-	t_vertex	*end;
-	t_vertex	**vertexes;
+	clear_combo(combo, 1);
+	ft_memdel((void **)combo);
+}
+
+void				set_paths(t_farm *farm)
+{
+	t_path_combo	*combo;
+
+	combo = NULL;
+	find_combo_with_vertex(&combo, farm->combo->starting, farm);
+	ft_strcpy(farm->end->path_name, combo->name);
+	free_combo(&combo);
+	clear_bfs_marks(farm->vertexes, 0);
+	restore_dist(farm->vertexes);
+	sort_links(farm->start);
+}
+
+int					main(int ac, char **av)
+{
+	char			**rooms;
+	char			**links;
+	int				rooms_num;
+	t_farm			*farm;
+	t_vertex		*start;
+	t_vertex		*end;
+	t_vertex		**vertexes;
 	t_ant_queue		*ant_queue;
 
-	int			fd;
-	int			ants_num;
-	char		*line;
-	char		*start_line;
-	char		*end_line;
+	int				fd;
+	int				ants_num;
+	char			*line;
+	char			*start_line;
+	char			*end_line;
 
 //
 	if (ac != 2)
@@ -593,7 +678,7 @@ int				main(int ac, char **av)
 	prepare_vertexes(farm);
 	find_path_combo(farm);
 	log_combo(STDOUT_FILENO, farm->combo, "Best combo:\n");
-	// set_paths(farm);
-	// release_ants(farm);
+	set_paths(farm);
+	release_ants(farm);
 	return (0);
 }
