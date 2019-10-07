@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/04 19:44:56 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/07 18:11:38 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int					isway(char *str);
 int					fill_rooms(char **data, char ***rooms, int size);
 void				fill_ways(char **data, char ***ways, int size);
 
+
+
+void				calculate_combo(t_path_combo *combo, int ants_num);
 /* 
 ** sol_init_vertex.c
 */

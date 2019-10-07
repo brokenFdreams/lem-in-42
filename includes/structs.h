@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/06 00:04:41 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/07 20:52:31 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct			s_vertex
 	int					x;
 	int					y;
 	int					capacity;
+	struct s_vertex		*next;
 }						t_vertex;
 
 typedef struct			s_ant
@@ -66,6 +67,7 @@ typedef struct			s_path_combo
 	int					paths_num;
 	t_path				*paths;
 	char				*name;
+	int					is_best_one;
 }						t_path_combo;
 
 typedef struct			s_farm
@@ -73,7 +75,7 @@ typedef struct			s_farm
 	int					ants_num;
 	t_vertex			*start;
 	t_vertex			*end;
-	t_vertex			**vertexes; //
+	t_vertex			**vertexes;
 	int					vertex_num;
 	t_ant_queue			*ant_queue;
 	t_ant				*first_in_queue;
