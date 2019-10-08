@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/07 20:52:31 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/08 14:55:56 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,14 @@ typedef struct			s_queue
 	t_vertex			*vertex;
 	struct s_queue		*next;
 }						t_queue;
+
+typedef struct			s_options
+{
+	int					path;
+	int					color;
+	int					stat;
+	int					help;
+	int					log;
+}						t_options;
+
 # endif
