@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 17:20:11 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/07 14:33:10 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/08 16:54:15 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,14 @@ static void		set_distance(t_vertex *vertex, int dist, char *name)
 // 		temp_link = temp_link->next;
 // 	}
 // }
-void			set_distances_by_bfs(t_vertex *end, char *name)
+static void		process_vertex(t_vertex *vertex, int dist, char *name,
+								t_queue **queue)
+{
+	set_distance(vertex, dist, name);
+	push(queue, vertex);
+}
+void			set_distances_by_bfs(t_vertex *end, char *name,
+									int count_links_flag)
 {
 	t_queue		*queue;
 	t_vertex	*vertex;
@@ -65,13 +72,11 @@ void			set_distances_by_bfs(t_vertex *end, char *name)
 			list = vertex->links;
 			while (list)
 			{
-				vertex->links_num++;
+				if (count_links_flag)
+					vertex->links_num++;
 				temp_vertex = *(t_vertex **)list->content;
 				if (!ft_strequ(temp_vertex->path_name, name))
-				{
-					set_distance(temp_vertex, vertex->dist + 1, name);
-					push(&queue, temp_vertex);
-				}
+					process_vertex(temp_vertex, vertex->dist + 1, name, &queue);
 				list = list->next;
 			}
 		}
@@ -79,12 +84,12 @@ void			set_distances_by_bfs(t_vertex *end, char *name)
 }
 
 
-int				compute_distances(t_farm *farm, char *name)
+int				compute_distances(t_farm *farm, char *name, int count_links_flag)
 {
 	farm->end->dist = 0;
 	farm->start->is_visited = 1;
 	farm->start->links_num = INT_MAX;
-	set_distances_by_bfs(farm->end, name);
+	set_distances_by_bfs(farm->end, name, count_links_flag);
 	if (farm->start->dist < 0)
 		return (0);
 	farm->start->dist = INT_MAX;
