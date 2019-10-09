@@ -6,28 +6,44 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/08 14:57:11 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/09 11:57:13 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-/*
-** Count strs in file
-*/
-
-static int	count_str(char *arg)
+void		ft_del(t_list **list)
 {
-	int		fd;
-	int		count;
-	char	*line;
+	t_list *tmp;
+	t_list *buf;
 
-	fd = open(arg, O_RDONLY);
-	count = 0;
-	while (get_next_line(fd, &line) > 0 && ++count)
-		ft_strdel(&line);
-	close(fd);
-	return (count);
+	if (list && *list)
+	{
+		buf = *list;
+		while (buf)
+		{
+			tmp = buf->next;
+			if (buf->content)
+				free(buf->content);
+			free(buf);
+			buf = tmp;
+		}
+		*list = NULL;
+	}
+}
+
+void		fill_data(t_list *list, char **data, int size)
+{
+	int i;
+
+	i = 0;
+	data = (char**)malloc(sizeof(char*) * (count + 1));
+	while (list)
+	{
+		data[i++] = ft_strcpy(ft_strnew(list->content_size), list->content);
+		list = list->next;
+	}
+	data[count] = NULL;
 }
 
 /*
@@ -35,22 +51,26 @@ static int	count_str(char *arg)
 ** if there's no file, then call ft_error
 */
 
-void		read_data()
+void		read_data(char **data)
 {
-	int		count;
 	int		gnl;
 	char	*line;
+	t_list	*list;
+	t_list	*tmp;
 
-	count = count_str(arg);
-	if (count == 0)
-		ft_error("Empty map\n");
-	*data = (char**)malloc(sizeof(char*) * (count + 1));
 	count = 0;
-	while ((gnl = get_next_line(0, &line)) > 0)
-		(*data)[count++] = line;
+	if ((gnl = get_next_line(0, &line)) > 0 && ++count)
+		list = ft_lstnew(line, ft_strlen(line));
+	tmp = list->next;
+	while ((gnl = get_next_line(0, &line)) > 0 && ++count)
+	{
+		tmp = ft_lstnew(line, ft_strlen(line));
+		tmp = tmp->next;
+	}
 	if (gnl == -1)
 		ft_error("Usage: ./lem-in < [file.map]");
-	(*data)[count] = NULL;
+	fill_data(list, data, count);
+	ft_del(&list);
 }
 
 t_options	*init_options()
