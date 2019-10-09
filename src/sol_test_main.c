@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/08 17:38:03 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/09 16:08:52 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,9 @@ void			prepare_vertexes(t_farm *farm)
 	// log_links(1, farm->start, "Before sorting:\n");
 	set_real_dist(farm->vertexes);
 	sort_links(farm->start);
-	// log_links(1, farm->start, "\nBefore deleting impasses:\n");
+	log_links(1, farm->start, "\nBefore deleting impasses:\n");
 	remove_impasses(farm->start);
-	// log_links(1, farm->start, "\nAfter deleting impasses:\n");
+	log_links(1, farm->start, "\nAfter deleting impasses:\n");
 }
 
 void			move_ant(t_ant *ant, t_vertex *vertex)
@@ -600,8 +600,8 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	new_path_flag = 0;
 	links = farm->start->links; //
 	vertex = *(t_vertex **)links->content;
-	calculate_combo(*combo, farm->ants_num);
-	while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 <= (*combo)->lines_num))
+	calculate_combo(*combo, farm->ants_num); //
+	while (vertex->dist >= 0 && !vertex->is_end) //while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 <= (*combo)->lines_num))
 	{
 		if (vertex != first && !ft_strequ(vertex->path_name, (*combo)->name))
 			new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num, farm->vertex_num);
@@ -613,9 +613,9 @@ void				find_combo_with_vertex(t_path_combo **combo,
 		vertex = *(t_vertex **)links->content;
 		if (ft_strequ(vertex->name, (*combo)->name))
 			vertex = *(t_vertex **)links->next->content;
-		calculate_combo(*combo, farm->ants_num);
+		calculate_combo(*combo, farm->ants_num); //
 	}
-	// log_combo(STDOUT_FILENO, *combo, "New combo:\n");
+	log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }
 
 int					compare_combos(t_path_combo *current, t_path_combo *new)
@@ -659,15 +659,15 @@ void				find_path_combo(t_farm *farm)
 	t_vertex		*vertex;
 	int				i;
 
+	i = 0;
 	best_combo = NULL;
 	combo = NULL;
-	i = 0;
 	link_a = copy_links(farm->start);
 	while (link_a)
 	{
 		vertex = *(t_vertex **)link_a->content;
-		if (best_combo && (i >= farm->end->links_num / 2))
-			break ;
+		// if (best_combo && (i >= farm->end->links_num / 2))
+		// 	break ;
 		find_combo_with_vertex(&combo, vertex, farm, 0);
 		if (compare_combos(best_combo, combo))
 			copy_combo(&best_combo, combo);
@@ -735,7 +735,7 @@ void				set_paths(t_farm *farm)
 	sort_links(farm->start);
 	sort_paths(farm->combo);
 	farm->start->ants_num = farm->ants_num;
-	// log_combo(STDOUT_FILENO, farm->combo, "Sorted paths\n");
+	log_combo(STDOUT_FILENO, farm->combo, "Sorted paths\n");
 
 }
 
@@ -781,7 +781,7 @@ int					main(int ac, char **av)
 	// printf("Distance from start to end is %d\n", farm->start->dist);
 	prepare_vertexes(farm);
 	find_path_combo(farm);
-	// log_combo(STDOUT_FILENO, farm->combo, "Best combo:\n");
+	log_combo(STDOUT_FILENO, farm->combo, "Best combo:\n");
 	set_paths(farm);
 	release_ants(farm);
 	return (0);

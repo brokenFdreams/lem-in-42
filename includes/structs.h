@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/08 18:51:08 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/08 19:20:30 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ typedef struct			s_path_combo
 	int					is_best_one;
 }						t_path_combo;
 
+typedef struct			s_options
+{
+	int					path;
+	int					color;
+	int					stat;
+	int					help;
+	int					log;
+}						t_options;
+
 typedef struct			s_farm
 {
 	int					ants_num;
@@ -80,6 +89,8 @@ typedef struct			s_farm
 	t_ant_queue			*ant_queue;
 	t_ant				*first_in_queue;
 	t_path_combo		*combo;
+	t_options			*options;
+	int					impasses_num;
 }						t_farm;
 
 typedef struct			s_queue
@@ -88,13 +99,5 @@ typedef struct			s_queue
 	struct s_queue		*next;
 }						t_queue;
 
-typedef struct			s_options
-{
-	int					path;
-	int					color;
-	int					stat;
-	int					help;
-	int					log;
-}						t_options;
 
 # endif
