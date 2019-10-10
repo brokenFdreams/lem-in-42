@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/10/08 19:20:30 by dtimeon          ###   ########.fr       */
-=======
-/*   Updated: 2019/10/09 11:41:09 by fsinged          ###   ########.fr       */
->>>>>>> 5c65beb10895b571a8378b0a39172f43b706a984
+/*   Updated: 2019/10/10 13:14:30 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +91,7 @@ typedef struct			s_farm
 	t_path_combo		*combo;
 	t_options			*options;
 	int					impasses_num;
+	t_list				*original_links_of_start;
 }						t_farm;
 
 typedef struct			s_queue
