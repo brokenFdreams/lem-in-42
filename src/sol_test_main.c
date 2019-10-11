@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 17:05:25 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 22:03:58 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,78 @@ void				calculate_combo(t_path_combo *combo, int ants_num)
 	combo->lines_num = min_num_of_lines;
 }
 
+t_options			*init_options()
+{
+	t_options		*new;
+
+	new = (t_options *)malloc(sizeof(t_options));
+	if (!new)
+		ft_error("Memory allocation error\n");
+	new->color = 0;
+	new->help = 0;
+	new->log = 0;
+	new->path = 0;
+	new->stat = 0;
+
+	return (new);
+}
+
+void				switch_to_colour(int colour_diff)
+{
+	colour_diff = (colour_diff > 12 ? colour_diff % 12 : colour_diff);
+	if (colour_diff < 7)
+	{
+		ft_putstr("\033[1;");
+		ft_putnbr(31 + colour_diff);
+	}
+	else
+	{
+		ft_putstr("\033[0;");
+		ft_putnbr(31 + colour_diff - 7);
+	}	
+	write(1, "m", 2);	
+}
+
+void				switch_to_default(void)
+{
+	write(1, "\033[0m", 4);
+}
+
+void				print_paths(t_farm *farm)
+{
+	int				i;
+	int				colour;
+	t_path			*temp_path;
+	t_vertex		*temp_vertex;
+
+	i = 0;
+	colour = farm->options->color;
+	temp_path = farm->combo->paths;
+	while (temp_path && (i < farm->combo->num_of_paths_to_use))
+	{
+		if (colour)
+			switch_to_colour(i);
+		ft_putnbr(i + 1);
+		ft_putstr(": ");
+		temp_vertex = temp_path->starting_vertex;
+		ft_putstr(temp_vertex->name);
+		while (temp_vertex)
+		{
+			temp_vertex = temp_vertex->next;
+			if (temp_vertex)
+			{
+				ft_putstr(" --> ");
+				ft_putstr(temp_vertex->name);
+			}
+		}
+		ft_putstr("\n");
+		switch_to_default();
+		temp_path = temp_path->next;
+		i++;
+	}
+	ft_putstr("\n");
+}
+
 int					main(int ac, char **av)
 {
 	char			**rooms;
@@ -191,35 +263,40 @@ int					main(int ac, char **av)
 	t_vertex		**vertexes;
 	t_ant_queue		*ant_queue;
 
-	// int				fd;
+	int				fd;
 	int				ants_num;
 	char			*line;
 	char			*start_line;
 	char			*end_line;
+	t_options		*options;
 
 //
-	// if (ac != 2)
-	// 	return (0);
-	// fd = open(av[1], O_RDONLY);
+	if (ac != 2)
+		return (0);
+	fd = open(av[1], O_RDONLY);
 	(void)ac;
 	(void)av;
-	while (get_next_line(STDIN_FILENO, &line) > 0)
+	while (get_next_line(fd, &line) > 0)
 		if (*line != '#')
 			break;
 	write(STDOUT_FILENO, line, ft_strlen(line));
 	write(STDOUT_FILENO, "\n", 1);
 	ants_num = ft_strtol(line, NULL, 10);
 
-	rooms_num = read_rooms_and_links(STDIN_FILENO, &rooms, &links, &start_line, &end_line);
+	rooms_num = read_rooms_and_links(fd, &rooms, &links, &start_line, &end_line);
 	write(STDOUT_FILENO, "\n", 1);
+
+	options = init_options();
 //
 
+	options->path = 1;
+	options->color = 1;
 	start = init_vertex(start_line, 1, 0);
 	end = init_vertex(end_line, 0, 1);
 	vertexes = collect_vertexes(start, end, rooms, rooms_num);
 	add_links(vertexes, links);
 	ant_queue = create_ant_queue(ants_num, start);
-	farm = init_farm(vertexes, ant_queue, ants_num);
+	farm = init_farm(vertexes, ant_queue, ants_num, options);
 	if (!compute_distances(farm, "", 1))
 		ft_error("No path from end to start found\n");
 	// printf("Distance from start to end is %d\n", farm->start->dist);
@@ -227,6 +304,8 @@ int					main(int ac, char **av)
 	find_path_combo(farm);
 	// log_combo(STDOUT_FILENO, farm->combo, "Best combo:\n");
 	set_paths(farm);
+	if (farm->options->path)
+		print_paths(farm);
 	release_ants(farm);
 	return (0);
 }

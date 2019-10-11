@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 16:27:16 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 20:52:32 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ void				find_path_combo(t_farm *farm)
 	while (start_links)
 	{
 		vertex = *(t_vertex **)start_links->content;
-		// if (best_combo && (i >= farm->end->links_num / 2))
-		// 	break ;
+		if (best_combo && ((best_combo->lines_num <= vertex->real_dist + 1) ||
+							(farm->end->links_num / 2 + 1) <= i))
+			break ;
 		find_combo_with_vertex(&combo, vertex, farm, 0);
 		if (compare_combos(best_combo, combo))
 			copy_combo(&best_combo, combo);

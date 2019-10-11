@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:34:55 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 17:00:22 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/10 16:34:55 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/11 20:24:07 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	links = farm->start->links; //
 	vertex = *(t_vertex **)links->content;
 	calculate_combo(*combo, farm->ants_num); //
-	while (vertex->dist >= 0 && !vertex->is_end) //while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 <= (*combo)->lines_num))
+	/* while (vertex->dist >= 0 && !vertex->is_end) */ while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 < (*combo)->lines_num))
 	{
 		if (vertex != first && !ft_strequ(vertex->path_name, (*combo)->name))
 			new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num, farm->vertex_num);

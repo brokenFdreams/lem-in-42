@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_data_saving.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 00:59:43 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 22:10:31 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int		count_vertexes(t_vertex **vertexes)
 }
 
 t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
-							int ants_num)
+							int ants_num, t_options *options)
 {
 	t_farm		*farm;
 
@@ -54,5 +54,6 @@ t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 	farm->ants_num = ants_num;
 	farm->ant_queue = ant_queue;
 	farm->combo = NULL;
+	farm->options = options;
 	return (farm);
 }

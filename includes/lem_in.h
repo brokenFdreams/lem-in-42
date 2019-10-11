@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/11 16:36:03 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 22:04:57 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void				find_path_combo(t_farm *farm);
 */
 
 t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
-							int ants_num);
+							int ants_num, t_options *options);
 t_path_combo		*init_path_combo(void);
 
 /*
@@ -183,6 +183,14 @@ void				add_links(t_vertex **vertexes, char **links_line);
 */
 
 void				set_paths(t_farm *farm);
+
+/*
+** sol_colours
+*/
+
+void				switch_to_colour(int colour_diff);
+void				switch_to_default(void);
+
 
 /* 
 ** additional libft functions

@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 16:06:38 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 22:10:01 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct			s_ant
 {
 	int					num;
 	t_vertex			*current_vertex;
+	int					path_num;
 }						t_ant;
 
 
