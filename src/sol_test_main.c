@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/09 16:08:52 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/09 18:20:02 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,7 +600,7 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	new_path_flag = 0;
 	links = farm->start->links; //
 	vertex = *(t_vertex **)links->content;
-	calculate_combo(*combo, farm->ants_num); //
+	// calculate_combo(*combo, farm->ants_num); //
 	while (vertex->dist >= 0 && !vertex->is_end) //while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 <= (*combo)->lines_num))
 	{
 		if (vertex != first && !ft_strequ(vertex->path_name, (*combo)->name))
@@ -613,8 +613,8 @@ void				find_combo_with_vertex(t_path_combo **combo,
 		vertex = *(t_vertex **)links->content;
 		if (ft_strequ(vertex->name, (*combo)->name))
 			vertex = *(t_vertex **)links->next->content;
-		calculate_combo(*combo, farm->ants_num); //
 	}
+	calculate_combo(*combo, farm->ants_num); //
 	log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }
 
@@ -727,12 +727,12 @@ void				set_paths(t_farm *farm)
 	t_path_combo	*combo;
 
 	combo = NULL;
-	find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
-	ft_strcpy(farm->end->path_name, combo->name);
-	free_combo(&combo);
 	clear_bfs_marks(farm->vertexes, 0);
 	restore_dist(farm->vertexes);
 	sort_links(farm->start);
+	find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
+	ft_strcpy(farm->end->path_name, combo->name);
+	free_combo(&combo);
 	sort_paths(farm->combo);
 	farm->start->ants_num = farm->ants_num;
 	log_combo(STDOUT_FILENO, farm->combo, "Sorted paths\n");
@@ -763,13 +763,12 @@ int					main(int ac, char **av)
 	while (get_next_line(fd, &line) > 0)
 		if (*line != '#')
 			break;
-	write(STDOUT_FILENO, line, ft_strlen(line));
 	write(STDOUT_FILENO, "\n", 1);
 	ants_num = ft_strtol(line, NULL, 10);
 
 	rooms_num = read_rooms_and_links(fd, &rooms, &links, &start_line, &end_line);
 //
-	write(STDOUT_FILENO, "\n", 1);
+
 	start = init_vertex(start_line, 1, 0);
 	end = init_vertex(end_line, 0, 1);
 	vertexes = collect_vertexes(start, end, rooms, rooms_num);
