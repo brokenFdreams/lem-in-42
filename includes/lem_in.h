@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/10 01:24:55 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 16:36:03 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,85 @@ void				log_combo(int fd, t_path_combo *combo, char *message);
 */
 
 void				remove_impasses(t_vertex *vertex);
+
+
+/*
+** sol_search_for_path.c
+*/
+
+int					search_for_path(t_vertex *first, t_path_combo *combo,
+									int path_num, int vertex_num);
+t_vertex			*choose_next_vertex(t_list *links, t_path_combo *combo,
+									t_vertex *previous, int name_flag);
+
+/*
+** sol_restoring_data.c
+*/
+
+void				set_real_dist(t_vertex **vertexes);
+void				restore_dist(t_vertex **vertexes);
+void				clear_combo(t_path_combo **combo, int clr_paths_flag);
+void				clear_bfs_marks(t_vertex **vertexes, 
+									int path_name_clear_flag);
+void				restore_vertexes(t_farm *farm);
+
+/*
+** sol_links_manipulations.c
+*/
+
+void				release_ants(t_farm *farm);
+
+/*
+** sol_set_paths.c
+*/
+
+t_list				*copy_links(t_list *links);
+
+/*
+** sol_freeing_memory.c
+*/
+
+void				free_combo(t_path_combo **combo);
+
+/*
+** sol_find_vertex_combo.c
+*/
+
+void				find_combo_with_vertex(t_path_combo **combo,
+											t_vertex *first, t_farm *farm,
+											int best_one_flag);
+
+/*
+** sol_find_combos.c
+*/
+
+void				find_path_combo(t_farm *farm);
+
+/*
+** sol_data_saving.c
+*/
+
+t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
+							int ants_num);
+t_path_combo		*init_path_combo(void);
+
+/*
+** sol_ant_queue_management.c
+*/
+
+void				renew_ant_queue(t_farm *farm);
+
+/*
+** sol_add_links_to_vertex.c
+*/
+
+void				add_links(t_vertex **vertexes, char **links_line);
+
+/*
+** sol_set_paths.c
+*/
+
+void				set_paths(t_farm *farm);
 
 /* 
 ** additional libft functions

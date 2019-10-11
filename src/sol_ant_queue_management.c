@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sol_ant_queue_management.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:33:42 by anna              #+#    #+#             */
-/*   Updated: 2019/10/10 16:59:43 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 16:34:12 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 
-void			del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
+static void		del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
 {
 	t_ant_queue	*temp;
 	t_ant		*temp_ant;
@@ -30,7 +30,7 @@ void			del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
 	}
 }
 
-void			del_ant_queue_node(t_ant_queue **to_del, t_ant_queue *previous)
+static void		del_ant_queue_node(t_ant_queue **to_del, t_ant_queue *previous)
 {
 	previous->next = (*to_del)->next;
 	ft_memdel((void **)&(*to_del)->ant);

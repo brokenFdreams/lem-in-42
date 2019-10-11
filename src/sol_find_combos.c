@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sol_find_combos.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/10 16:44:09 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 16:27:16 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int					compare_combos(t_path_combo *current, t_path_combo *new)
+static int			compare_combos(t_path_combo *current, t_path_combo *new)
 {
 	if (!current)
 		return (1);
@@ -23,7 +23,7 @@ int					compare_combos(t_path_combo *current, t_path_combo *new)
 	return (0);	
 }
 
-void				copy_combo(t_path_combo **old, t_path_combo *new)
+static void			copy_combo(t_path_combo **old, t_path_combo *new)
 {
 	if (*old)
 		clear_combo(old, 1);

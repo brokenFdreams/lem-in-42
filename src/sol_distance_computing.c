@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_distance_computing.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/24 17:20:11 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/10 01:24:23 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 16:27:40 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void		process_vertex(t_vertex *vertex, int dist, char *name,
 	set_distance(vertex, dist, name);
 	push(queue, vertex);
 }
+
 void			set_distances_by_bfs(t_vertex *end, char *name,
 									int count_links_flag)
 {
@@ -82,7 +83,6 @@ void			set_distances_by_bfs(t_vertex *end, char *name,
 		}
 	}
 }
-
 
 int				compute_distances(t_farm *farm, char *name, int count_links_flag)
 {

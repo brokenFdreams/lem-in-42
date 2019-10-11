@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:30:56 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 21:32:31 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 16:34:51 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		link_rooms(t_vertex *room1, t_vertex *room2)
 	ft_lstadd(&room2->links, ft_lstnew(&room1, sizeof(t_vertex *)));
 }
 
-void				add_links(t_vertex **vertexes, char **links_line)
+void			add_links(t_vertex **vertexes, char **links_line)
 {
 	int			i;
 	char		**link;

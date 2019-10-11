@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sol_find_vertex_combo.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:55 by anna              #+#    #+#             */
-/*   Updated: 2019/10/10 16:49:07 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 17:00:22 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void				prepare_for_combo_search(t_path_combo **combo,
+static void			prepare_for_combo_search(t_path_combo **combo,
 											t_vertex *first, t_farm *farm,
 											int best_one_flag)
 {
@@ -58,5 +58,5 @@ void				find_combo_with_vertex(t_path_combo **combo,
 			vertex = *(t_vertex **)links->next->content;
 		calculate_combo(*combo, farm->ants_num); //
 	}
-	log_combo(STDOUT_FILENO, *combo, "New combo:\n");
+	// log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }

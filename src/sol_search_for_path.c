@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_search_for_path.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:24 by anna              #+#    #+#             */
-/*   Updated: 2019/10/10 16:55:21 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/11 16:18:30 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
 	return (NULL);
 }
 
-void			mark_path(t_vertex *first, t_path_combo *combo, int num)
+static void			mark_path(t_vertex *first, t_path_combo *combo, int num)
 {
 		t_list		*links;
 		t_vertex	*vertex;
@@ -61,7 +61,7 @@ void			mark_path(t_vertex *first, t_path_combo *combo, int num)
 		}
 }
 
-void			add_path(t_path_combo *combo, t_vertex *first, int steps)
+static void		add_path(t_path_combo *combo, t_vertex *first, int steps)
 {
 	t_path		*new;
 	t_path		*temp;
