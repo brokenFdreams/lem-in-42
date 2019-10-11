@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/09 16:16:43 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 16:06:38 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct			s_farm
 	t_path_combo		*combo;
 	t_options			*options;
 	int					impasses_num;
+	t_list				*original_links_of_start;
 }						t_farm;
 
 typedef struct			s_queue

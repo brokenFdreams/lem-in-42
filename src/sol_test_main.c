@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/09 18:20:02 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 16:06:05 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -556,17 +556,15 @@ void				prepare_for_combo_search(t_path_combo **combo,
 	(*combo)->is_best_one = best_one_flag;
 	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num, farm->vertex_num);
 	clear_bfs_marks(farm->vertexes, 0);
-	restore_dist(farm->vertexes);
+	compute_distances(farm, (*combo)->name, 0);
 	sort_links(farm->start);
 }
 
-t_list				*copy_links(t_vertex *vertex)
+t_list				*copy_links(t_list *links)
 {
 	t_list			*new;
-	t_list			*links;
 	t_list			*temp;
 
-	links = vertex->links;
 	if (!links)
 		return (NULL);
 	new = ft_lstnew(links->content, sizeof(t_vertex **));
@@ -646,6 +644,8 @@ void				copy_combo(t_path_combo **old, t_path_combo *new)
 
 void				restore_vertexes(t_farm *farm)
 {
+	ft_lstdel(&farm->start->links, ft_bzero);
+	farm->start->links = copy_links(farm->original_links_of_start);
 	clear_bfs_marks(farm->vertexes, 1);
 	restore_dist(farm->vertexes); // change
 	sort_links(farm->start);
@@ -655,17 +655,18 @@ void				find_path_combo(t_farm *farm)
 {
 	t_path_combo	*combo;
 	t_path_combo	*best_combo;
-	t_list			*link_a;
+	t_list			*start_links;
 	t_vertex		*vertex;
 	int				i;
 
 	i = 0;
 	best_combo = NULL;
 	combo = NULL;
-	link_a = copy_links(farm->start);
-	while (link_a)
+	start_links = copy_links(farm->start->links);
+	farm->original_links_of_start = start_links;
+	while (start_links)
 	{
-		vertex = *(t_vertex **)link_a->content;
+		vertex = *(t_vertex **)start_links->content;
 		// if (best_combo && (i >= farm->end->links_num / 2))
 		// 	break ;
 		find_combo_with_vertex(&combo, vertex, farm, 0);
@@ -673,7 +674,7 @@ void				find_path_combo(t_farm *farm)
 			copy_combo(&best_combo, combo);
 		else
 			clear_combo(&combo, 1);
-		link_a = link_a->next;
+		start_links = start_links->next;
 		restore_vertexes(farm);
 		i++;
 	}
@@ -705,9 +706,9 @@ void				sort_paths(t_path_combo *combo)
 {
 	t_path			*temp_a;
 	t_path			*temp_b;
-	t_path			*first;
+	// t_path			*first;
 
-	first = combo->paths;
+	// first = combo->paths;
 	temp_a = combo->paths;
 	while (temp_a->next)
 	{
