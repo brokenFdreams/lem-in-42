@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 22:03:58 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/12 21:46:15 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int			read_rooms_and_links(int fd, char ***rooms, char ***links,
 
 void			prepare_vertexes(t_farm *farm)
 {
-	// log_links(1, farm->start, "Before sorting:\n");
+	log_links(1, farm->start, "Before sorting:\n");
 	set_real_dist(farm->vertexes);
 	sort_links(farm->start);
-	// log_links(1, farm->start, "\nBefore deleting impasses:\n");
+	log_links(1, farm->start, "\nBefore deleting impasses:\n");
 	remove_impasses(farm->start);
 	// log_links(1, farm->start, "\nAfter deleting impasses:\n");
 }
@@ -138,48 +138,6 @@ void			prepare_vertexes(t_farm *farm)
 // 		return (0);
 // }
 
-int					compute_line_num(t_path *first, t_path *last, int ants_num)
-{
-	int				total_steps;
-	t_path			*temp;
-	int				lines_num;
-
-	total_steps = last->steps;
-	temp = first;
-	while (temp && temp != last)
-	{
-		total_steps += temp->steps;
-		temp = temp->next;
-	}
-	lines_num = (ants_num + total_steps) / (last->num + 1) - 1;
-	if ((ants_num + total_steps) % (last->num + 1) > 0)
-		lines_num++;
-	return (lines_num);
-}
-
-void				calculate_combo(t_path_combo *combo, int ants_num)
-{
-	t_path			*temp;
-	int				min_num_of_lines;
-	int				opt_path_num;
-	int				num_of_lines;
-
-	min_num_of_lines = INT_MAX;
-	temp = combo->paths;
-	while (temp)
-	{
-		num_of_lines = compute_line_num(combo->paths, temp, ants_num);
-		if (num_of_lines < min_num_of_lines)
-		{
-			min_num_of_lines = num_of_lines;
-			opt_path_num = temp->num + 1;
-		}
-		temp = temp->next;
-	}
-	combo->num_of_paths_to_use = opt_path_num;
-	combo->lines_num = min_num_of_lines;
-}
-
 t_options			*init_options()
 {
 	t_options		*new;
@@ -196,60 +154,52 @@ t_options			*init_options()
 	return (new);
 }
 
-void				switch_to_colour(int colour_diff)
+int					count_links(t_list *list)
 {
-	colour_diff = (colour_diff > 12 ? colour_diff % 12 : colour_diff);
-	if (colour_diff < 7)
+	int				result;
+
+	result = 0;
+	while (list)
 	{
-		ft_putstr("\033[1;");
-		ft_putnbr(31 + colour_diff);
+		result++;
+		list = list->next;
 	}
-	else
-	{
-		ft_putstr("\033[0;");
-		ft_putnbr(31 + colour_diff - 7);
-	}	
-	write(1, "m", 2);	
+	return (result);
 }
 
-void				switch_to_default(void)
+int					count_links_leading_to_end(t_list *list)
 {
-	write(1, "\033[0m", 4);
+	int				result;
+
+	result = 0;
+	while (list && (*(t_vertex **)list->content)->dist > 0)
+	{
+		result++;
+		list = list->next;
+	}
+	return (result);
 }
 
-void				print_paths(t_farm *farm)
+void				print_stat(t_farm *farm)
 {
-	int				i;
-	int				colour;
-	t_path			*temp_path;
-	t_vertex		*temp_vertex;
-
-	i = 0;
-	colour = farm->options->color;
-	temp_path = farm->combo->paths;
-	while (temp_path && (i < farm->combo->num_of_paths_to_use))
-	{
-		if (colour)
-			switch_to_colour(i);
-		ft_putnbr(i + 1);
-		ft_putstr(": ");
-		temp_vertex = temp_path->starting_vertex;
-		ft_putstr(temp_vertex->name);
-		while (temp_vertex)
-		{
-			temp_vertex = temp_vertex->next;
-			if (temp_vertex)
-			{
-				ft_putstr(" --> ");
-				ft_putstr(temp_vertex->name);
-			}
-		}
-		ft_putstr("\n");
-		switch_to_default();
-		temp_path = temp_path->next;
-		i++;
-	}
+	ft_putstr("\033[1;37m");
+	ft_putstr("Graph stat:\n");
+	switch_to_default();
+	ft_putstr("Rooms number\tTotal edges of start\tTotal edges of end\t\
+Minimal distance");
+	if (farm->options->color)
+		ft_putstr("\033[0;32m");
 	ft_putstr("\n");
+	ft_putnbr(farm->vertex_num);
+	ft_putstr("\t\t");
+	ft_putnbr(count_links(farm->start->links));
+	ft_putstr("\t\t\t");
+	ft_putnbr(farm->end->links_num);
+	ft_putstr("\t\t\t");
+	ft_putnbr(count_links_leading_to_end(farm->start->links));
+	if (farm->options->color)
+		switch_to_default();
+	ft_putstr("\n\n");
 }
 
 int					main(int ac, char **av)
@@ -262,8 +212,8 @@ int					main(int ac, char **av)
 	t_vertex		*end;
 	t_vertex		**vertexes;
 	t_ant_queue		*ant_queue;
-
 	int				fd;
+
 	int				ants_num;
 	char			*line;
 	char			*start_line;
@@ -291,6 +241,7 @@ int					main(int ac, char **av)
 
 	options->path = 1;
 	options->color = 1;
+	options->stat = 1;
 	start = init_vertex(start_line, 1, 0);
 	end = init_vertex(end_line, 0, 1);
 	vertexes = collect_vertexes(start, end, rooms, rooms_num);
@@ -301,6 +252,8 @@ int					main(int ac, char **av)
 		ft_error("No path from end to start found\n");
 	// printf("Distance from start to end is %d\n", farm->start->dist);
 	prepare_vertexes(farm);
+	if (farm->options->stat)
+		print_stat(farm);
 	find_path_combo(farm);
 	// log_combo(STDOUT_FILENO, farm->combo, "Best combo:\n");
 	set_paths(farm);
