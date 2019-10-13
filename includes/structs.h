@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 22:10:01 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/13 17:52:16 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct			s_farm
 	t_options			*options;
 	int					impasses_num;
 	t_list				*original_links_of_start;
+	int					log_fd;
 }						t_farm;
 
 typedef struct			s_queue
@@ -100,6 +101,16 @@ typedef struct			s_queue
 	t_vertex			*vertex;
 	struct s_queue		*next;
 }						t_queue;
+
+typedef struct			s_time
+{
+	char				*month;
+	char				*day;
+	char				*hour;
+	char				*minute;
+	char				*second;
+}						t_time;
+
 
 
 # endif

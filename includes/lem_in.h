@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/12 17:46:59 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/13 17:58:38 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include "structs.h"
 # include <fcntl.h>
 # include <limits.h>
-
+# include <time.h>
+# include <stdarg.h>
 
 # include <stdio.h>
 
@@ -192,7 +193,7 @@ void				switch_to_colour(int colour_diff);
 void				switch_to_default(void);
 
 /*
-** sol_option_colours.c
+** sol_calculating_path_combo.c
 */
 
 void				calculate_combo(t_path_combo *combo, int ants_num);
@@ -202,6 +203,9 @@ void				calculate_combo(t_path_combo *combo, int ants_num);
 */
 
 void				print_paths(t_farm *farm);
+
+void				print_combo_stat_header();
+void				print_combo_stat(t_path_combo *combo, int colour_flag);
 
 /* 
 ** additional libft functions
