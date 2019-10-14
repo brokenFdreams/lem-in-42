@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/13 17:52:16 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 20:53:08 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct			s_vertex
 	int					links_num;
 	int					x;
 	int					y;
-	int					capacity;
 	struct s_vertex		*next;
 }						t_vertex;
 
@@ -80,6 +79,17 @@ typedef struct			s_options
 	int					log;
 }						t_options;
 
+typedef struct			s_map_data
+{
+	int					ants_num;
+	int					rooms_num;
+	char				**room_lines;
+	char				**links;
+	int					name_len;
+	char				*start_line;
+	char				*end_line;
+}						t_map_data;
+
 typedef struct			s_farm
 {
 	int					ants_num;
@@ -88,7 +98,6 @@ typedef struct			s_farm
 	t_vertex			**vertexes;
 	int					vertex_num;
 	t_ant_queue			*ant_queue;
-	t_ant				*first_in_queue;
 	t_path_combo		*combo;
 	t_options			*options;
 	int					impasses_num;

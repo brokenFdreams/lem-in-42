@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/13 22:57:19 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 18:14:09 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
 	combo_num++;
 }
 
+void				del_combo(t_path_combo **combo)
+{
+	ft_strdel(&(*combo)->name);
+	free(*combo);
+}
+
 void				find_path_combo(t_farm *farm)
 {
 	t_path_combo	*combo;
@@ -76,8 +82,6 @@ void				find_path_combo(t_farm *farm)
 	combo = NULL;
 	start_links = copy_links(farm->start->links);
 	farm->original_links_of_start = start_links;
-	if (farm->options->stat)
-		print_combo_stat_header();
 	while (start_links)
 	{
 		vertex = *(t_vertex **)start_links->content;
@@ -89,5 +93,7 @@ void				find_path_combo(t_farm *farm)
 		restore_vertexes(farm);
 		i++;
 	}
+	if (!ft_strequ(combo->name, best_combo->name))
+		del_combo(&combo);
 	farm->combo = best_combo;
 }

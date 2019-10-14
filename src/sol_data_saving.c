@@ -6,13 +6,13 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 22:10:31 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 20:20:19 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_path_combo		*init_path_combo(void)
+t_path_combo		*init_path_combo(int name_len)
 {
 	t_path_combo	*new;
 
@@ -24,7 +24,7 @@ t_path_combo		*init_path_combo(void)
 	new->num_of_paths_to_use = 0;
 	new->paths_num = 0;
 	new->paths = NULL;
-	new->name = ft_strnew(30);
+	new->name = ft_strnew(name_len);
 	new->is_best_one = 0;
 	return (new);
 }

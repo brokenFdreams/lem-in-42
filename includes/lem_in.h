@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/13 17:58:38 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 21:05:05 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void				calculate_combo(t_path_combo *combo, int ants_num);
 ** sol_init_vertex.c
 */
 
-t_vertex			*init_vertex(char *room_line, char s_flag, char e_flag);
+t_vertex			*init_vertex(char *room_line, char s_flag, char e_flag,
+								int name_len);
 t_vertex			**collect_vertexes(t_vertex *start, t_vertex *end,
-										char **rooms_lines, int rooms_num);
+										t_map_data *map_data);
 
 /* 
 ** sol_create_ant_queue.c
@@ -138,6 +139,7 @@ void				release_ants(t_farm *farm);
 */
 
 t_list				*copy_links(t_list *links);
+void				del_content(void *content, size_t size);
 
 /*
 ** sol_freeing_memory.c

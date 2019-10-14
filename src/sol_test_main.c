@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/13 21:43:11 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 20:53:06 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int			read_rooms_and_links(int fd, char ***rooms, char ***links,
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (*line == '#' && *(line + 1) != '#')
+		{
+			free(line);
 			continue ;
+		}
 		if (ft_strchr(line, '-') && !start_flag && !end_flag &&
 			!ft_strnequ(line, "##start", 7) && !ft_strnequ(line, "##end", 5))
 			(*links)[l_i++] = line;
@@ -51,7 +54,10 @@ int			read_rooms_and_links(int fd, char ***rooms, char ***links,
 			end_flag = 1;
 		write(STDOUT_FILENO, line, ft_strlen(line));
 		write(STDOUT_FILENO, "\n", 1);
+		if (*line == '#')
+			free(line);
 	}
+	free(line);
 	return (r_i + 2);
 }
 
@@ -336,10 +342,38 @@ void				init_log(t_farm *farm)
 		ft_putstr("Log file creation error.\n");
 }
 
+
+void				free_vertexes(t_farm *farm)
+{
+	int				i;
+
+	i = 0;
+	while (farm->vertexes[i])
+	{
+		ft_lstdel(&farm->vertexes[i]->links, del_content);
+		ft_strdel(&farm->vertexes[i]->name);
+		ft_strdel(&farm->vertexes[i]->path_name);
+		ft_memdel((void **)&farm->vertexes[i]);
+		i++;
+	}
+	ft_memdel((void **)&farm->vertexes);
+}
+
+void				free_memory(t_farm *farm)
+{
+	if (farm->combo)
+		free_combo(&farm->combo);
+	if (farm->options)
+		ft_memdel((void **)&farm->options);
+	if (farm->original_links_of_start)
+		ft_lstdel(&farm->original_links_of_start, del_content);
+	if (farm->vertexes)
+		free_vertexes(farm);
+	ft_memdel((void **)&farm);
+}
+
 int					main(int ac, char **av)
 {
-	char			**rooms;
-	char			**links;
 	int				rooms_num;
 	t_farm			*farm;
 	t_vertex		*start;
@@ -348,10 +382,10 @@ int					main(int ac, char **av)
 	t_ant_queue		*ant_queue;
 	int				fd;
 
+	
 	int				ants_num;
 	char			*line;
-	char			*start_line;
-	char			*end_line;
+	t_map_data		*map_data;
 	t_options		*options;
 
 //
@@ -366,23 +400,26 @@ int					main(int ac, char **av)
 	write(STDOUT_FILENO, line, ft_strlen(line));
 	write(STDOUT_FILENO, "\n", 1);
 	ants_num = ft_strtol(line, NULL, 10);
+	ft_strdel(&line);
 
-	rooms_num = read_rooms_and_links(fd, &rooms, &links, &start_line, &end_line);
+	map_data = init_map_data();
+	map_data->rooms_num = read_rooms_and_links(fd, map_data);
 	write(STDOUT_FILENO, "\n", 1);
 
 	options = init_options();
 //
 
-	options->path = 1;
-	options->color = 1;
-	options->stat = 1;
-	options->log = 1;
-	start = init_vertex(start_line, 1, 0);
-	end = init_vertex(end_line, 0, 1);
-	vertexes = collect_vertexes(start, end, rooms, rooms_num);
-	add_links(vertexes, links);
-	ant_queue = create_ant_queue(ants_num, start);
-	farm = init_farm(vertexes, ant_queue, ants_num, options);
+	// options->path = 1;
+	// options->color = 1;
+	// options->stat = 1;
+	// options->log = 1;
+
+	start = init_vertex(map_data->start_line, 1, 0);
+	end = init_vertex(map_data->end_line, 0, 1);
+	vertexes = collect_vertexes(start, end, map_data);
+	add_links(vertexes, map_data);
+	ant_queue = create_ant_queue(map_data->ants_num, start);
+	farm = init_farm(vertexes, ant_queue, map_data->ants_num, options);
 
 	if (farm->options->log)
 		init_log(farm);
@@ -390,7 +427,10 @@ int					main(int ac, char **av)
 		ft_error("No path from end to start found\n");
 	prepare_vertexes(farm);
 	if (farm->options->stat)
+	{
 		print_stat(farm);
+		print_combo_stat_header();
+	}
 	find_path_combo(farm);
 	if (farm->options->log && farm->log_fd > 0)
 		log_combo(farm->log_fd, farm->combo, "Best combo:\n");
@@ -400,5 +440,9 @@ int					main(int ac, char **av)
 	if (farm->options->log)
 		close(farm->log_fd);
 	release_ants(farm);
+	free_memory(farm);
+	
+	free(map_data->room_lines);
+	ft_str_free_array(&map_data->links);
 	return (0);
 }

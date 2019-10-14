@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/13 23:09:42 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/14 15:31:29 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void			log_links(int fd, t_vertex *vertex, char *message)
 	(void)message;
 	ft_putstr_fd(message, fd);
 	list = vertex->links;
-	ft_putstr_fd("\nVertex with name \"", fd);
+	ft_putstr_fd("\nStarting vertex name: \"", fd);
 	ft_putstr_fd(vertex->name, fd);
 	ft_putstr_fd("\"\n", fd);
 	while (list)
 	{
 		temp_vertex = *(t_vertex **)list->content;
-		ft_putstr_fd("\tlink name: ", fd);
+		ft_putstr_fd("\tname: ", fd);
 		ft_putstr_fd(temp_vertex->name, fd);
 		ft_putstr_fd(", dist: ", fd);
 		ft_putnbr_fd(temp_vertex->dist, fd);
@@ -51,7 +51,7 @@ void			log_combo(int fd, t_path_combo *combo, char *message)
 	t_path		*path;
 
 	ft_putstr_fd(message, fd);
-	ft_putstr_fd("\nCombo name: ", fd);
+	ft_putstr_fd("\nName: ", fd);
 	ft_putstr_fd(combo->name, fd);
 	ft_putstr_fd(", number of lines: ", fd);
 	ft_putnbr_fd(combo->lines_num, fd);
