@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:55 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 20:24:07 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:44:49 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void			prepare_for_combo_search(t_path_combo **combo,
 											int best_one_flag)
 {
 	if (!*combo)
-		*combo = init_path_combo();
+		*combo = init_path_combo(farm->map_data->name_len);
 	else
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);
@@ -41,10 +41,10 @@ void				find_combo_with_vertex(t_path_combo **combo,
 	if (!(*combo)->paths_num)
 		return ;
 	new_path_flag = 0;
-	links = farm->start->links; //
+	links = farm->start->links;
 	vertex = *(t_vertex **)links->content;
-	calculate_combo(*combo, farm->ants_num); //
-	/* while (vertex->dist >= 0 && !vertex->is_end) */ while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 < (*combo)->lines_num))
+	calculate_combo(*combo, farm->ants_num);
+	while (vertex->dist >= 0 && !vertex->is_end && (vertex->real_dist + 1 < (*combo)->lines_num))
 	{
 		if (vertex != first && !ft_strequ(vertex->path_name, (*combo)->name))
 			new_path_flag = search_for_path(vertex, *combo, (*combo)->paths_num, farm->vertex_num);
@@ -56,7 +56,6 @@ void				find_combo_with_vertex(t_path_combo **combo,
 		vertex = *(t_vertex **)links->content;
 		if (ft_strequ(vertex->name, (*combo)->name))
 			vertex = *(t_vertex **)links->next->content;
-		calculate_combo(*combo, farm->ants_num); //
+		calculate_combo(*combo, farm->ants_num);
 	}
-	// log_combo(STDOUT_FILENO, *combo, "New combo:\n");
 }

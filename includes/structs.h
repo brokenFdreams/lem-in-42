@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/14 20:53:08 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:15:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct			s_map_data
 	int					ants_num;
 	int					rooms_num;
 	char				**room_lines;
-	char				**links;
+	char				**link_lines;
 	int					name_len;
 	char				*start_line;
 	char				*end_line;
@@ -102,6 +102,7 @@ typedef struct			s_farm
 	t_options			*options;
 	int					impasses_num;
 	t_list				*original_links_of_start;
+	t_map_data			*map_data;
 	int					log_fd;
 }						t_farm;
 

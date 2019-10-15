@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/14 18:14:09 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:20:59 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ static int			compare_combos(t_path_combo *current, t_path_combo *new)
 	return (0);	
 }
 
-static void			copy_combo(t_path_combo **old, t_path_combo *new)
+static void			copy_combo(t_path_combo **old, t_path_combo *new,
+								int name_len)
 {
 	if (*old)
 		clear_combo(old, 1);
 	else
-		*old = init_path_combo();
+		*old = init_path_combo(name_len);
 	(*old)->starting = new->starting;
 	(*old)->lines_num = new->lines_num;
 	(*old)->num_of_paths_to_use = new->num_of_paths_to_use;
@@ -57,7 +58,7 @@ void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
 		ft_strdel(&message);
 	}
 	if (compare_combos(*best_combo, *combo))
-		copy_combo(best_combo, *combo);
+		copy_combo(best_combo, *combo, farm->map_data->name_len);
 	else
 		clear_combo(combo, 1);
 	combo_num++;

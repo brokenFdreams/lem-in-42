@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/14 21:05:04 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:45:29 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag,
 
 int				is_dublicate_name(char **rooms, int i)
 {
-	char		*name;
 	int			j;
 
 	j = 0;
@@ -94,7 +93,6 @@ t_vertex		**collect_vertexes(t_vertex *start, t_vertex *end,
 									t_map_data *map_data)
 {
 	t_vertex	**vertexes;
-	int			room_name_len;
 	int			i;
 
 	map_data->name_len = room_check(map_data->room_lines);

@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:30 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 16:59:45 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 21:08:19 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void				set_paths(t_farm *farm)
 
 	combo = NULL;
 	find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
+	if (farm->options->log && farm->log_fd > -1)
+		log_combo(farm->log_fd, combo, "Attaching vertexes to each other, order:\n");
 	ft_strcpy(farm->end->path_name, combo->name);
 	free_combo(&combo);
 	clear_bfs_marks(farm->vertexes, 0);
@@ -61,6 +63,7 @@ void				set_paths(t_farm *farm)
 	sort_links(farm->start);
 	sort_paths(farm->combo);
 	farm->start->ants_num = farm->ants_num;
-	// log_combo(STDOUT_FILENO, farm->combo, "Sorted paths\n");
+	if (farm->options->log && farm->log_fd > -1)
+		log_combo(farm->log_fd, farm->combo, "Sorted paths\n");
 
 }

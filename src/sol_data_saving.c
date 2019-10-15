@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/14 20:20:19 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:16:27 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 	farm->ant_queue = ant_queue;
 	farm->combo = NULL;
 	farm->options = options;
+	farm->map_data = NULL;
 	return (farm);
 }

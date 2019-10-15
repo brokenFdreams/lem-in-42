@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/14 21:05:05 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 17:24:09 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_ant_queue			*create_ant_queue(int ants_left, t_vertex *start);
 ** sol_add_links_to_vertex.c
 */
 
-void				add_links(t_vertex **vertexes, char **links_line);
+void				add_links(t_vertex **vertexes, t_map_data *map_data);
 
 /* 
 ** sol_distance_computing.c
@@ -167,19 +167,13 @@ void				find_path_combo(t_farm *farm);
 
 t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 							int ants_num, t_options *options);
-t_path_combo		*init_path_combo(void);
+t_path_combo		*init_path_combo(int name_len);
 
 /*
 ** sol_ant_queue_management.c
 */
 
 void				renew_ant_queue(t_farm *farm);
-
-/*
-** sol_add_links_to_vertex.c
-*/
-
-void				add_links(t_vertex **vertexes, char **links_line);
 
 /*
 ** sol_set_paths.c
