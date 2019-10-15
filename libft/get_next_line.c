@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 11:19:26 by fsinged           #+#    #+#             */
-/*   Updated: 2019/04/22 13:29:38 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/03 02:55:56 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	read_line(const int fd, char **str)
 
 int	get_next_line(const int fd, char **line)
 {
-	static char	*str[2147483647];
+	static char	*str[10240];
 	char		*tmp;
 
 	if (fd < 0 || !line || BUFF_SIZE < 0 ||
