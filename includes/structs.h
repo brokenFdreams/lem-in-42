@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/10 13:14:30 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/15 16:15:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct			s_vertex
 	int					links_num;
 	int					x;
 	int					y;
-	int					capacity;
 	struct s_vertex		*next;
 }						t_vertex;
 
@@ -40,6 +39,7 @@ typedef struct			s_ant
 {
 	int					num;
 	t_vertex			*current_vertex;
+	int					path_num;
 }						t_ant;
 
 
@@ -79,6 +79,17 @@ typedef struct			s_options
 	int					log;
 }						t_options;
 
+typedef struct			s_map_data
+{
+	int					ants_num;
+	int					rooms_num;
+	char				**room_lines;
+	char				**link_lines;
+	int					name_len;
+	char				*start_line;
+	char				*end_line;
+}						t_map_data;
+
 typedef struct			s_farm
 {
 	int					ants_num;
@@ -87,11 +98,12 @@ typedef struct			s_farm
 	t_vertex			**vertexes;
 	int					vertex_num;
 	t_ant_queue			*ant_queue;
-	t_ant				*first_in_queue;
 	t_path_combo		*combo;
 	t_options			*options;
 	int					impasses_num;
 	t_list				*original_links_of_start;
+	t_map_data			*map_data;
+	int					log_fd;
 }						t_farm;
 
 typedef struct			s_queue
@@ -99,6 +111,16 @@ typedef struct			s_queue
 	t_vertex			*vertex;
 	struct s_queue		*next;
 }						t_queue;
+
+typedef struct			s_time
+{
+	char				*month;
+	char				*day;
+	char				*hour;
+	char				*minute;
+	char				*second;
+}						t_time;
+
 
 
 # endif

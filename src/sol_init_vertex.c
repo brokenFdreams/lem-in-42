@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:28:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/07 17:02:23 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:45:29 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static char		*read_room_name(char **room_line)
 	return (name);
 }
 
-t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
+t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag,
+							int name_len)
 {
 	t_vertex	*new;
 
@@ -44,29 +45,68 @@ t_vertex		*init_vertex(char *room_line, char start_flag, char end_flag)
 	new->next = NULL;
 	new->ants_num = 0;
 	new->path_num = -1;
-	new->path_name = ft_strnew(30); // TODO: change to longest name of start's links
+	new->path_name = ft_strnew(name_len);
 	new->path_name[0] = 'L';
 	new->x = ft_strtol(room_line, &room_line, 10);
 	new->y = ft_strtol(room_line, NULL, 10);
 	return (new);
 }
 
+int				is_dublicate_name(char **rooms, int i)
+{
+	int			j;
+
+	j = 0;
+	while (j < i)
+	{
+		if ((rooms[i][0] == rooms[j][0]) && (rooms[i][1] && rooms[j][1] &&
+			(rooms[i][1] == rooms[j][1])) && ft_strequ(rooms[i], rooms[j]))
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
+int				room_check(char	**rooms)
+{
+	int			max_len;
+	int			len;
+	int			i;
+
+	i = 0;
+	max_len = 0;
+	while(rooms[i])
+	{
+		len = ft_strlen(rooms[i]);
+		if (len > max_len)
+			max_len = len;
+		if (ft_strchr(rooms[i], '-'))
+			return (-1);
+		if ((i > 0) && is_dublicate_name(rooms, i))
+			return (-2);
+		i++;
+	}
+	return (max_len);
+}
+
 t_vertex		**collect_vertexes(t_vertex *start, t_vertex *end,
-									char **rooms_lines, int rooms_num)
+									t_map_data *map_data)
 {
 	t_vertex	**vertexes;
 	int			i;
 
-	vertexes = (t_vertex **)malloc(sizeof(t_vertex) * rooms_num + 1);
+	map_data->name_len = room_check(map_data->room_lines);
+	vertexes = (t_vertex **)malloc(sizeof(t_vertex) * map_data->rooms_num + 1);
 	if (!vertexes)
 		ft_error("Memory allocation error\n");
 	vertexes[0] = end;
 	vertexes[1] = start;
-	vertexes[rooms_num] = NULL;
+	vertexes[map_data->rooms_num] = NULL;
 	i = 0;
-	while (i < rooms_num - 2)
+	while (i < map_data->rooms_num - 2)
 	{
-		vertexes[i + 2] = init_vertex(rooms_lines[i], 0, 0);
+		vertexes[i + 2] = init_vertex(map_data->room_lines[i], 0, 0,
+							map_data->name_len);
 		i++;
 	}
 	return (vertexes);

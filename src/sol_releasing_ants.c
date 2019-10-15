@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sol_releasing_ants.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:02 by anna              #+#    #+#             */
-/*   Updated: 2019/10/10 17:01:06 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/14 14:42:17 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 
-void			move_ant(t_ant *ant, t_vertex *vertex)
+static void		move_ant(t_ant *ant, t_vertex *vertex)
 {
 	if (!ant->current_vertex->is_start)
 		ant->current_vertex->is_occupied = 0;
@@ -28,19 +28,16 @@ void			move_ant(t_ant *ant, t_vertex *vertex)
 	}
 }
 
-t_vertex		*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
+static t_vertex	*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
 {
-	static int	original_nim_of_paths = 0;
-	// int			diff;
 	int			path_num;
  	t_list		*vertex_list;
 	t_vertex	*vertex;
 
-	if (original_nim_of_paths == 0)
-		original_nim_of_paths = combo->num_of_paths_to_use;
 	path_num = ant->num % combo->num_of_paths_to_use - 1;
 	if (path_num < 0)
 		path_num = combo->num_of_paths_to_use - 1;
+	ant->path_num = path_num;
 	vertex_list = ant->current_vertex->links;
 	while (vertex_list)
 	{
@@ -59,7 +56,7 @@ t_vertex		*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
 ** -1 - ant couldn't find a move and he is at start or last in queue
 */
 
-int				find_move(t_ant *ant, int ants_num, t_path_combo *combo)
+static int		find_move(t_ant *ant, int ants_num, t_path_combo *combo)
 {
 	t_vertex	*vertex;
 
@@ -82,12 +79,16 @@ int				find_move(t_ant *ant, int ants_num, t_path_combo *combo)
 	return (1);
 }
 
-void			print_move(t_ant *ant)
+static void		print_move(t_ant *ant, int colour_flag)
 {
+	if (colour_flag)
+		switch_to_colour(ant->path_num);
 	ft_putstr("L");
 	ft_putnbr(ant->num);
 	ft_putstr("-");
 	ft_putstr(ant->current_vertex->name);
+	if (colour_flag)
+		switch_to_default();
 }
 
 void			release_ants(t_farm *farm)
@@ -105,7 +106,7 @@ void			release_ants(t_farm *farm)
 			if (move_status > 0 && current_ant != farm->ant_queue->ant)
 				write(STDOUT_FILENO, " ", 1);
 			if (move_status > 0)
-				print_move(current_ant);
+				print_move(current_ant, farm->options->color);
 			current_ant = get_next_ant(farm->ant_queue, current_ant);
 		}
 		renew_ant_queue(farm);

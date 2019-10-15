@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:30:56 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 21:32:31 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/15 17:23:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		link_rooms(t_vertex *room1, t_vertex *room2)
 	ft_lstadd(&room2->links, ft_lstnew(&room1, sizeof(t_vertex *)));
 }
 
-void				add_links(t_vertex **vertexes, char **links_line)
+void			add_links(t_vertex **vertexes, t_map_data *map_data)
 {
 	int			i;
 	char		**link;
@@ -41,9 +41,9 @@ void				add_links(t_vertex **vertexes, char **links_line)
 	t_vertex	*room2;
 
 	i = 0;
-	while (links_line[i])
+	while (map_data->link_lines[i])
 	{
-		link = ft_strsplit(links_line[i], '-');
+		link = ft_strsplit(map_data->link_lines[i], '-');
 		if (!link || !link[0] || !link[1] || !*link[0] || !*link[1])
 			ft_error("Error: incorrect link between vertexes");
 		room1 = find_room(link[0], vertexes);

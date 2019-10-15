@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:33:51 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/26 21:59:54 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/11 22:10:27 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static t_ant		*init_ant(int ant_num, t_vertex *start)
 		return (NULL);
 	new->num = ant_num;
 	new->current_vertex = start;
+	new->path_num = -1;
 	return (new);
 }
 
