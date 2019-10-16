@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/16 15:47:21 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:58:10 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct			s_path_combo
 	int					num_of_paths_to_use;
 	int					lines_num;
 	int					paths_num;
-	t_path				*paths;
+	t_path				**paths;
 	char				*name;
 	int					is_best_one;
 }						t_path_combo;

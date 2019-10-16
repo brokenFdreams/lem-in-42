@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/16 16:12:59 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:32:12 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void			log_vertex_chain(t_path *path, int fd)
 
 	i = 0;
 	ft_putstr_fd("\n\t", fd);
-	while (i < (path->steps - 1))
+	while (i < path->steps)
 	{
 		ft_putstr_fd(path->chain[i]->name, fd);
 		i++;
-		if (i < (path->steps - 1))
+		if (i < path->steps)
 			ft_putstr_fd("-->", fd);
 	}
 	ft_putstr_fd("\n", fd);

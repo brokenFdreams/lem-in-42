@@ -6,13 +6,37 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/15 16:16:27 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 18:17:59 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_path_combo		*init_path_combo(int name_len)
+t_path				**init_paths(t_farm *farm)
+{
+	t_path			**paths;
+	int				i;
+
+	paths = (t_path **)malloc(sizeof(t_path *) * (farm->end->links_num + 1));
+	if (!paths)
+		ft_error("Memory allocation error\n");
+	paths[farm->end->links_num] = NULL;
+	i = 0;
+	while (i < farm->end->links_num)
+	{
+		paths[i] = (t_path *)malloc(sizeof(t_path));
+		if (!paths[i])
+			ft_error("Memory allocation error\n");
+		paths[i]->chain = 
+			(t_vertex **)malloc(sizeof(t_vertex *) * farm->vertex_num);
+		if (!paths[i]->chain)
+			ft_error("Memory allocation error\n");
+		i++;
+	}
+	return (paths);
+}
+
+t_path_combo		*init_path_combo(t_farm *farm)
 {
 	t_path_combo	*new;
 
@@ -23,8 +47,8 @@ t_path_combo		*init_path_combo(int name_len)
 	new->lines_num = 0;
 	new->num_of_paths_to_use = 0;
 	new->paths_num = 0;
-	new->paths = NULL;
-	new->name = ft_strnew(name_len);
+	new->paths = init_paths(farm);
+	new->name = ft_strnew(farm->map_data->name_len);
 	new->is_best_one = 0;
 	return (new);
 }

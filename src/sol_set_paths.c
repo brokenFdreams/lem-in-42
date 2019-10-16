@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:30 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 16:17:11 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:50:14 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,39 @@ static void			sort_paths(t_path_combo *combo)
 	}
 }
 
+void				make_chains(t_farm *farm)
+{
+	int				i;
+	t_path			*temp_path;
+
+	temp_path = farm->combo->paths;
+	while (temp_path)
+	{
+		i = 0;
+		while (i < (temp_path->steps - 1))
+		{
+			temp_path->chain[i]->next = temp_path->chain[i + 1];
+			i++;
+		}
+		temp_path = temp_path->next;
+	}
+}
+
 void				set_paths(t_farm *farm)
 {
 	t_path_combo	*combo;
 
 	combo = NULL;
-	find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
-	if (farm->options->log && farm->log_fd > -1)
-		log_combo(farm->log_fd, combo, "Attaching vertexes to each other, order:\n");
-	ft_strcpy(farm->end->path_name, combo->name);
-	free_combo(&combo);
-	clear_bfs_marks(farm->vertexes, 0);
-	restore_dist(farm->vertexes);
-	sort_links(farm->start);
+	// find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
+	// if (farm->options->log && farm->log_fd > -1)
+		// log_combo(farm->log_fd, combo, "Attaching vertexes to each other, order:\n");
+	ft_strcpy(farm->end->path_name, farm->combo->name);
+	// free_combo(&combo);
+	// clear_bfs_marks(farm->vertexes, 0);
+	// restore_dist(farm->vertexes);
+	// sort_links(farm->start);
 	sort_paths(farm->combo);
+	make_chains(farm);
 	farm->start->ants_num = farm->ants_num;
 	if (farm->options->log && farm->log_fd > -1)
 		log_combo(farm->log_fd, farm->combo, "Sorted paths\n");

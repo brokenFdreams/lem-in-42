@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:24 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 16:12:37 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:26:07 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ static void			mark_path(t_path *path, t_vertex *first,
 			vertex->path_num = num;
 			new = choose_next_vertex(links, combo, previous, 1);
 			previous = vertex;
-			if (combo->is_best_one)
-				vertex->next = new;
 			vertex = new;
 			i++;
 		}

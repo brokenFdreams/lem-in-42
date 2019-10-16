@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/15 17:24:09 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:55:54 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void				find_path_combo(t_farm *farm);
 
 t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 							int ants_num, t_options *options);
-t_path_combo		*init_path_combo(int name_len);
+t_path_combo		*init_path_combo(t_farm *farm);
 
 /*
 ** sol_ant_queue_management.c
