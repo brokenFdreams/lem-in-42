@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:02 by anna              #+#    #+#             */
-/*   Updated: 2019/10/14 14:42:17 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:45:27 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,19 @@ static void		move_ant(t_ant *ant, t_vertex *vertex)
 static t_vertex	*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
 {
 	int			path_num;
- 	t_list		*vertex_list;
-	t_vertex	*vertex;
+ 	// t_list		*vertex_list;
+	// t_vertex	*vertex;
+	t_path		*path;
 
 	path_num = ant->num % combo->num_of_paths_to_use - 1;
 	if (path_num < 0)
 		path_num = combo->num_of_paths_to_use - 1;
 	ant->path_num = path_num;
-	vertex_list = ant->current_vertex->links;
-	while (vertex_list)
-	{
-		vertex = *(t_vertex **)vertex_list->content;
-		if (vertex->path_num == path_num || vertex->is_end)
-			return (vertex);
-		vertex_list = vertex_list->next;
-	}
+	path = combo->paths;
+	while (path && (path->num != path_num))
+		path = path->next;
+	if (path)
+		return (path->starting_vertex);
 	return (NULL);
 }
 

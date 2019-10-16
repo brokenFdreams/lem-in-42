@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:14 by anna              #+#    #+#             */
-/*   Updated: 2019/10/14 17:27:35 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 15:55:34 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 		{
 			temp_b = temp_a;
 			temp_a = temp_a->next;
+			ft_memdel((void **)&temp_b->chain);
 			ft_memdel((void **)&temp_b);
 		}
 	}

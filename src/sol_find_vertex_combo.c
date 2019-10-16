@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:55 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/15 16:44:49 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:55:09 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void			prepare_for_combo_search(t_path_combo **combo,
 											int best_one_flag)
 {
 	if (!*combo)
-		*combo = init_path_combo(farm->map_data->name_len);
+		*combo = init_path_combo(farm);
 	else
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);

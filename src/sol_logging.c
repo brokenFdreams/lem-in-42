@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/14 15:31:29 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:32:12 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,22 @@ void			log_finding_move(int fd, t_ant *ant)
 				" is about to choose path. His current vertex:");
 }
 
+void			log_vertex_chain(t_path *path, int fd)
+{
+	int			i;
+
+	i = 0;
+	ft_putstr_fd("\n\t", fd);
+	while (i < path->steps)
+	{
+		ft_putstr_fd(path->chain[i]->name, fd);
+		i++;
+		if (i < path->steps)
+			ft_putstr_fd("-->", fd);
+	}
+	ft_putstr_fd("\n", fd);
+}
+
 void			log_combo(int fd, t_path_combo *combo, char *message)
 {
 	t_path		*path;
@@ -59,17 +75,17 @@ void			log_combo(int fd, t_path_combo *combo, char *message)
 	ft_putnbr_fd((int)combo->num_of_paths_to_use, fd);
 	ft_putstr_fd(", total number of paths: ", fd);
 	ft_putnbr_fd(combo->paths_num, fd);
-	ft_putstr_fd("\nPaths:\n", fd);
+	ft_putstr_fd("\nPaths:", fd);
 	path = combo->paths;
 	while (path)
 	{
-		ft_putstr_fd("First vertex name: ", fd);
+		ft_putstr_fd("\nFirst vertex name: ", fd);
 		ft_putstr_fd(path->starting_vertex->name, fd);
 		ft_putstr_fd(", steps: ", fd);
 		ft_putnbr_fd(path->steps, fd);
 		ft_putstr_fd(", path number: ", fd);
 		ft_putnbr_fd(path->num, fd);
-		ft_putstr_fd("\n", fd);
+		log_vertex_chain(path, fd);
 		path = path->next;
 	}
 	ft_putstr_fd("\n", fd);
