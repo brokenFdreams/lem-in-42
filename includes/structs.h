@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/15 16:15:37 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 15:47:21 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef	struct			s_path
 	t_vertex			*starting_vertex;
 	int					steps;
 	int					num;
+	t_vertex			**chain;
 	struct s_path		*next;
 }						t_path;
 

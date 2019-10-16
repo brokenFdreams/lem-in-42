@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:24 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 16:18:30 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:12:37 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,23 @@ t_vertex		*choose_next_vertex(t_list *links, t_path_combo *combo,
 	return (NULL);
 }
 
-static void			mark_path(t_vertex *first, t_path_combo *combo, int num)
+static void			mark_path(t_path *path, t_vertex *first,
+								t_path_combo *combo, int num)
 {
 		t_list		*links;
 		t_vertex	*vertex;
 		t_vertex	*new;
 		t_vertex	*previous;
+		int			i;
 
+		i = 0;
 		vertex = first;
 		previous = first;
 		ft_strclr(vertex->path_name);
 		ft_strcpy(vertex->path_name, combo->name);
 		while (!vertex->is_end)
 		{
+			path->chain[i] = vertex;
 			links = vertex->links;
 			vertex->path_num = num;
 			new = choose_next_vertex(links, combo, previous, 1);
@@ -58,10 +62,12 @@ static void			mark_path(t_vertex *first, t_path_combo *combo, int num)
 			if (combo->is_best_one)
 				vertex->next = new;
 			vertex = new;
+			i++;
 		}
+		path->chain[i] = vertex;
 }
 
-static void		add_path(t_path_combo *combo, t_vertex *first, int steps)
+static t_path	*add_path(t_path_combo *combo, t_vertex *first, int steps)
 {
 	t_path		*new;
 	t_path		*temp;
@@ -71,6 +77,10 @@ static void		add_path(t_path_combo *combo, t_vertex *first, int steps)
 		ft_error("Memory allocation error\n");
 	new->starting_vertex = first;
 	new->steps = steps;
+	new->chain = (t_vertex **)malloc(sizeof(t_vertex *) * (steps + 1));
+	if (!new->chain)
+		ft_error("Memory allocation error\n");
+	new->chain[steps] = NULL;
 	new->next = NULL;
 	new->num = combo->paths_num;
 	if (combo->paths)
@@ -82,6 +92,7 @@ static void		add_path(t_path_combo *combo, t_vertex *first, int steps)
 	}
 	else
 		combo->paths = new;
+	return (new);
 }
 
 int				search_for_path(t_vertex *first, t_path_combo *combo,
@@ -100,8 +111,7 @@ int				search_for_path(t_vertex *first, t_path_combo *combo,
 	{
 		if (vertex->is_end)
 		{
-			mark_path(first, combo, path_num);
-			add_path(combo, first, steps);
+			mark_path(add_path(combo, first, steps), first, combo, path_num);
 			return (1);
 		}
 		links = vertex->links;

@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:30 by anna              #+#    #+#             */
-/*   Updated: 2019/10/15 21:08:19 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:17:11 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void			swap_paths(t_path *more_steps, t_path *less_steps)
 {
 	int				temp_steps;
 	t_vertex		*temp_vertex;
+	t_vertex		**temp_chain;
 
 	temp_steps = more_steps->steps;
 	more_steps->steps = less_steps->steps;
@@ -23,6 +24,9 @@ static void			swap_paths(t_path *more_steps, t_path *less_steps)
 	temp_vertex = more_steps->starting_vertex;
 	more_steps->starting_vertex = less_steps->starting_vertex;
 	less_steps->starting_vertex = temp_vertex;
+	temp_chain = more_steps->chain;
+	more_steps->chain = less_steps->chain;
+	less_steps->chain = temp_chain;
 	more_steps->starting_vertex->path_num = more_steps->num;
 	less_steps->starting_vertex->path_num = less_steps->num;
 }
