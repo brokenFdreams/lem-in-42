@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_data_saving.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 18:17:59 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 23:48:38 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,17 @@ t_path				**init_paths(t_farm *farm)
 	t_path			**paths;
 	int				i;
 
-	paths = (t_path **)malloc(sizeof(t_path *) * (farm->end->links_num + 1));
+	paths = (t_path **)ft_memalloc(sizeof(t_path *) * (farm->end->links_num + 1));
 	if (!paths)
 		ft_error("Memory allocation error\n");
-	paths[farm->end->links_num] = NULL;
 	i = 0;
 	while (i < farm->end->links_num)
 	{
-		paths[i] = (t_path *)malloc(sizeof(t_path));
+		paths[i] = (t_path *)ft_memalloc(sizeof(t_path));
 		if (!paths[i])
 			ft_error("Memory allocation error\n");
 		paths[i]->chain = 
-			(t_vertex **)malloc(sizeof(t_vertex *) * farm->vertex_num);
+			(t_vertex **)ft_memalloc(sizeof(t_vertex *) * farm->vertex_num);
 		if (!paths[i]->chain)
 			ft_error("Memory allocation error\n");
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_search_for_path.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:24 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 16:26:07 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 01:56:28 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,34 @@ static void			mark_path(t_path *path, t_vertex *first,
 
 static t_path	*add_path(t_path_combo *combo, t_vertex *first, int steps)
 {
-	t_path		*new;
-	t_path		*temp;
+	combo->paths[combo->paths_num]->num = combo->paths_num;
+	combo->paths[combo->paths_num]->starting_vertex = first;
+	combo->paths[combo->paths_num]->steps = steps;
+	return (combo->paths[combo->paths_num]);
+	// t_path		*new;
+	// t_path		*temp;
 
-	new = (t_path *)malloc(sizeof(t_path));
-	if (!new)
-		ft_error("Memory allocation error\n");
-	new->starting_vertex = first;
-	new->steps = steps;
-	new->chain = (t_vertex **)malloc(sizeof(t_vertex *) * (steps + 1));
-	if (!new->chain)
-		ft_error("Memory allocation error\n");
-	new->chain[steps] = NULL;
-	new->next = NULL;
-	new->num = combo->paths_num;
-	if (combo->paths)
-	{
-		temp = combo->paths;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new;
-	}
-	else
-		combo->paths = new;
-	return (new);
+	// new = (t_path *)malloc(sizeof(t_path));
+	// if (!new)
+	// 	ft_error("Memory allocation error\n");
+	// new->starting_vertex = first;
+	// new->steps = steps;
+	// new->chain = (t_vertex **)malloc(sizeof(t_vertex *) * (steps + 1));
+	// if (!new->chain)
+	// 	ft_error("Memory allocation error\n");
+	// new->chain[steps] = NULL;
+	// new->next = NULL;
+	// new->num = combo->paths_num;
+	// if (combo->paths)
+	// {
+	// 	temp = combo->paths;
+	// 	while (temp->next)
+	// 		temp = temp->next;
+	// 	temp->next = new;
+	// }
+	// else
+	// 	combo->paths = new;
+	// return (new);
 }
 
 int				search_for_path(t_vertex *first, t_path_combo *combo,

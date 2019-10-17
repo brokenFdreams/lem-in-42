@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_option_paths.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:44:23 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/12 17:47:01 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 02:45:47 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,16 @@ void				print_paths(t_farm *farm)
 {
 	int				i;
 	int				colour;
-	t_path			*temp_path;
 
 	i = 0;
 	colour = farm->options->color;
-	temp_path = farm->combo->paths;
-	while (temp_path && (i < farm->combo->num_of_paths_to_use))
+	while (farm->combo->paths[i] && (i < farm->combo->num_of_paths_to_use))
 	{
 		if (colour)
 			switch_to_colour(i);
-		print_path(temp_path);
+		print_path(farm->combo->paths[i]);
 		if (colour)
 			switch_to_default();
-		temp_path = temp_path->next;
 		i++;
 	}
 	ft_putstr("\n");

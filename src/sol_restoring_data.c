@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_restoring_data.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:35:14 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 15:55:34 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/10 16:35:14 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/17 02:47:39 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,31 @@ void			restore_dist(t_vertex **vertexes)
 	}
 }
 
+void				clear_path(t_path *path)
+{
+	path->starting_vertex = NULL;
+	path->num = -1;
+	path->steps = -1;
+	ft_bzero(path->chain, path->steps * sizeof(t_vertex *));
+}
+
 
 void				clear_combo(t_path_combo **combo, int clr_paths_flag)
 {
-	t_path			*temp_a;
-	t_path			*temp_b;
+	int				i;
 
 	(*combo)->starting = NULL;
 	(*combo)->paths_num = 0;
+	(*combo)->lines_num = INT_MAX;
+	(*combo)->num_of_paths_to_use = INT_MAX;
+	(void)clr_paths_flag;
 	ft_strclr((*combo)->name);
-	if (clr_paths_flag)
+	i = 0;
+	while (i < (*combo)->paths_num)
 	{
-		temp_a = (*combo)->paths;
-		while (temp_a)
-		{
-			temp_b = temp_a;
-			temp_a = temp_a->next;
-			ft_memdel((void **)&temp_b->chain);
-			ft_memdel((void **)&temp_b);
-		}
+		clear_path((*combo)->paths[i]);
+		i++;
 	}
-	else
-		(*combo)->paths = NULL;
 }
 
 void			clear_bfs_marks(t_vertex **vertexes, int path_name_clear_flag)

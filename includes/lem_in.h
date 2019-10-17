@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/16 17:55:54 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 02:49:41 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,15 +145,14 @@ void				del_content(void *content, size_t size);
 ** sol_freeing_memory.c
 */
 
-void				free_combo(t_path_combo **combo);
+void				free_combo(t_path_combo **combo, int paths_num);
 
 /*
 ** sol_find_vertex_combo.c
 */
 
 void				find_combo_with_vertex(t_path_combo **combo,
-											t_vertex *first, t_farm *farm,
-											int best_one_flag);
+											t_vertex *first, t_farm *farm);
 
 /*
 ** sol_find_combos.c

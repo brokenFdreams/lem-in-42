@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sol_find_vertex_combo.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:55 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/16 17:55:09 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 02:49:04 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
 static void			prepare_for_combo_search(t_path_combo **combo,
-											t_vertex *first, t_farm *farm,
-											int best_one_flag)
+											t_vertex *first, t_farm *farm)
 {
 	if (!*combo)
 		*combo = init_path_combo(farm);
@@ -22,7 +21,6 @@ static void			prepare_for_combo_search(t_path_combo **combo,
 		clear_combo(combo, 0);
 	ft_strcpy((*combo)->name, first->name);
 	(*combo)->starting = first;
-	(*combo)->is_best_one = best_one_flag;
 	(*combo)->paths_num = search_for_path(first, *combo, (*combo)->paths_num, farm->vertex_num);
 	clear_bfs_marks(farm->vertexes, 0);
 	compute_distances(farm, (*combo)->name, 0);
@@ -30,14 +28,13 @@ static void			prepare_for_combo_search(t_path_combo **combo,
 }
 
 void				find_combo_with_vertex(t_path_combo **combo,
-											t_vertex *first, t_farm *farm,
-											int best_one_flag)
+											t_vertex *first, t_farm *farm)
 {
 	t_list			*links;
 	t_vertex		*vertex;
 	int				new_path_flag;
 
-	prepare_for_combo_search(combo, first, farm, best_one_flag);
+	prepare_for_combo_search(combo, first, farm);
 	if (!(*combo)->paths_num)
 		return ;
 	new_path_flag = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_find_combos.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 17:55:37 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 02:51:20 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ static int			compare_combos(t_path_combo *current, t_path_combo *new)
 	return (0);	
 }
 
+void				copy_paths(t_path_combo *dest, t_path_combo *src)
+{
+	int				p_i;
+	// int				c_i;
+
+	p_i = 0;
+	while (p_i < src->paths_num)
+	{
+		ft_memcpy(dest->paths[p_i], src->paths[p_i], sizeof(t_path));
+		ft_memcpy(dest->paths[p_i]->chain, src->paths[p_i]->chain, sizeof(t_vertex *) * src->paths[p_i]->steps);
+		p_i++;
+	}
+}
+
 static void			copy_combo(t_path_combo **old, t_path_combo *new,
 								t_farm *farm)
 {
@@ -34,7 +48,7 @@ static void			copy_combo(t_path_combo **old, t_path_combo *new,
 	(*old)->lines_num = new->lines_num;
 	(*old)->num_of_paths_to_use = new->num_of_paths_to_use;
 	(*old)->paths_num = new->paths_num;
-	(*old)->paths = new->paths;
+	copy_paths(*old, new);
 	ft_strclr((*old)->name);
 	ft_strcpy((*old)->name, new->name);
 }
@@ -46,10 +60,10 @@ void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
 	char		*combo_num_str;
 	char		*message;
 
-	find_combo_with_vertex(combo, vertex, farm, 0);
+	find_combo_with_vertex(combo, vertex, farm);
 	if (farm->options->stat)
 		print_combo_stat(*combo, farm->options->color);
-	if (farm->options->log && farm->log_fd > 0)
+	if (farm->options->log && farm->log_fd > -1)
 	{
 		combo_num_str = ft_itoa(combo_num);
 		message = ft_strjoin("Combo ", combo_num_str);

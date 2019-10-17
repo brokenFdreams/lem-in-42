@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sol_test_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/15 20:02:04 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 03:14:45 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include "struct.h"
+#include "structs.h"
 //
 int			read_rooms_and_links(int fd, t_map_data *map_data, int map_fd)
 {
@@ -20,11 +20,12 @@ int			read_rooms_and_links(int fd, t_map_data *map_data, int map_fd)
 	int			l_i = 0;
 	int			start_flag = 0;
 	int			end_flag = 0;
+	int			b;
 
 	map_data->room_lines = (char **)ft_memalloc(sizeof(char *) * 10000);
-	map_data->link_lines = (char **)ft_memalloc(sizeof(char *) * 100000);
+	map_data->link_lines = (char **)ft_memalloc(sizeof(char *) * 10000);
 	
-	while (get_next_line(fd, &line) > 0)
+	while ((b = get_next_line(fd, &line)) > 0)
 	{
 		if (*line == '#' && *(line + 1) != '#')
 		{
@@ -365,7 +366,7 @@ void				free_vertexes(t_farm *farm)
 void				free_memory(t_farm *farm)
 {
 	if (farm->combo)
-		free_combo(&farm->combo);
+		free_combo(&farm->combo, farm->end->links_num);
 	if (farm->options)
 		ft_memdel((void **)&farm->options);
 	if (farm->original_links_of_start)
@@ -415,13 +416,13 @@ int					main(int ac, char **av)
 	t_options		*options;
 
 //
-	// if (ac != 2)
-	// 	return (0);
+	if (ac != 2)
+		return (0);
 	fd = open(av[1], O_RDONLY);
 	map_fd = open(time_string, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	// fd = STDIN_FILENO;
-	(void)ac;
-	(void)av;
+	// (void)ac;
+	// (void)av;
 	while (get_next_line(fd, &line) > 0)
 		if (*line != '#')
 			break;

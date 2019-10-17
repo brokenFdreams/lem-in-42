@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_releasing_ants.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:02 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 17:45:27 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/16 23:34:03 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,13 @@ static t_vertex	*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
 	int			path_num;
  	// t_list		*vertex_list;
 	// t_vertex	*vertex;
-	t_path		*path;
-
+	
 	path_num = ant->num % combo->num_of_paths_to_use - 1;
 	if (path_num < 0)
 		path_num = combo->num_of_paths_to_use - 1;
 	ant->path_num = path_num;
-	path = combo->paths;
-	while (path && (path->num != path_num))
-		path = path->next;
-	if (path)
-		return (path->starting_vertex);
+	if (combo->paths[path_num])
+		return (combo->paths[path_num]->starting_vertex);
 	return (NULL);
 }
 

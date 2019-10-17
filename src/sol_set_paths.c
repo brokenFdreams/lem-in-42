@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_set_paths.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:30 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 16:50:14 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 03:34:42 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,48 +33,50 @@ static void			swap_paths(t_path *more_steps, t_path *less_steps)
 
 static void			sort_paths(t_path_combo *combo)
 {
-	t_path			*temp_a;
-	t_path			*temp_b;
+	int				a;
+	int				b;
 	// t_path			*first;
 
 	// first = combo->paths;
-	temp_a = combo->paths;
-	while (temp_a->next)
+	a = 0;
+	while (a < combo->paths_num)
 	{
-		temp_b = temp_a->next;
-		while (temp_b)
+		b = a + 1;
+		while (b < combo->paths_num)
 		{
-			if (temp_a->steps > temp_b->steps)
-				swap_paths(temp_a, temp_b);
-			temp_b = temp_b->next;
+			if (combo->paths[a]->steps > combo->paths[b]->steps)
+				swap_paths(combo->paths[a], combo->paths[b]);
+			b++;
 		}
-		temp_a = temp_a->next;
+		a++;
 	}
 }
 
 void				make_chains(t_farm *farm)
 {
-	int				i;
-	t_path			*temp_path;
+	int				p_i;
+	int				c_i;
+	t_path			**paths;
 
-	temp_path = farm->combo->paths;
-	while (temp_path)
+	p_i = 0;
+	paths = farm->combo->paths;
+	while (p_i < farm->combo->paths_num)
 	{
-		i = 0;
-		while (i < (temp_path->steps - 1))
+		c_i = 0;
+		while (c_i < (paths[p_i]->steps - 1))
 		{
-			temp_path->chain[i]->next = temp_path->chain[i + 1];
-			i++;
+			paths[p_i]->chain[c_i]->next = paths[p_i]->chain[c_i + 1];
+			c_i++;
 		}
-		temp_path = temp_path->next;
+		p_i++;
 	}
 }
 
 void				set_paths(t_farm *farm)
 {
-	t_path_combo	*combo;
+	// t_path_combo	*combo;
 
-	combo = NULL;
+	// combo = NULL;
 	// find_combo_with_vertex(&combo, farm->combo->starting, farm, 1);
 	// if (farm->options->log && farm->log_fd > -1)
 		// log_combo(farm->log_fd, combo, "Attaching vertexes to each other, order:\n");

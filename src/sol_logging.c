@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_logging.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/16 16:32:12 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 02:45:28 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void			log_vertex_chain(t_path *path, int fd)
 
 void			log_combo(int fd, t_path_combo *combo, char *message)
 {
-	t_path		*path;
+	int			i;
 
 	ft_putstr_fd(message, fd);
 	ft_putstr_fd("\nName: ", fd);
@@ -76,17 +76,17 @@ void			log_combo(int fd, t_path_combo *combo, char *message)
 	ft_putstr_fd(", total number of paths: ", fd);
 	ft_putnbr_fd(combo->paths_num, fd);
 	ft_putstr_fd("\nPaths:", fd);
-	path = combo->paths;
-	while (path)
+	i = 0;
+	while (i < combo->paths_num)
 	{
 		ft_putstr_fd("\nFirst vertex name: ", fd);
-		ft_putstr_fd(path->starting_vertex->name, fd);
+		ft_putstr_fd(combo->paths[i]->starting_vertex->name, fd);
 		ft_putstr_fd(", steps: ", fd);
-		ft_putnbr_fd(path->steps, fd);
+		ft_putnbr_fd(combo->paths[i]->steps, fd);
 		ft_putstr_fd(", path number: ", fd);
-		ft_putnbr_fd(path->num, fd);
-		log_vertex_chain(path, fd);
-		path = path->next;
+		ft_putnbr_fd(combo->paths[i]->num, fd);
+		log_vertex_chain(combo->paths[i], fd);
+		i++;
 	}
 	ft_putstr_fd("\n", fd);
 }

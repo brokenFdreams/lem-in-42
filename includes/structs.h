@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/16 17:58:10 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/17 00:21:54 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef	struct			s_path
 	int					steps;
 	int					num;
 	t_vertex			**chain;
-	struct s_path		*next;
+	// struct s_path		*next;
 }						t_path;
 
 typedef struct			s_path_combo
