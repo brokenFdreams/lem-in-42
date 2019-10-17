@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_test_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:50:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/17 03:14:45 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/17 17:21:08 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ char						*ft_join_str_array(char **array)
 	i = 0;
 	while (array[i])
 		len += ft_strlen(array[i++]);
-	if (!(result = ft_strnew(len + 1)))
+	if (!(result = ft_strnew(len)))
 		exit(EXIT_FAILURE);
 	i = 0;
 	while (*array)
@@ -337,11 +337,15 @@ void				init_log(t_farm *farm)
 	time_t			rawtime;
 	struct tm		*timeinfo;
 	char			*time_string;
+	char			*temp_time;
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	time_string = ft_strjoin("log_", create_time_string(timeinfo));
+	temp_time = create_time_string(timeinfo);
+	time_string = ft_strjoin("log_", temp_time);
+	ft_strdel(&temp_time);
 	farm->log_fd = open(time_string, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	ft_strdel(&time_string);
 	if (farm->log_fd < 0)
 		ft_putstr("Log file creation error.\n");
 }
@@ -404,11 +408,14 @@ int					main(int ac, char **av)
 	int				map_fd;
 	time_t			rawtime;
 	struct tm		*timeinfo;
-	char			*time_string;
+	char			*map_string;
+	char			*temp_map;
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	time_string = ft_strjoin("map_", create_time_string(timeinfo));
+	temp_map = create_time_string(timeinfo);
+	map_string = ft_strjoin("map_", temp_map);
+	ft_strdel(&temp_map);
 	
 	int				ants_num;
 	char			*line;
@@ -419,7 +426,8 @@ int					main(int ac, char **av)
 	if (ac != 2)
 		return (0);
 	fd = open(av[1], O_RDONLY);
-	map_fd = open(time_string, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	map_fd = open(map_string, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	ft_strdel(&map_string);
 	// fd = STDIN_FILENO;
 	// (void)ac;
 	// (void)av;

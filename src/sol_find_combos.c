@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_find_combos.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/17 13:12:31 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/17 17:09:47 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
 	combo_num++;
 }
 
-void				del_combo(t_path_combo **combo)
-{
-	ft_strdel(&(*combo)->name);
-	free(*combo);
-}
+// void				del_combo(t_path_combo **combo)
+// {
+// 	ft_strdel(&(*combo)->name);
+// 	free(*combo);
+// }
 
 void				find_path_combo(t_farm *farm)
 {
@@ -111,6 +111,6 @@ void				find_path_combo(t_farm *farm)
 		i++;
 	}
 	if (!ft_strequ(combo->name, best_combo->name))
-		del_combo(&combo);
+		free_combo(&combo, farm->end->links_num);
 	farm->combo = best_combo;
 }
