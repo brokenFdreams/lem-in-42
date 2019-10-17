@@ -6,7 +6,7 @@
 /*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/17 02:51:20 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/17 13:12:31 by anna             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void				copy_paths(t_path_combo *dest, t_path_combo *src)
 	p_i = 0;
 	while (p_i < src->paths_num)
 	{
-		ft_memcpy(dest->paths[p_i], src->paths[p_i], sizeof(t_path));
+		dest->paths[p_i]->num = src->paths[p_i]->num;
+		dest->paths[p_i]->starting_vertex = src->paths[p_i]->starting_vertex;
+		dest->paths[p_i]->steps = src->paths[p_i]->steps;
 		ft_memcpy(dest->paths[p_i]->chain, src->paths[p_i]->chain, sizeof(t_vertex *) * src->paths[p_i]->steps);
 		p_i++;
 	}
