@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/17 02:49:41 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/17 18:58:50 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void				del_content(void *content, size_t size);
 */
 
 void				free_combo(t_path_combo **combo, int paths_num);
+void				free_memory(t_farm *farm);
 
 /*
 ** sol_find_vertex_combo.c
@@ -167,6 +168,14 @@ void				find_path_combo(t_farm *farm);
 t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 							int ants_num, t_options *options);
 t_path_combo		*init_path_combo(t_farm *farm);
+
+/*
+** sol_data_saving_bonus.c
+*/
+
+t_options			*init_options();
+t_map_data			*init_map_data(int ants_num);
+void				init_log(t_farm *farm);
 
 /*
 ** sol_ant_queue_management.c
@@ -201,6 +210,24 @@ void				print_paths(t_farm *farm);
 
 void				print_combo_stat_header();
 void				print_combo_stat(t_path_combo *combo, int colour_flag);
+
+/*
+** sol_option_stat.c
+*/
+
+void				print_combo_stat(t_path_combo *combo, int colour_flag);
+void				print_combo_stat_header(void);
+void				print_stat(t_farm *farm);
+
+/*
+** sol_string_manipulations.c
+*/
+
+char				*convert_with_nessesery_zero(unsigned char num);
+void				ft_str_free_array(char ***array);
+char				*ft_join_str_array(char **array);
+char				*ft_join_strings(int str_num, ...);
+char				*create_time_string(struct tm *timeinfo);
 
 /* 
 ** additional libft functions
