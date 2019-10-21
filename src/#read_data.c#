@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 15:27:50 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:22:28 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		read_data(char ***data)
 
 	count = 0;
 	if ((gnl = get_next_line(0, &line)) > 0 && ++count)
-		list = ft_newlist(&line, ft_strlen(line));
+		list = ft_lstnew(&line, ft_strlen(line));
 	ft_strdel(&line);
 	tmp = list;
 	while ((gnl = get_next_line(0, &line)) > 0 && ++count)
