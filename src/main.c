@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:30:35 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 15:32:52 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:59:27 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,19 @@ int		main(int argc, char **argv)
 	char	**rooms;
 	char	**ways;
 	int		ants;
+	t_options *options;
 
 	//list
 	if (argc > 1)
-		read_options(argc, argv + 1);
+		options = read_options(argc, argv + 1);
 	read_data(&data);
 	ants = validation(data, &rooms, &ways);
 	ft_free_strings_array(&data);
 
 	ft_free_strings_array(&rooms);
 	ft_free_strings_array(&ways);
+	if (options)
+		free(options);
 //	ft_free_list
 	return (0);
 }

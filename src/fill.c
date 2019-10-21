@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 15:32:14 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:56:22 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,5 @@ void	fill_ways(char **data, char ***ways, int size)
 			(*ways)[j++] = ft_strdup(data[i]);
 		i++;
 	}
-	(*ways)[j] = NULL;
+	(*ways)[size] = NULL;
 }
