@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/09 11:57:13 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 13:57:21 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ void		ft_del(t_list **list)
 	}
 }
 
-void		fill_data(t_list *list, char **data, int size)
+void		fill_data(t_list *list, char ***data, int size)
 {
 	int i;
 
 	i = 0;
-	data = (char**)malloc(sizeof(char*) * (count + 1));
-	while (list)
+	*data = (char**)malloc(sizeof(char*) * (size + 1));
+	while (i < size)
 	{
-		data[i++] = ft_strcpy(ft_strnew(list->content_size), list->content);
+		(*data)[i++] = ft_strcpy(ft_strnew(list->content_size), list->content);
 		list = list->next;
 	}
-	data[count] = NULL;
+	(*data)[size] = NULL;
 }
 
 /*
@@ -51,26 +51,29 @@ void		fill_data(t_list *list, char **data, int size)
 ** if there's no file, then call ft_error
 */
 
-void		read_data(char **data)
+void		read_data(char ***data)
 {
 	int		gnl;
 	char	*line;
 	t_list	*list;
 	t_list	*tmp;
+	int		count;
 
 	count = 0;
 	if ((gnl = get_next_line(0, &line)) > 0 && ++count)
-		list = ft_lstnew(line, ft_strlen(line));
-	tmp = list->next;
+		list = ft_newlist(&line, ft_strlen(line));
+	ft_strdel(&line);
+	tmp = list;
 	while ((gnl = get_next_line(0, &line)) > 0 && ++count)
 	{
-		tmp = ft_lstnew(line, ft_strlen(line));
+		tmp->next = ft_newlist(&line, ft_strlen(line));
 		tmp = tmp->next;
+		ft_strdel(&line);
 	}
 	if (gnl == -1)
 		ft_error("Usage: ./lem-in < [file.map]");
 	fill_data(list, data, count);
-	ft_del(&list);
+//	ft_del(&list);
 }
 
 t_options	*init_options()
@@ -83,6 +86,7 @@ t_options	*init_options()
 	options->stat = 0;
 	options->help = 0;
 	options->log = 0;
+	return (options);
 }
 
 t_options	*read_options(int argc, char **argv)
@@ -106,6 +110,7 @@ t_options	*read_options(int argc, char **argv)
 				options->log = 1;
 		}
 		else if (argv[argc][0] == '-' && !(i = 0))
+		{
 			while (argv[argc][++i])
 				if (argv[argc][i] == 'p')
 					options->path = 1;
@@ -117,4 +122,6 @@ t_options	*read_options(int argc, char **argv)
 					options->help = 1;
 				else if (argv[argc][i] == 'l')
 					options->log = 1;
+		}
+	return (options);
 }

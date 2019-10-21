@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/26 14:21:25 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 12:20:27 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		fill_rooms(char **data, char ***rooms, int size)
 	j = 1;
 	flag = 0;
 	if (size < 2)
-		ft_error("No rooms");
+		ft_error("No rooms\n");
 	*rooms = (char**)malloc(sizeof(char*) * (size + 1));
 	while (data[++i] && ((j < size && flag != 2) || (flag == 2 && j < size - 1)))
 		if (ft_strcmp(data[i], "##start") == 0 && ++flag)

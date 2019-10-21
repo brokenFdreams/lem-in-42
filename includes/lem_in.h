@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/17 18:58:50 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/21 13:27:54 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ typedef struct		s_lst
 	struct t_list	**next;
 }					t_lst;
 
-void				read_data(char *argv, char ***data);
+void				read_data(char ***data);
+t_options			*read_options(int argc, char **argv);
 int					validation(char **data, char ***rooms, char ***ways);
 void				ft_error(char *str);
+
+t_list				*ft_newlist(char **content, int content_size);
 
 /*
 ** fill.c

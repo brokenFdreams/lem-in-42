@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 15:30:35 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/08 14:42:29 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 13:39:39 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	print(char **data)
 {
 	while (*data != NULL)
 	{
-		printf("%s\n", *data);
+		write(1, *data, ft_strlen(*data));
+		write(1, "\n", 1);
 		data++;
 	}
 }
@@ -39,8 +40,9 @@ int		main(int argc, char **argv)
 
 	//list
 	if (argc > 1)
-		read_options(argc, argv + 1)
+		read_options(argc, argv + 1);
 	read_data(&data);
+	print(data);
 	ants = validation(data, &rooms, &ways);
 	ft_free_strings_array(&data);
 
