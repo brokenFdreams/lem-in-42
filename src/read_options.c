@@ -6,13 +6,13 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:07:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 15:10:46 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 16:35:19 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_options		*init_options()
+t_options		*init_options(void)
 {
 	t_options	*options;
 
@@ -25,13 +25,31 @@ t_options		*init_options()
 	return (options);
 }
 
+void			readhelp(t_options *options, char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[++i])
+		if (str[i] == 'p')
+			options->path = 1;
+		else if (str[i] == 'c')
+			options->color = 1;
+		else if (str[i] == 's')
+			options->stat = 1;
+		else if (str[i] == 'h')
+			options->help = 1;
+		else if (str[i] == 'l')
+			options->log = 1;
+}
+
 t_options		*read_options(int argc, char **argv)
 {
 	t_options	*options;
 	int			i;
 
 	options = init_options();
-	while (--argc > 0)
+	while (--argc >= 0)
 		if (argv[argc][0] == '-' && argv[argc][1] == '-')
 		{
 			if (ft_strequ(argv[argc], "--path"))
@@ -46,18 +64,6 @@ t_options		*read_options(int argc, char **argv)
 				options->log = 1;
 		}
 		else if (argv[argc][0] == '-' && !(i = 0))
-		{
-			while (argv[argc][++i])
-				if (argv[argc][i] == 'p')
-					options->path = 1;
-				else if (argv[argc][i] == 'c')
-					options->color = 1;
-				else if (argv[argc][i] == 's')
-					options->stat = 1;
-				else if (argv[argc][i] == 'h')
-					options->help = 1;
-				else if (argv[argc][i] == 'l')
-					options->log = 1;
-		}
+			readhelp(options, argv[argc]);
 	return (options);
 }

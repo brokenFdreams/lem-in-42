@@ -6,7 +6,7 @@
 /*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 16:01:08 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/21 16:22:51 by fsinged          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void		read_data(char ***data)
 		ft_strdel(&line);
 		tmp = tmp->next;
 	}
+	if (line)
+		ft_strdel(&line);
 	if (gnl == -1)
 		ft_error("Usage: ./lem-in < [file.map]");
 	fill_data(list, data, count);
