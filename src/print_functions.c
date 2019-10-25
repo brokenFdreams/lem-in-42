@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sol_option_colours.c                               :+:      :+:    :+:   */
+/*   print_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/12 17:43:22 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/23 16:43:28 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/22 14:26:33 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 15:57:02 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void				switch_to_colour(int colour_diff)
+void			print_map(int fd, t_list *map)
 {
-	colour_diff = (colour_diff > 12 ? colour_diff % 12 : colour_diff);
-	if (colour_diff < 7)
+	while (map)
 	{
-		ft_putstr("\033[1;");
-		ft_putnbr(31 + colour_diff);
+		write(fd, (char *)map->content,
+				ft_strlen((char *)map->content));
+		write(fd, "\n", 1);
+		map = map->next;
 	}
-	else
-	{
-		ft_putstr("\033[0;");
-		ft_putnbr(31 + colour_diff - 7);
-	}
-	write(1, "m", 2);
+	write(fd, "\n", 1);
 }
 
-void				switch_to_default(void)
+void			print_number_of_lines(int lines_num)
 {
-	write(1, "\033[0m", 4);
+	write(1, "All ants will be free in ", 25);
+	ft_putnbr(lines_num);
+	write(1, " lines.\n", 8);
 }

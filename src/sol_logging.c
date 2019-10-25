@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_logging.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:55:58 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/17 02:45:28 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/23 16:39:36 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void			log_finding_move(int fd, t_ant *ant)
 {
 	ft_putstr_fd("\nAnt ", fd);
 	ft_putnbr_fd(ant->num, fd);
-	log_links(fd, ant->current_vertex, 
+	log_links(fd, ant->current_vertex,
 				" is about to choose path. His current vertex:");
 }
 

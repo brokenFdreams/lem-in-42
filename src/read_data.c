@@ -3,65 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   read_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 14:21:33 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 16:22:51 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/24 13:58:09 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		del(void *content, size_t size)
+int					read_num(char *str)
 {
-	if (content)
-		ft_memdel(&content);
+	long long int	num;
+	int				len;
+
+	num = ft_strtol(str, NULL, 10);
+	if (num < 1 || num == LLONG_MAX || num > INT_MAX)
+		exit_with_map_format("Error: ants line is incorrect");
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			exit_with_map_format("Error: ants line is incorrect");
+		str++;
+	}
+	if ((len = ft_strlen(str)) > 11)
+		exit_with_map_format("Error: too many ants");
+	else if (len == 11 && num > INT_MAX)
+		exit_with_map_format("Error: too many ants");
+	return ((int)num);
 }
 
-static void	fill_data(t_list *list, char ***data, int size)
+t_list				*new_list_with_line(char *line)
 {
-	int i;
+	t_list			*new;
 
-	i = 0;
-	*data = (char**)malloc(sizeof(char*) * (size + 1));
-	while (i < size)
+	new = ft_lstnew(NULL, 0);
+	if (!new)
+		ft_error("Memory allocation error\n");
+	new->content = line;
+	new->content_size = sizeof(char *);
+	return (new);
+}
+
+int					is_blank(char *line)
+{
+	while (line && *line)
 	{
-		(*data)[i++] = ft_strdup(list->content);
-		list = list->next;
+		if (!ft_isspace(*line))
+			return (0);
+		line++;
 	}
-	(*data)[size] = NULL;
+	return (1);
+}
+
+void				free_line_if_empty(char **line)
+{
+	if (*line && **line == '\0')
+		free(*line);
 }
 
 /*
-** Reading data from file
-** if there's no file, then call ft_error
+** Reading data from stdin
+** if there's error, then call ft_error
 */
 
-void		read_data(char ***data)
+void				read_data(t_map_data *map_data)
 {
-	int		gnl;
-	char	*line;
-	t_list	*list;
-	t_list	*tmp;
-	size_t	count;
+	int				gnl;
+	char			*line;
+	t_list			*tmp;
 
-	count = 0;
-	if ((gnl = get_next_line(0, &line)) > 0 && ++count)
+	if ((gnl = get_next_line(STDIN_FILENO, &line)) > 0)
 	{
-		list = ft_newlist(&line, ft_strlen(line));
-		ft_strdel(&line);
+		if (line && *line)
+			map_data->data = new_list_with_line(line);
+		else
+			exit_with_map_format("Error: empty lines found");
 	}
-	tmp = list;
-	while ((gnl = get_next_line(0, &line)) > 0 && ++count)
+	tmp = map_data->data;
+	while ((gnl = get_next_line(STDIN_FILENO, &line)) > 0)
 	{
-		tmp->next = ft_newlist(&line, ft_strlen(line));
-		ft_strdel(&line);
-		tmp = tmp->next;
+		if (line && !is_blank(line))
+		{
+			tmp->next = new_list_with_line(line);
+			tmp = tmp->next;
+		}
+		else if (line)
+			exit_with_map_format("Error: blank line found in map");
 	}
-	if (line)
-		ft_strdel(&line);
 	if (gnl == -1)
-		ft_error("Usage: ./lem-in < [file.map]");
-	fill_data(list, data, count);
-	ft_lstdel(&list, &del);
+		exit_with_usage();
+	free(line);
 }

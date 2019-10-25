@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sol_restoring_data.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:35:14 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/17 02:47:39 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/23 16:56:39 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,9 @@ void			restore_dist(t_vertex **vertexes)
 	}
 }
 
-void				clear_path(t_path *path)
+void			clear_combo(t_path_combo **combo, int clr_paths_flag)
 {
-	path->starting_vertex = NULL;
-	path->num = -1;
-	path->steps = -1;
-	ft_bzero(path->chain, path->steps * sizeof(t_vertex *));
-}
-
-
-void				clear_combo(t_path_combo **combo, int clr_paths_flag)
-{
-	int				i;
+	int			i;
 
 	(*combo)->starting = NULL;
 	(*combo)->paths_num = 0;
@@ -83,10 +74,10 @@ void			clear_bfs_marks(t_vertex **vertexes, int path_name_clear_flag)
 	}
 }
 
-void				restore_vertexes(t_farm *farm)
+void			restore_vertexes(t_farm *farm)
 {
-	t_list			*temp_a;
-	t_list			*temp_b;
+	t_list		*temp_a;
+	t_list		*temp_b;
 
 	temp_a = farm->start->links;
 	while (temp_a)
@@ -98,6 +89,6 @@ void				restore_vertexes(t_farm *farm)
 	}
 	farm->start->links = copy_links(farm->original_links_of_start);
 	clear_bfs_marks(farm->vertexes, 1);
-	restore_dist(farm->vertexes); // change
+	restore_dist(farm->vertexes);
 	sort_links(farm->start);
 }

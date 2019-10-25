@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 20:56:30 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/08 17:16:28 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/23 16:51:54 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void			ft_swap(void **a, void **b)
 {
-	void		*tmp;
-	
+	void			*tmp;
+
 	tmp = *a;
 	*a = *b;
 	*b = tmp;
@@ -37,11 +37,12 @@ static int			compare_vertexes(t_vertex *vertex_a, t_vertex *vertex_b)
 		return (0);
 }
 
-static t_list		*ft_sort_list(t_list *lst, int (*cmp)(t_vertex *, t_vertex *))
+static t_list		*ft_sort_list(t_list *lst,
+									int (*cmp)(t_vertex *, t_vertex *))
 {
-	t_list		*tmp;
-	t_list		*first;
-	
+	t_list			*tmp;
+	t_list			*first;
+
 	first = lst;
 	while (lst->next)
 	{
@@ -57,13 +58,13 @@ static t_list		*ft_sort_list(t_list *lst, int (*cmp)(t_vertex *, t_vertex *))
 	return (first);
 }
 
-void			sort_links(t_vertex *start)
+void				sort_links(t_vertex *start)
 {
-	t_queue		*queue;
-	t_vertex	*vertex;
-	t_vertex	*temp_vertex;
-	t_list		*list;
-	
+	t_queue			*queue;
+	t_vertex		*vertex;
+	t_vertex		*temp_vertex;
+	t_list			*list;
+
 	queue = NULL;
 	push(&queue, start);
 	while ((vertex = pop(&queue)))
@@ -80,7 +81,6 @@ void			sort_links(t_vertex *start)
 					push(&queue, temp_vertex);
 				list = list->next;
 			}
-			// log_links(STDOUT_FILENO, vertex, "\nAfter links sorting\n");
 		}
 	}
 }

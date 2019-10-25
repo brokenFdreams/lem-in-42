@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 16:16:39 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/09/25 21:05:55 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/23 16:44:55 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			push(t_queue **queue, t_vertex *vertex)
 		temp->next = new;
 	}
 	else
-		*queue = new;	
+		*queue = new;
 }
 
 t_vertex		*pop(t_queue **queue)
@@ -42,7 +42,7 @@ t_vertex		*pop(t_queue **queue)
 		return (NULL);
 	vertex = (*queue)->vertex;
 	temp = *queue;
-	*queue =(*queue)->next;
+	*queue = (*queue)->next;
 	ft_memdel((void **)&temp);
-	return(vertex);
+	return (vertex);
 }

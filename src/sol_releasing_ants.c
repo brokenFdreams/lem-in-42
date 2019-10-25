@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sol_releasing_ants.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:35:02 by anna              #+#    #+#             */
-/*   Updated: 2019/10/16 23:34:03 by anna             ###   ########.fr       */
+/*   Created: 2019/10/10 16:35:02 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:46:58 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
 
 static void		move_ant(t_ant *ant, t_vertex *vertex)
 {
@@ -31,9 +30,7 @@ static void		move_ant(t_ant *ant, t_vertex *vertex)
 static t_vertex	*find_vertex_for_ant(t_ant *ant, t_path_combo *combo)
 {
 	int			path_num;
- 	// t_list		*vertex_list;
-	// t_vertex	*vertex;
-	
+
 	path_num = ant->num % combo->num_of_paths_to_use - 1;
 	if (path_num < 0)
 		path_num = combo->num_of_paths_to_use - 1;
@@ -65,7 +62,7 @@ static int		find_move(t_ant *ant, int ants_num, t_path_combo *combo)
 	if (ant->current_vertex->next && ant->current_vertex->next->is_occupied)
 	{
 		if (ant->current_vertex->is_start || ant->num == ants_num)
- 			return (-1);
+			return (-1);
 		else
 			return (0);
 	}
@@ -94,7 +91,7 @@ void			release_ants(t_farm *farm)
 	{
 		current_ant = get_next_ant(farm->ant_queue, NULL);
 		move_status = 0;
-		while (move_status >=0 && current_ant)
+		while (move_status >= 0 && current_ant)
 		{
 			move_status = find_move(current_ant, farm->ants_num, farm->combo);
 			if (move_status > 0 && current_ant != farm->ant_queue->ant)

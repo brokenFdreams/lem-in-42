@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/11 01:00:48 by anna              #+#    #+#             */
-/*   Updated: 2019/10/17 18:06:20 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/11 01:00:48 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:01:11 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ static void			free_vertexes(t_farm *farm)
 	ft_memdel((void **)&farm->vertexes);
 }
 
+void				free_map_data(t_map_data **map_data)
+{
+	if ((*map_data)->room_lines)
+		ft_memdel((void **)&(*map_data)->room_lines);
+	if ((*map_data)->ways)
+		ft_memdel((void **)&(*map_data)->ways);
+	if ((*map_data)->data)
+		ft_lstdel(&(*map_data)->data, del_content);
+	ft_memdel((void **)map_data);
+}
+
 void				free_memory(t_farm *farm)
 {
 	if (farm->combo)
@@ -58,6 +69,8 @@ void				free_memory(t_farm *farm)
 		ft_memdel((void **)&farm->options);
 	if (farm->original_links_of_start)
 		ft_lstdel(&farm->original_links_of_start, del_content);
+	if (farm->map_data)
+		free_map_data(&farm->map_data);
 	if (farm->vertexes)
 		free_vertexes(farm);
 	ft_memdel((void **)&farm);

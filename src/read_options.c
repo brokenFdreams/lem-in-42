@@ -3,67 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   read_options.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 15:07:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 16:35:19 by fsinged          ###   ########.fr       */
+/*   Created: 2019/10/18 15:15:44 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 15:57:30 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_options		*init_options(void)
+static void	save_full_option(char *line, t_options *options)
 {
-	t_options	*options;
-
-	options = malloc(sizeof(t_options));
-	options->path = 0;
-	options->color = 0;
-	options->stat = 0;
-	options->help = 0;
-	options->log = 0;
-	return (options);
+	if (ft_strequ(line, "path"))
+		options->path = 1;
+	else if (ft_strequ(line, "color"))
+		options->color = 1;
+	else if (ft_strequ(line, "stat"))
+		options->stat = 1;
+	else if (ft_strequ(line, "log"))
+		options->log = 1;
+	else if (ft_strequ(line, "save_map"))
+		options->save_map = 1;
+	else if (ft_strequ(line, "quiet"))
+		options->quiet = 1;
+	else if (ft_strequ(line, "help"))
+		options->help = 1;
+	else
+		options->usage = 1;
 }
 
-void			readhelp(t_options *options, char *str)
+static void	save_short_options(char *line, t_options *options)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	while (str[++i])
-		if (str[i] == 'p')
+	while (line[i])
+	{
+		if (line[i] == 'p')
 			options->path = 1;
-		else if (str[i] == 'c')
+		else if (line[i] == 'c')
 			options->color = 1;
-		else if (str[i] == 's')
+		else if (line[i] == 's')
 			options->stat = 1;
-		else if (str[i] == 'h')
+		else if (line[i] == 'h')
 			options->help = 1;
-		else if (str[i] == 'l')
+		else if (line[i] == 'l')
 			options->log = 1;
+		else if (line[i] == 'm')
+			options->save_map = 1;
+		else if (line[i] == 'q')
+			options->quiet = 1;
+		else
+			options->usage = 1;
+		i++;
+	}
 }
 
-t_options		*read_options(int argc, char **argv)
+void		read_options(int argc, char **argv, t_options *options)
 {
-	t_options	*options;
-	int			i;
-
-	options = init_options();
 	while (--argc >= 0)
 		if (argv[argc][0] == '-' && argv[argc][1] == '-')
-		{
-			if (ft_strequ(argv[argc], "--path"))
-				options->path = 1;
-			else if (ft_strequ(argv[argc], "--color"))
-				options->color = 1;
-			else if (ft_strequ(argv[argc], "--stat"))
-				options->stat = 1;
-			else if (ft_strequ(argv[argc], "--help"))
-				options->help = 1;
-			else if (ft_strequ(argv[argc], "--log"))
-				options->log = 1;
-		}
-		else if (argv[argc][0] == '-' && !(i = 0))
-			readhelp(options, argv[argc]);
-	return (options);
+			save_full_option(argv[argc] + 2, options);
+		else if (argv[argc][0] == '-')
+			save_short_options(argv[argc] + 1, options);
 }

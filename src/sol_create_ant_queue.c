@@ -6,17 +6,15 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 01:33:51 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/11 22:10:27 by dtimeon          ###   ########.fr       */
+/*   Updated: 2019/10/23 16:32:32 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include "structs.h"
 
-
-static t_ant		*init_ant(int ant_num, t_vertex *start)
+static t_ant			*init_ant(int ant_num, t_vertex *start)
 {
-	t_ant			*new;
+	t_ant				*new;
 
 	new = (t_ant *)malloc(sizeof(t_ant));
 	if (!new)
@@ -46,7 +44,7 @@ t_ant					*get_next_ant(t_ant_queue *queue, t_ant *previous)
 			return (current);
 		}
 		else
-			return (NULL);		
+			return (NULL);
 	}
 }
 

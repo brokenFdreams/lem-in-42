@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 15:25:44 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/17 00:21:54 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/23 16:55:56 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _STRUCTS_H_
-# define _STRUCTS_H_
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # include "libft.h"
 
@@ -42,7 +42,6 @@ typedef struct			s_ant
 	int					path_num;
 }						t_ant;
 
-
 typedef struct			s_ant_queue
 {
 	t_ant				*ant;
@@ -55,14 +54,11 @@ typedef	struct			s_path
 	int					steps;
 	int					num;
 	t_vertex			**chain;
-	// struct s_path		*next;
 }						t_path;
 
 typedef struct			s_path_combo
 {
 	t_vertex			*starting;
-	// int					capacity;
-	// float				average_path_len;
 	int					num_of_paths_to_use;
 	int					lines_num;
 	int					paths_num;
@@ -78,17 +74,25 @@ typedef struct			s_options
 	int					stat;
 	int					help;
 	int					log;
+	int					save_map;
+	int					quiet;
+	int					usage;
 }						t_options;
 
 typedef struct			s_map_data
 {
 	int					ants_num;
 	int					rooms_num;
+	int					ways_num;
 	char				**room_lines;
-	char				**link_lines;
+	char				**ways;
 	int					name_len;
 	char				*start_line;
 	char				*end_line;
+	t_list				*data;
+	t_list				*first_room;
+	t_list				*first_way;
+	int					map_fd;
 }						t_map_data;
 
 typedef struct			s_farm
@@ -122,6 +126,4 @@ typedef struct			s_time
 	char				*second;
 }						t_time;
 
-
-
-# endif
+#endif

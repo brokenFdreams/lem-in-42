@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:33:42 by anna              #+#    #+#             */
-/*   Updated: 2019/10/11 16:34:12 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/10 16:33:42 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:31:10 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
 
 static void		del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
 {
@@ -19,7 +18,6 @@ static void		del_ant_queue_till(t_ant_queue **head, t_ant_queue *to_keep)
 	t_ant		*temp_ant;
 
 	temp = *head;
-
 	while (temp != to_keep)
 	{
 		*head = temp->next;

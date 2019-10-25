@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:58:30 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 15:56:22 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/24 13:29:59 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 ** Check str, room is it or not
 */
 
-int		isroom(char *str)
+int			isroom(char *str)
 {
 	if (!*str || *str == 'L' || *str == '#')
 		return (0);
-	while (*str && *str != ' ')
-		str++;
+	if (!is_coordinates(&str))
+		return (0);
 	if (!*str)
 		return (0);
 	str++;
@@ -47,7 +47,7 @@ int		isroom(char *str)
 ** Check str, way is it or not
 */
 
-int		isway(char *str)
+int			isway(char *str)
 {
 	if (*str == 'L' || *str == '#')
 		return (0);
@@ -65,51 +65,51 @@ int		isway(char *str)
 ** Fill rooms
 */
 
-int		fill_rooms(char **data, char ***rooms, int size)
+void		fill_rooms(t_map_data *map_data)
 {
-	int i;
-	int j;
-	int flag;
+	t_list	*temp;
+	int		i;
 
 	i = 0;
-	j = 1;
-	flag = 0;
-	if (size < 2)
-		ft_error("No rooms\n");
-	*rooms = (char**)malloc(sizeof(char*) * (size + 1));
-	while (data[++i] &&
-			((j < size && flag != 2) || (flag == 2 && j < size - 1)))
-		if (ft_strcmp(data[i], "##start") == 0 && ++flag)
-			(*rooms)[0] = ft_strdup(data[++i]);
-		else if (ft_strcmp(data[i], "##end") == 0 && ++flag)
-			(*rooms)[size - 1] = ft_strdup(data[++i]);
-		else if (isroom(data[i]))
-			(*rooms)[j++] = ft_strdup(data[i]);
-	if (flag != 2)
-		ft_error("No mandatory comments\n");
-	(*rooms)[size] = NULL;
-	return (i);
+	temp = map_data->first_room;
+	map_data->room_lines = (char**)ft_memalloc(sizeof(char*) *
+							(map_data->rooms_num + 1));
+	if (!map_data->room_lines)
+		ft_error("Memory allocation error\n");
+	while (temp && temp != map_data->first_way && i < map_data->rooms_num)
+	{
+		if (*(char *)temp->content != '#')
+		{
+			map_data->room_lines[i] = (char *)temp->content;
+			i++;
+		}
+		if (ft_strequ((char *)temp->content, "##start") ||
+			ft_strequ((char *)temp->content, "##end"))
+			temp = temp->next;
+		if (temp)
+			temp = temp->next;
+	}
 }
 
-/*
-** Fill ways
-*/
-
-void	fill_ways(char **data, char ***ways, int size)
+void		fill_ways(t_map_data *map_data)
 {
-	int i;
-	int j;
+	t_list	*temp;
+	int		i;
 
 	i = 0;
-	j = 0;
-	if (size < 1)
-		ft_error("No possible solution\n");
-	*ways = (char**)malloc(sizeof(char*) * (size + 1));
-	while (data[i] && j < size)
+	temp = map_data->first_way;
+	map_data->ways = (char**)ft_memalloc(sizeof(char*) *
+							(map_data->ways_num + 1));
+	if (!map_data->ways)
+		ft_error("Memory allocation error\n");
+	map_data->ways[map_data->ways_num] = NULL;
+	while (temp && i < map_data->ways_num)
 	{
-		if (isway(data[i]))
-			(*ways)[j++] = ft_strdup(data[i]);
-		i++;
+		if (*(char *)temp->content != '#')
+		{
+			map_data->ways[i] = (char *)temp->content;
+			i++;
+		}
+		temp = temp->next;
 	}
-	(*ways)[size] = NULL;
 }

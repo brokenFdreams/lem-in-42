@@ -6,7 +6,7 @@
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:02:48 by fsinged           #+#    #+#             */
-/*   Updated: 2019/10/21 14:38:38 by fsinged          ###   ########.fr       */
+/*   Updated: 2019/10/23 17:23:41 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,32 @@ typedef struct		s_lst
 	struct t_list	**next;
 }					t_lst;
 
-void				read_data(char ***data);
-t_options			*read_options(int argc, char **argv);
-int					validation(char **data, char ***rooms, char ***ways);
-void				ft_error(char *str);
+void				read_data(t_map_data *map_data);
 
-t_list				*ft_newlist(char **content, size_t content_size);
+int					read_num(char *str);
+void				validation(t_map_data *map_data);
+
+void				ft_error(char *str);
+void				exit_with_map_format(char *message);
+void				exit_with_help(int color_flag);
+void				exit_with_usage(void);
+void				exit_with_ants(int lines_num);
+void				show_room_error(int code);
+
+void				read_options(int argc, char **argv, t_options *options);
+
+void				create_map_file(t_map_data *map_data);
+
+void				print_number_of_lines(int lines_num);
+void				print_map(int fd, t_list *map);
+
+int					is_coordinates(char **line);
+int					is_comment_or_command(char *line);
+void				save_start_room(t_list *start_list, t_list *room_list,
+								t_map_data *map_data);
+void				save_end_room(t_list *end_list, t_list *room_list,
+								t_map_data *map_data);
+void				save_map_to_file(t_map_data *map_data);
 
 /*
 ** fill.c
@@ -48,35 +68,34 @@ t_list				*ft_newlist(char **content, size_t content_size);
 
 int					isroom(char *str);
 int					isway(char *str);
-int					fill_rooms(char **data, char ***rooms, int size);
-void				fill_ways(char **data, char ***ways, int size);
-
-
+void				fill_rooms(t_map_data *map_data);
+void				fill_ways(t_map_data *map_data);
 
 void				calculate_combo(t_path_combo *combo, int ants_num);
-/* 
+/*
 ** sol_init_vertex.c
 */
 
+int					room_check(char	**rooms);
 t_vertex			*init_vertex(char *room_line, char s_flag, char e_flag,
 								int name_len);
 t_vertex			**collect_vertexes(t_vertex *start, t_vertex *end,
 										t_map_data *map_data);
 
-/* 
+/*
 ** sol_create_ant_queue.c
 */
 
 t_ant				*get_next_ant(t_ant_queue *queue, t_ant *previous);
 t_ant_queue			*create_ant_queue(int ants_left, t_vertex *start);
 
-/* 
+/*
 ** sol_add_links_to_vertex.c
 */
 
 void				add_links(t_vertex **vertexes, t_map_data *map_data);
 
-/* 
+/*
 ** sol_distance_computing.c
 */
 
@@ -110,7 +129,6 @@ void				log_combo(int fd, t_path_combo *combo, char *message);
 
 void				remove_impasses(t_vertex *vertex);
 
-
 /*
 ** sol_search_for_path.c
 */
@@ -127,7 +145,7 @@ t_vertex			*choose_next_vertex(t_list *links, t_path_combo *combo,
 void				set_real_dist(t_vertex **vertexes);
 void				restore_dist(t_vertex **vertexes);
 void				clear_combo(t_path_combo **combo, int clr_paths_flag);
-void				clear_bfs_marks(t_vertex **vertexes, 
+void				clear_bfs_marks(t_vertex **vertexes,
 									int path_name_clear_flag);
 void				restore_vertexes(t_farm *farm);
 
@@ -169,15 +187,15 @@ void				find_path_combo(t_farm *farm);
 */
 
 t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
-							int ants_num, t_options *options);
+							int ants_num, t_map_data *map_data);
 t_path_combo		*init_path_combo(t_farm *farm);
 
 /*
 ** sol_data_saving_bonus.c
 */
 
-t_options			*init_options();
-t_map_data			*init_map_data(int ants_num);
+t_options			*init_options(void);
+t_map_data			*init_map_data(void);
 void				init_log(t_farm *farm);
 
 /*
@@ -203,6 +221,7 @@ void				switch_to_default(void);
 ** sol_calculating_path_combo.c
 */
 
+void				clear_path(t_path *path);
 void				calculate_combo(t_path_combo *combo, int ants_num);
 
 /*
@@ -232,7 +251,7 @@ char				*ft_join_str_array(char **array);
 char				*ft_join_strings(int str_num, ...);
 char				*create_time_string(struct tm *timeinfo);
 
-/* 
+/*
 ** additional libft functions
 */
 

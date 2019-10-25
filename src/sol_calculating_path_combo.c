@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   sol_calculating_path_combo.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anna <anna@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:43:16 by dtimeon           #+#    #+#             */
-/*   Updated: 2019/10/17 03:00:07 by anna             ###   ########.fr       */
+/*   Updated: 2019/10/23 17:00:43 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
+void				clear_path(t_path *path)
+{
+	path->starting_vertex = NULL;
+	path->num = -1;
+	path->steps = -1;
+	ft_bzero(path->chain, path->steps * sizeof(t_vertex *));
+}
 
 static int			compute_line_num(t_path **paths, int i, int ants_num)
 {

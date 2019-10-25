@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ants_lines_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsinged <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 15:34:09 by fsinged           #+#    #+#             */
-/*   Updated: 2019/09/19 14:45:55 by fsinged          ###   ########.fr       */
+/*   Created: 2019/10/23 16:16:29 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:25:05 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-/*
-** Write error massage and exit program
-*/
-
-void	ft_error(char *str)
+void	exit_with_ants(int lines_num)
 {
-	write(1, str, ft_strlen(str));
-	exit(0);
+	write(1, "All ants will be free in ", 25);
+	ft_putnbr(lines_num);
+	write(1, " lines.\n", 8);
 }

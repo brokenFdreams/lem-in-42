@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 22:17:52 by anna              #+#    #+#             */
-/*   Updated: 2019/10/18 11:27:23 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/10 22:17:52 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:33:38 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ t_path				**init_paths(t_farm *farm)
 	t_path			**paths;
 	int				i;
 
-	paths = (t_path **)ft_memalloc(sizeof(t_path *) * (farm->end->links_num + 1));
+	paths = (t_path **)ft_memalloc(sizeof(t_path *) *
+							(farm->end->links_num + 1));
 	if (!paths)
 		ft_error("Memory allocation error\n");
 	i = 0;
@@ -26,7 +27,7 @@ t_path				**init_paths(t_farm *farm)
 		paths[i] = (t_path *)ft_memalloc(sizeof(t_path));
 		if (!paths[i])
 			ft_error("Memory allocation error\n");
-		paths[i]->chain = 
+		paths[i]->chain =
 			(t_vertex **)ft_memalloc(sizeof(t_vertex *) * farm->vertex_num);
 		if (!paths[i]->chain)
 			ft_error("Memory allocation error\n");
@@ -52,18 +53,8 @@ t_path_combo		*init_path_combo(t_farm *farm)
 	return (new);
 }
 
-static int		count_vertexes(t_vertex **vertexes)
-{
-	t_vertex	**temp;
-
-	temp = vertexes;
-	while (*temp)
-		temp++;
-	return (temp - vertexes);
-}
-
-t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
-							int ants_num, t_options *options)
+t_farm				*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
+							int ants_num, t_map_data *map_data)
 {
 	t_farm		*farm;
 
@@ -73,11 +64,13 @@ t_farm			*init_farm(t_vertex **vertexes, t_ant_queue *ant_queue,
 	farm->start = vertexes[1];
 	farm->end = vertexes[0];
 	farm->vertexes = vertexes;
-	farm->vertex_num = count_vertexes(vertexes);
+	farm->vertex_num = map_data->rooms_num + 2;
 	farm->ants_num = ants_num;
 	farm->ant_queue = ant_queue;
 	farm->combo = NULL;
-	farm->options = options;
-	farm->map_data = NULL;
+	farm->map_data = map_data;
+	farm->options = NULL;
+	farm->original_links_of_start = NULL;
+	farm->log_fd = -1;
 	return (farm);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dtimeon <dtimeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 16:34:44 by anna              #+#    #+#             */
-/*   Updated: 2019/10/17 17:09:47 by dtimeon          ###   ########.fr       */
+/*   Created: 2019/10/10 16:34:44 by dtimeon           #+#    #+#             */
+/*   Updated: 2019/10/23 16:37:19 by dtimeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ static int			compare_combos(t_path_combo *current, t_path_combo *new)
 	if (new->paths_num < 1)
 		return (0);
 	if (new->lines_num < current->lines_num)
-		return (1);	
-	return (0);	
+		return (1);
+	return (0);
 }
 
 void				copy_paths(t_path_combo *dest, t_path_combo *src)
 {
 	int				p_i;
-	// int				c_i;
 
 	p_i = 0;
 	while (p_i < src->paths_num)
@@ -34,7 +33,8 @@ void				copy_paths(t_path_combo *dest, t_path_combo *src)
 		dest->paths[p_i]->num = src->paths[p_i]->num;
 		dest->paths[p_i]->starting_vertex = src->paths[p_i]->starting_vertex;
 		dest->paths[p_i]->steps = src->paths[p_i]->steps;
-		ft_memcpy(dest->paths[p_i]->chain, src->paths[p_i]->chain, sizeof(t_vertex *) * src->paths[p_i]->steps);
+		ft_memcpy(dest->paths[p_i]->chain, src->paths[p_i]->chain,
+					sizeof(t_vertex *) * src->paths[p_i]->steps);
 		p_i++;
 	}
 }
@@ -55,12 +55,13 @@ static void			copy_combo(t_path_combo **old, t_path_combo *new,
 	ft_strcpy((*old)->name, new->name);
 }
 
-void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
-							t_path_combo **combo, t_vertex *vertex)
+void				make_new_combo_search(t_farm *farm,
+										t_path_combo **best_combo,
+										t_path_combo **combo, t_vertex *vertex)
 {
-	static int	combo_num = 1;
-	char		*combo_num_str;
-	char		*message;
+	static int		combo_num = 1;
+	char			*combo_num_str;
+	char			*message;
 
 	find_combo_with_vertex(combo, vertex, farm);
 	if (farm->options->stat)
@@ -79,12 +80,6 @@ void			make_new_combo_search(t_farm *farm, t_path_combo **best_combo,
 		clear_combo(combo, 1);
 	combo_num++;
 }
-
-// void				del_combo(t_path_combo **combo)
-// {
-// 	ft_strdel(&(*combo)->name);
-// 	free(*combo);
-// }
 
 void				find_path_combo(t_farm *farm)
 {
@@ -110,7 +105,6 @@ void				find_path_combo(t_farm *farm)
 		restore_vertexes(farm);
 		i++;
 	}
-	if (!ft_strequ(combo->name, best_combo->name))
-		free_combo(&combo, farm->end->links_num);
+	free_combo(&combo, farm->end->links_num);
 	farm->combo = best_combo;
 }
